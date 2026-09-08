@@ -198,7 +198,7 @@ You can host this tool publicly for free using GitHub Pages with zero server mai
 2. In GitHub, go to **Settings** &rarr; **Pages**.
 3. Under **Build and deployment** &gt; **Branch**, select `main` and root `/`.
 4. Click **Save**. GitHub Pages will deploy your site at:
-   `https://<username>.github.io/<repo-name>/`
+   `https://woodyuk90.github.io/hb_flowcode_builder/`
 
 Because `index.html` is provided in the repository root, it will load instantly with no build step or package dependencies required.
 

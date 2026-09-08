@@ -22,9 +22,9 @@ It is completely free, 100% client-side, zero-dependency, and open-source.
 ---
 
 ### 🌐 How to Use It
-- **Live Web App (GitHub Pages):** [https://<your-username>.github.io/<repo-name>/](https://<your-username>.github.io/<repo-name>/)
+- **Live Web App (GitHub Pages):** [https://woodyuk90.github.io/hb_flowcode_builder/](https://woodyuk90.github.io/hb_flowcode_builder/)
 - **Offline / Local Use:** You can also download the attached `Hornbill Flowcode Advanced Builder.html` file and simply double-click it. It runs locally in your browser (`file:///...`) with zero internet connection or server dependencies.
-- **Source Code & Contributions (GitHub):** [https://github.com/<your-username>/<repo-name>](https://github.com/<your-username>/<repo-name>)
+- **Source Code & Contributions (GitHub):** [https://github.com/WoodyUK90/hb_flowcode_builder](https://github.com/WoodyUK90/hb_flowcode_builder)
 
 ---
 
