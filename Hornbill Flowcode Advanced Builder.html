@@ -9,22 +9,22 @@
         :root {
             --primary: #0284c7;
             --primary-hover: #0369a1;
-            --primary-light: #f0f9ff;
-            --primary-border: #bae6fd;
-            --bg: #f8fafc;
+            --primary-light: #e0f2fe;
+            --primary-border: #7dd3fc;
+            --bg: #eaeff5;
             --surface: #ffffff;
             --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --text-muted: #475569;
+            --border: #cbd5e1;
             --border-focus: #0284c7;
             --code-bg: #0f172a;
             --code-text: #f8fafc;
             --preview-bg: #f0fdf4;
-            --preview-border: #bbf7d0;
-            --preview-text: #166534;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+            --preview-border: #86efac;
+            --preview-text: #14532d;
+            --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+            --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.1), 0 2px 4px -2px rgb(15 23 42 / 0.06);
+            --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.1), 0 4px 6px -4px rgb(15 23 42 / 0.05);
             --radius-sm: 6px;
             --radius-md: 10px;
             --radius-lg: 14px;
@@ -372,12 +372,12 @@
             display: inline-flex;
             align-items: center;
             padding: 4px 8px;
-            background: #f8fafc;
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             font-size: 11.5px;
             font-weight: 500;
-            color: #475569;
+            color: #334155;
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
@@ -1259,11 +1259,11 @@
                         </div>
                         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                             <div class="form-group" style="flex: 1; min-width: 130px; margin-bottom: 0;">
-                                <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label">(token 1)</span></label>
+                                <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label" id="mock-val-1-helper">(token 1)</span></label>
                                 <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
                             </div>
                             <div class="form-group" id="mock-val-2-container" style="display: none; flex: 1; min-width: 130px; margin-bottom: 0;">
-                                <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label">(token 2)</span></label>
+                                <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label" id="mock-val-2-helper">(token 2)</span></label>
                                 <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
                             </div>
                         </div>
@@ -1345,19 +1345,19 @@
                     <div class="modal-preset-header"><span>🇬🇧</span> Now (UK DateTime)</div>
                     <div class="modal-preset-desc">Current UK human-readable timestamp (DD/MM/YYYY HH:mm).</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00')">
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'requestDate\']')">
                     <div class="modal-preset-header"><span>⏳</span> Due in 5 Days</div>
                     <div class="modal-preset-desc">Offsets date by +5 days for Hornbill custom field targets.</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm')">
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm', 'global[\'flowcoderefs\'][\'resolveNode\'][\'resolvedDate\']')">
                     <div class="modal-preset-header"><span>⚙</span> Custom Format</div>
                     <div class="modal-preset-desc">Formats input token date using custom token specifiers.</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('age_days', '', '', '', '', '2026-09-01 09:00:00')">
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('age_days', '', '', '', '', '2026-09-01 09:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'dateLogged\']')">
                     <div class="modal-preset-header"><span>⏱</span> Ticket Age (Days)</div>
                     <div class="modal-preset-desc">Calculates elapsed days between creation date and now.</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('is_past', '', '', '', '', '2026-09-01 00:00:00')">
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('is_past', '', '', '', '', '2026-09-01 00:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'slaTargetDate\']')">
                     <div class="modal-preset-header"><span>❗</span> Is Overdue? (Bool)</div>
                     <div class="modal-preset-desc">Evaluates boolean overdue condition (date &lt; now).</div>
                 </button>
@@ -1667,11 +1667,53 @@
             `;
             if (isOpen) targetDescEl.classList.add('open');
         }
+
+        updateMockHelperLabels();
     }
 
-    function applyTemplate(convType, category, operation, modType, extraVal, mock1, mock2) {
+    function updateMockHelperLabels() {
+        const cat = document.getElementById('category').value;
+        const helper1 = document.getElementById('mock-val-1-helper');
+        const helper2 = document.getElementById('mock-val-2-helper');
+        if (!helper1) return;
+
+        if (cat === 'math') {
+            helper1.textContent = '(token 1: numeric amount)';
+            if (helper2) helper2.textContent = '(token 2: modifier amount)';
+        } else if (cat === 'routing') {
+            helper1.textContent = '(token 1: counter / ticket ID)';
+        } else if (cat === 'string') {
+            helper1.textContent = '(token 1: input text)';
+        } else if (cat === 'logic') {
+            helper1.textContent = '(token 1: test value / condition)';
+        } else if (cat === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            if (dateOp === 'is_past') {
+                helper1.textContent = '(token 1: target / SLA date to check)';
+            } else if (dateOp === 'is_future') {
+                helper1.textContent = '(token 1: target date to test)';
+            } else if (dateOp === 'expires_within') {
+                helper1.textContent = '(token 1: expiration target date)';
+            } else if (dateOp === 'age_days' || dateOp === 'age_hours') {
+                helper1.textContent = '(token 1: ticket creation / logged date)';
+            } else if (dateOp === 'diff_days') {
+                helper1.textContent = '(token 1: start date)';
+                if (helper2) helper2.textContent = '(token 2: end date)';
+            } else if (dateOp === 'format_date' || dateOp === 'offset_var' || dateOp === 'extract_date' || dateOp === 'is_weekend') {
+                helper1.textContent = '(token 1: date string to evaluate)';
+            } else {
+                helper1.textContent = '(system clock used automatically)';
+            }
+        }
+    }
+
+    function applyTemplate(convType, category, operation, modType, extraVal, mock1, mock2, tokenVar) {
         isMock1ModifiedByUser = false;
         isMock2ModifiedByUser = false;
+
+        if (tokenVar) {
+            document.getElementById('variable').value = tokenVar;
+        }
 
         document.getElementById('category').value = category;
         switchCategory();
@@ -1702,9 +1744,13 @@
         showToast("Template applied: " + operation, "info");
     }
 
-    function applyDatePreset(op, format, offsetDir, offsetVal, offsetUnit, mock1, customFmt) {
+    function applyDatePreset(op, format, offsetDir, offsetVal, offsetUnit, mock1, customFmt, tokenVar) {
         isMock1ModifiedByUser = false;
         isMock2ModifiedByUser = false;
+
+        if (tokenVar) {
+            document.getElementById('variable').value = tokenVar;
+        }
 
         document.getElementById('category').value = 'date';
         switchCategory();
