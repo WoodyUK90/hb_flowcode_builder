@@ -45,17 +45,9 @@
         }
 
         .container {
-            max-width: 95vw;
-            max-width: 2400px;
+            max-width: 1720px;
             margin: 0 auto;
-            padding: 16px 20px 40px 20px;
-        }
-
-        @media (min-width: 2200px) {
-            .container {
-                max-width: 2600px;
-                padding: 20px 32px 50px 32px;
-            }
+            padding: 12px 18px 32px 18px;
         }
 
         /* Top Header */
@@ -64,23 +56,23 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
         }
 
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .brand-icon {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -89,8 +81,8 @@
         }
 
         .brand-icon svg {
-            width: 26px;
-            height: 26px;
+            width: 22px;
+            height: 22px;
             fill: none;
             stroke: white;
             stroke-width: 2.2;
@@ -100,7 +92,7 @@
 
         h1 {
             margin: 0;
-            font-size: 22px;
+            font-size: 19px;
             font-weight: 700;
             color: var(--text-main);
             letter-spacing: -0.02em;
@@ -109,60 +101,150 @@
         .subtitle {
             margin: 2px 0 0 0;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .badge-pill {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: var(--primary-light);
             border: 1px solid var(--primary-border);
             color: var(--primary-hover);
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 600;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 9999px;
         }
 
         .badge-pill .dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background: #10b981;
             border-radius: 50%;
         }
 
-        /* 3-Column Panoramic Responsive Layout */
+        /* Top Token Command Bar */
+        .token-bar-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+        }
+
+        .token-bar-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .token-bar-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .template-trigger-btn {
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .template-trigger-btn:hover {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+            color: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        .template-count-badge {
+            background: #0284c7;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 9999px;
+        }
+
+        .token-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .token-input-prefix {
+            position: absolute;
+            left: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0284c7;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .token-input-field {
+            width: 100%;
+            padding: 7px 28px 7px 30px !important;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px !important;
+            font-weight: 600;
+            color: var(--text-main);
+            background: #f8fafc !important;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.15s ease-in-out;
+            outline: none;
+        }
+
+        .token-input-field:focus {
+            background: var(--surface) !important;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .token-input-suffix {
+            position: absolute;
+            right: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0284c7;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* 2-Column Responsive Workspace Layout */
         .app-layout {
             display: grid;
-            grid-template-columns: 340px minmax(420px, 1fr) 420px;
-            gap: 20px;
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+            gap: 14px;
             align-items: start;
         }
 
-        @media (min-width: 2000px) {
-            .app-layout {
-                grid-template-columns: 380px minmax(480px, 1.25fr) 460px;
-                gap: 24px;
-            }
-        }
-
-        @media (max-width: 1400px) {
-            .app-layout {
-                grid-template-columns: minmax(320px, 1fr) minmax(380px, 1.1fr);
-            }
-            .col-token-templates {
-                grid-column: 1 / -1;
-            }
-        }
-
-        @media (max-width: 960px) {
+        @media (max-width: 1080px) {
             .app-layout {
                 grid-template-columns: 1fr;
             }
@@ -172,35 +254,39 @@
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             box-shadow: var(--shadow-sm);
-            padding: 18px 20px;
-            margin-bottom: 20px;
+            padding: 13px 15px;
+            margin-bottom: 12px;
+        }
+
+        .card:last-child {
+            margin-bottom: 0;
         }
 
         .card-title-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
+            margin-bottom: 8px;
         }
 
         .step-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             background: var(--primary);
             color: white;
             border-radius: 50%;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            margin-right: 8px;
+            margin-right: 6px;
         }
 
         .card-heading {
-            font-size: 15px;
+            font-size: 13.5px;
             font-weight: 700;
             color: var(--text-main);
             display: flex;
@@ -210,7 +296,7 @@
 
         /* Form Controls */
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 9px;
         }
 
         .form-group:last-child {
@@ -219,14 +305,14 @@
 
         label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-main);
-            margin-bottom: 6px;
+            margin-bottom: 3px;
         }
 
         .helper-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: normal;
             color: var(--text-muted);
             margin-left: 4px;
@@ -234,8 +320,8 @@
 
         input[type="text"], input[type="number"], select {
             width: 100%;
-            padding: 10px 12px;
-            font-size: 13.5px;
+            padding: 6px 9px;
+            font-size: 12.5px;
             color: var(--text-main);
             background: var(--surface);
             border: 1px solid var(--border);
@@ -250,28 +336,413 @@
             box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
         }
 
-        /* Action Templates & Filter Pills */
-        .presets-wrapper {
-            margin-top: 14px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius-md);
-            padding: 12px;
+        /* Category & Conversion Row */
+        .category-cast-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) minmax(280px, 1.4fr);
+            gap: 10px;
+            align-items: start;
         }
 
-        .presets-header {
+        @media (max-width: 768px) {
+            .category-cast-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Radio Pill Group for Conversion */
+        .radio-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 1px;
+        }
+
+        .radio-pill-item {
+            position: relative;
+        }
+
+        .radio-pill-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .radio-pill-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 11.5px;
+            font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .radio-pill-label code {
+            background: #e2e8f0;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .radio-pill-item input[type="radio"]:checked + .radio-pill-label {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-hover);
+            font-weight: 600;
+        }
+
+        .radio-pill-item input[type="radio"]:disabled + .radio-pill-label {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        /* Dynamic Section Panels */
+        .dynamic-section {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            margin-top: 8px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .dynamic-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .inner-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+            margin-top: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Collapsible Description Cards */
+        .desc-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 11.5px;
+            line-height: 1.4;
+            color: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .desc-card-compact {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 8px;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
         }
 
-        .presets-title {
+        .desc-card-compact:hover .desc-card-badge {
+            color: var(--primary-hover);
+        }
+
+        .desc-card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
             font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .desc-card-toggle {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            padding: 1px 6px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .desc-card-toggle:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .desc-card-drawer {
+            display: none;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed #cbd5e1;
+            font-size: 11.5px;
+            color: #475569;
+        }
+
+        .desc-card.open .desc-card-drawer {
+            display: block;
+        }
+
+        .desc-card.open .desc-card-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .desc-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed #cbd5e1;
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        .desc-meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .desc-meta-tag strong {
+            color: #1e293b;
+        }
+
+        .preview-dot {
+            width: 7px;
+            height: 7px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            margin-right: 4px;
+        }
+
+        .preview-badge {
+            font-size: 9.5px;
             font-weight: 700;
-            color: #334155;
             text-transform: uppercase;
             letter-spacing: 0.04em;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 1px solid #bae6fd;
+        }
+
+        /* Sticky Output & Live Preview Deck */
+        .sticky-deck {
+            position: sticky;
+            top: 12px;
+        }
+
+        .output-box {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12.5px;
+            line-height: 1.45;
+            word-break: break-all;
+            border: 1px solid #1e293b;
+            min-height: 38px;
+            margin-bottom: 10px;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .deck-btn-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .action-btn-secondary {
+            background: var(--surface);
+            color: #334155;
+            border: 1px solid var(--border);
+        }
+
+        .action-btn-secondary:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border-color: #cbd5e1;
+        }
+
+        .preview-box {
+            background-color: var(--preview-bg);
+            color: var(--preview-text);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 14px;
+            font-weight: 700;
+            border: 1px solid var(--preview-border);
+            min-height: 34px;
+            word-break: break-all;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-note {
+            background: #f0f9ff;
+            border-left: 3px solid #0284c7;
+            padding: 7px 10px;
+            font-size: 11.5px;
+            color: #0369a1;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        /* Modal Backdrop & Dialog */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+            animation: modalFadeIn 0.15s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 680px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: modalSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-icon {
+            font-size: 16px;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-subtitle {
+            margin: 1px 0 0 0;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .modal-body {
+            padding: 14px 16px;
+            overflow-y: auto;
         }
 
         .preset-filter-row {
@@ -304,333 +775,45 @@
             color: white;
         }
 
-        .preset-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .preset-btn {
-            background: var(--surface);
-            border: 1px solid #cbd5e1;
-            padding: 5px 9px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 11.5px;
-            font-weight: 500;
-            color: #334155;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.15s ease;
-        }
-
-        .preset-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-border);
-            color: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        .preset-btn .icon {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-
-        /* Radio Pill Group for Conversion */
-        .radio-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .radio-pill-item {
-            position: relative;
-        }
-
-        .radio-pill-item input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .radio-pill-label {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 12.5px;
-            font-weight: 500;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            user-select: none;
-        }
-
-        .radio-pill-label code {
-            background: #e2e8f0;
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-size: 11.5px;
-        }
-
-        .radio-pill-item input[type="radio"]:checked + .radio-pill-label {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            color: var(--primary-hover);
-            font-weight: 600;
-        }
-
-        .radio-pill-item input[type="radio"]:disabled + .radio-pill-label {
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
-
-        /* Dynamic Section Panels */
-        .dynamic-section {
-            display: none;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--primary);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            margin-top: 16px;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        .dynamic-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .inner-panel {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            margin-top: 12px;
-        }
-
-        .grid-2 {
+        .modal-preset-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
         }
 
-        @media (max-width: 600px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Collapsible Description Cards */
-        .desc-card {
+        .modal-preset-btn {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: var(--radius-sm);
-            padding: 8px 12px;
-            margin-top: 10px;
-            font-size: 12px;
-            line-height: 1.45;
-            color: #334155;
-            transition: all 0.2s ease;
-        }
-
-        .desc-card-compact {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
+            padding: 8px 10px;
             cursor: pointer;
-            user-select: none;
+            text-align: left;
+            transition: all 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
-        .desc-card-compact:hover .desc-card-badge {
-            color: var(--primary-hover);
-        }
-
-        .desc-card-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
-            font-size: 12px;
-            color: #1e293b;
-        }
-
-        .desc-card-toggle {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--primary);
+        .modal-preset-btn:hover {
             background: var(--primary-light);
-            border: 1px solid var(--primary-border);
-            padding: 2px 7px;
-            border-radius: 4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-            cursor: pointer;
-            transition: all 0.15s ease;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
-        .desc-card-toggle:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .desc-card-drawer {
-            display: none;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px dashed #cbd5e1;
-            font-size: 12px;
-            color: #475569;
-        }
-
-        .desc-card.open .desc-card-drawer {
-            display: block;
-        }
-
-        .desc-card.open .desc-card-toggle svg {
-            transform: rotate(180deg);
-        }
-
-        .desc-card-meta {
+        .modal-preset-header {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 6px;
-            padding-top: 6px;
-            border-top: 1px dashed #cbd5e1;
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .desc-meta-tag {
-            display: inline-flex;
             align-items: center;
-            gap: 4px;
-        }
-
-        .desc-meta-tag strong {
+            gap: 5px;
+            font-size: 11.5px;
+            font-weight: 700;
             color: #1e293b;
         }
 
-        .preview-dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-            margin-right: 4px;
-        }
-
-        .preview-badge {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 2px 7px;
-            border-radius: 9999px;
-            border: 1px solid #bae6fd;
-        }
-
-        /* Sticky Output & Live Preview Deck */
-        .sticky-deck {
-            position: sticky;
-            top: 20px;
-        }
-
-        .output-box {
-            background-color: var(--code-bg);
-            color: var(--code-text);
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 13.5px;
-            line-height: 1.5;
-            word-break: break-all;
-            border: 1px solid #1e293b;
-            min-height: 48px;
-            margin-bottom: 18px;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .deck-btn-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            justify-content: flex-end;
-        }
-
-        .action-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 7px 14px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 12.5px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.15s ease;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .action-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        .action-btn-secondary {
-            background: var(--surface);
-            color: #334155;
-            border: 1px solid var(--border);
-        }
-
-        .action-btn-secondary:hover {
-            background: #f1f5f9;
-            color: var(--text-main);
-            border-color: #cbd5e1;
-        }
-
-        .preview-box {
-            background-color: var(--preview-bg);
-            color: var(--preview-text);
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 14px;
-            font-weight: 600;
-            border: 1px solid var(--preview-border);
-            min-height: 38px;
-            word-break: break-all;
-            margin-bottom: 18px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .info-note {
-            background: #f0f9ff;
-            border-left: 4px solid #0284c7;
-            padding: 12px 14px;
-            font-size: 12.5px;
-            color: #0369a1;
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            line-height: 1.5;
+        .modal-preset-desc {
+            font-size: 10.5px;
+            color: #64748b;
+            line-height: 1.35;
         }
 
         /* Toast Notifications */
@@ -703,97 +886,74 @@
         </div>
     </header>
 
-    <div class="app-layout">
-        <!-- Column 1: Primary Token & Categorized Action Templates -->
-        <div class="col-token-templates">
-            <div class="card">
-                <div class="card-title-row">
-                    <h2 class="card-heading"><span class="step-badge">1</span> Primary Token &amp; Presets</h2>
-                </div>
-
-                <div class="form-group">
-                    <label for="variable">Primary Base Variable / Token String <span class="helper-label">(&amp;[ and ] auto-stripped)</span></label>
-                    <input type="text" id="variable" placeholder="Paste Hornbill token (e.g. global['flowcoderefs']['node']['result'])" value="global['flowcoderefs']['myCustomNode']['result']">
-                </div>
-
-                <div class="presets-wrapper">
-                    <div class="presets-header">
-                        <span class="presets-title">⚡ Quick Action Templates</span>
-                    </div>
-                    <!-- Categorized Filter Pills -->
-                    <div class="preset-filter-row">
-                        <button type="button" class="filter-pill active" data-filter="all" onclick="filterPresets('all')">All (14)</button>
-                        <button type="button" class="filter-pill" data-filter="date" onclick="filterPresets('date')">Date &amp; Time (7)</button>
-                        <button type="button" class="filter-pill" data-filter="math" onclick="filterPresets('math')">Math &amp; VAT (1)</button>
-                        <button type="button" class="filter-pill" data-filter="string" onclick="filterPresets('string')">Format &amp; PII (5)</button>
-                        <button type="button" class="filter-pill" data-filter="logic" onclick="filterPresets('logic')">Logic (1)</button>
-                    </div>
-                    <div class="preset-grid">
-                        <button type="button" class="preset-btn" data-cat="math" onclick="applyTemplate('parseFloat', 'math', 'multiply', 'variable', '', '100', '1.20')"><span class="icon">✖</span> Cost * VAT</button>
-                        <button type="button" class="preset-btn" data-cat="logic" onclick="applyTemplate('Number', 'logic', 'ternary', '', '', '1', '')"><span class="icon">⚖</span> Ternary Status IF/ELSE</button>
-                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'titlecap', '', '', 'john doe', '')"><span class="icon">Aa</span> Title Case (John Doe)</button>
-                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'pad', '', '', '123', '')"><span class="icon">00</span> Zero-Pad (000123)</button>
-                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'mask', '', '', '07700900461', '')"><span class="icon">🔒</span> Mask PII (****0461)</button>
-                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('Number', 'string', 'currency', '', '', '15', '')"><span class="icon">£</span> Currency (.00)</button>
-                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'encode2', '', '', 'https://api.domain.com/?q=hello world', '')"><span class="icon">🔗</span> Double URL Encode</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('now', 'YYYY-MM-DD', '', '', '', '')"><span class="icon">📅</span> Today (YYYY-MM-DD)</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('now', 'YYYY-MM-DD HH:mm:ss', '', '', '', '')"><span class="icon">🕒</span> Now (SQL DateTime)</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('now', 'DD/MM/YYYY HH:mm', '', '', '', '')"><span class="icon">🇬🇧</span> Now (UK DateTime)</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00')"><span class="icon">⏳</span> Due in 5 Days</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm')"><span class="icon">⚙</span> Custom Format</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('age_days', '', '', '', '', '2026-09-01 09:00:00')"><span class="icon">⏱</span> Ticket Age (Days)</button>
-                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('is_past', '', '', '', '', '2026-09-01 00:00:00')"><span class="icon">❗</span> Is Overdue? (Bool)</button>
-                    </div>
-                </div>
-            </div>
+    <!-- Top Command Bar: Primary Base Variable & Quick Action Templates Trigger -->
+    <div class="token-bar-card">
+        <div class="token-bar-label-row">
+            <label for="variable" class="token-bar-label">
+                <span class="step-badge">1</span>
+                <span>Primary Base Variable / Token String</span>
+                <span class="helper-label">(&amp;[ and ] delimiters auto-stripped)</span>
+            </label>
+            <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
+                <span class="btn-icon">⚡</span>
+                <span>Quick Action Templates</span>
+                <span class="template-count-badge">14</span>
+            </button>
         </div>
+        <div class="token-input-wrapper">
+            <span class="token-input-prefix">&amp;[</span>
+            <input type="text" id="variable" class="token-input-field" placeholder="Paste Hornbill token (e.g. global['flowcoderefs']['node']['result'])" value="global['flowcoderefs']['myCustomNode']['result']">
+            <span class="token-input-suffix">]</span>
+        </div>
+    </div>
 
-        <!-- Column 2: Operation Category, Type Casting & Operation Parameters -->
-        <div class="col-category-params">
+    <div class="app-layout">
+        <!-- Left Column: Configuration Studio -->
+        <div class="builder-column">
             <!-- Step 2: Category & Primary Conversion -->
             <div class="card">
-                <div class="card-title-row">
+                <div class="card-title-row" style="margin-bottom: 8px;">
                     <h2 class="card-heading"><span class="step-badge">2</span> Category &amp; Type Casting</h2>
+                    <div id="category-desc-card">
+                        <!-- Injected dynamically by updateDescriptions() -->
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="category">Operation Category</label>
-                    <select id="category" onchange="switchCategory(); generateFlowcode();">
-                        <option value="math">Mathematics (+, -, *, /)</option>
-                        <option value="routing">Modulus &amp; Routing Logic</option>
-                        <option value="string">Specialised Formatting (Padding, Masking, Encoding)</option>
-                        <option value="logic">Advanced Logic (Ternary, Fallback)</option>
-                        <option value="date">Date &amp; Time (Custom Fields, Offsets, Calculations)</option>
-                    </select>
-                </div>
+                <div class="category-cast-grid">
+                    <div class="form-group">
+                        <label for="category">Operation Category</label>
+                        <select id="category" onchange="switchCategory(); generateFlowcode();">
+                            <option value="math">Mathematics (+, -, *, /)</option>
+                            <option value="routing">Modulus &amp; Routing Logic</option>
+                            <option value="string">Specialised Formatting (Padding, Masking, Encoding)</option>
+                            <option value="logic">Advanced Logic (Ternary, Fallback)</option>
+                            <option value="date">Date &amp; Time (Custom Fields, Offsets, Calculations)</option>
+                        </select>
+                    </div>
 
-                <!-- Contextual Category Description Banner -->
-                <div class="desc-card" id="category-desc-card">
-                    <!-- Injected dynamically by updateDescriptions() -->
-                </div>
-
-                <div class="form-group" style="margin-top: 16px;">
-                    <label>Primary Variable Data Conversion <span class="helper-label">(Guarded by Category)</span></label>
-                    <div class="radio-pills" id="conversion-radios">
-                        <div class="radio-pill-item">
-                            <input type="radio" name="convType" id="conv-none" value="None" onchange="generateFlowcode()">
-                            <label class="radio-pill-label" for="conv-none">None</label>
-                        </div>
-                        <div class="radio-pill-item">
-                            <input type="radio" name="convType" id="conv-number" value="Number" checked onchange="generateFlowcode()">
-                            <label class="radio-pill-label" for="conv-number"><code>Number()</code></label>
-                        </div>
-                        <div class="radio-pill-item">
-                            <input type="radio" name="convType" id="conv-parseint" value="parseInt" onchange="generateFlowcode()">
-                            <label class="radio-pill-label" for="conv-parseint"><code>parseInt(val, 10)</code></label>
-                        </div>
-                        <div class="radio-pill-item">
-                            <input type="radio" name="convType" id="conv-parsefloat" value="parseFloat" onchange="generateFlowcode()">
-                            <label class="radio-pill-label" for="conv-parsefloat"><code>parseFloat()</code></label>
-                        </div>
-                        <div class="radio-pill-item">
-                            <input type="radio" name="convType" id="conv-string" value="String" onchange="generateFlowcode()">
-                            <label class="radio-pill-label" for="conv-string"><code>String()</code></label>
+                    <div class="form-group">
+                        <label>Data Conversion <span class="helper-label">(Guarded by Category)</span></label>
+                        <div class="radio-pills" id="conversion-radios">
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-none" value="None" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-none">None</label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-number" value="Number" checked onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-number"><code>Number()</code></label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-parseint" value="parseInt" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-parseint"><code>parseInt(val, 10)</code></label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-parsefloat" value="parseFloat" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-parsefloat"><code>parseFloat()</code></label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-string" value="String" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-string"><code>String()</code></label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -819,7 +979,7 @@
 
                     <div class="desc-card" id="math-op-desc"></div>
 
-                    <div class="form-group" style="margin-top: 14px;">
+                    <div class="form-group" style="margin-top: 10px;">
                         <label>Modifier Type</label>
                         <div class="radio-pills">
                             <div class="radio-pill-item">
@@ -886,14 +1046,14 @@
                                 <option value="pad">Left Pad with Leading Zeros (000123)</option>
                                 <option value="mask">Mask Sensitive Data (PII / GDPR) (****0461)</option>
                             </optgroup>
-                            <optgroup label="Financial / Currency">
-                                <option value="currency">Format Currency (.toFixed(2))</option>
+                            <optgroup label="Formatting">
+                                <option value="currency">Strict Currency Format (15.00)</option>
                             </optgroup>
-                            <optgroup label="API &amp; REST Encoding">
-                                <option value="encode">Single URL Encode (encodeURIComponent)</option>
-                                <option value="encode2">Double URL Encode (encodeURIComponent &times; 2)</option>
-                                <option value="decode">Single URL Decode (decodeURIComponent)</option>
-                                <option value="decode2">Double URL Decode (decodeURIComponent &times; 2)</option>
+                            <optgroup label="URL Encoding (API Support)">
+                                <option value="encode1">Single URL Encode [encodeURIComponent(x)]</option>
+                                <option value="encode2">Double URL Encode (Nested REST APIs)</option>
+                                <option value="decode1">Single URL Decode</option>
+                                <option value="decode2">Double URL Decode</option>
                             </optgroup>
                         </select>
                     </div>
@@ -901,7 +1061,7 @@
                     <div class="desc-card" id="string-op-desc"></div>
 
                     <div class="inner-panel" id="string-pad-panel" style="display: none;">
-                        <label for="pad-len">Total Target Length (Left-Padded with '0')</label>
+                        <label for="pad-len">Total String Target Length</label>
                         <input type="number" id="pad-len" value="6" min="1" max="50" oninput="generateFlowcode()">
                     </div>
                 </div>
@@ -909,10 +1069,10 @@
                 <!-- Logic Panel -->
                 <div id="section-logic" class="dynamic-section">
                     <div class="form-group">
-                        <label for="logic-op">Logic Construct</label>
+                        <label for="logic-op">Logical Construction</label>
                         <select id="logic-op" onchange="toggleLogicInputs(); updateDescriptions(); generateFlowcode()">
-                            <option value="ternary">Ternary Expression (Inline IF / THEN / ELSE)</option>
-                            <option value="fallback">Safe Fallback (OR || Default Value)</option>
+                            <option value="ternary">Ternary Expression (Inline IF / ELSE)</option>
+                            <option value="fallback">Null / Undefined Coalesce / Fallback</option>
                         </select>
                     </div>
 
@@ -923,24 +1083,24 @@
                             <div class="form-group">
                                 <label for="logic-cond">Comparison Operator</label>
                                 <select id="logic-cond" onchange="generateFlowcode()">
-                                    <option value="===">Strict Equals (===)</option>
-                                    <option value="!==">Strict Not Equals (!==)</option>
-                                    <option value="&gt;">Greater Than (&gt;)</option>
-                                    <option value="&lt;">Less Than (&lt;)</option>
+                                    <option value="===">Strict Equal (===)</option>
+                                    <option value="!==">Strict Not Equal (!==)</option>
+                                    <option value=">">Greater Than (&gt;)</option>
+                                    <option value="<">Less Than (&lt;)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="logic-compare">Compare Against Value</label>
+                                <label for="logic-compare">Comparison Value</label>
                                 <input type="text" id="logic-compare" value="1" oninput="generateFlowcode()">
                             </div>
                         </div>
                         <div class="grid-2">
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label for="logic-true">If TRUE (Return Value)</label>
+                            <div class="form-group">
+                                <label for="logic-true">Value if TRUE</label>
                                 <input type="text" id="logic-true" value="Active" oninput="generateFlowcode()">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label for="logic-false">If FALSE (Return Value)</label>
+                            <div class="form-group">
+                                <label for="logic-false">Value if FALSE</label>
                                 <input type="text" id="logic-false" value="Inactive" oninput="generateFlowcode()">
                             </div>
                         </div>
@@ -1097,16 +1257,110 @@
                             <span style="font-size: 11.5px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em;">🧪 Simulation Mock Values</span>
                             <span style="font-size: 11px; color: var(--text-muted);">In-Memory Test Data</span>
                         </div>
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label">(token 1)</span></label>
-                            <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
-                        </div>
-                        <div class="form-group" id="mock-val-2-container" style="display: none; margin-bottom: 0;">
-                            <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label">(token 2)</span></label>
-                            <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div class="form-group" style="flex: 1; min-width: 130px; margin-bottom: 0;">
+                                <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label">(token 1)</span></label>
+                                <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
+                            </div>
+                            <div class="form-group" id="mock-val-2-container" style="display: none; flex: 1; min-width: 130px; margin-bottom: 0;">
+                                <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label">(token 2)</span></label>
+                                <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Action Templates Modal -->
+<div class="modal-backdrop" id="templates-modal" onclick="closeTemplatesModalOnBackdrop(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <span class="modal-icon">⚡</span>
+                <div>
+                    <h3 class="modal-title" id="modal-title">Quick Action Templates</h3>
+                    <p class="modal-subtitle">Select a preconfigured workflow pattern to jump-start your Flowcode expression</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeTemplatesModal()" title="Close (Esc)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="preset-filter-row">
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (14)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (1)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (5)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
+            </div>
+            <div class="modal-preset-grid">
+                <!-- Math -->
+                <button type="button" class="modal-preset-btn" data-cat="math" onclick="applyTemplateAndClose('parseFloat', 'math', 'multiply', 'variable', '', '100', '1.20')">
+                    <div class="modal-preset-header"><span>✖</span> Cost &times; VAT (1.20)</div>
+                    <div class="modal-preset-desc">Multiplies base cost by secondary tax/VAT multiplier token.</div>
+                </button>
+                <!-- Logic -->
+                <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('Number', 'logic', 'ternary', '', '', '1', '')">
+                    <div class="modal-preset-header"><span>⚖</span> Ternary Status IF/ELSE</div>
+                    <div class="modal-preset-desc">Evaluates status code condition with custom True/False labels.</div>
+                </button>
+                <!-- String -->
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'titlecap', '', '', 'john doe', '')">
+                    <div class="modal-preset-header"><span>Aa</span> Title Case (John Doe)</div>
+                    <div class="modal-preset-desc">Capitalises first letter of each space-separated word.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'pad', '', '', '123', '')">
+                    <div class="modal-preset-header"><span>00</span> Zero-Pad (000123)</div>
+                    <div class="modal-preset-desc">Left-pads numeric reference strings up to a target width.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'mask', '', '', '07700900461', '')">
+                    <div class="modal-preset-header"><span>🔒</span> Mask PII (****0461)</div>
+                    <div class="modal-preset-desc">Obfuscates sensitive data leaving the last 4 digits visible.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('Number', 'string', 'currency', '', '', '15', '')">
+                    <div class="modal-preset-header"><span>£</span> Currency (.00)</div>
+                    <div class="modal-preset-desc">Formats numeric amounts to standard 2 decimal places.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'encode2', '', '', 'https://api.domain.com/?q=hello world', '')">
+                    <div class="modal-preset-header"><span>🔗</span> Double URL Encode</div>
+                    <div class="modal-preset-desc">Double URI encode for REST webhooks and external queries.</div>
+                </button>
+                <!-- Date -->
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('now', 'YYYY-MM-DD', '', '', '', '')">
+                    <div class="modal-preset-header"><span>📅</span> Today (YYYY-MM-DD)</div>
+                    <div class="modal-preset-desc">Current date formatted strictly for Hornbill custom fields.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('now', 'YYYY-MM-DD HH:mm:ss', '', '', '', '')">
+                    <div class="modal-preset-header"><span>🕒</span> Now (SQL DateTime)</div>
+                    <div class="modal-preset-desc">Current timestamp in standard SQL format (YYYY-MM-DD HH:mm:ss).</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('now', 'DD/MM/YYYY HH:mm', '', '', '', '')">
+                    <div class="modal-preset-header"><span>🇬🇧</span> Now (UK DateTime)</div>
+                    <div class="modal-preset-desc">Current UK human-readable timestamp (DD/MM/YYYY HH:mm).</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00')">
+                    <div class="modal-preset-header"><span>⏳</span> Due in 5 Days</div>
+                    <div class="modal-preset-desc">Offsets date by +5 days for Hornbill custom field targets.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm')">
+                    <div class="modal-preset-header"><span>⚙</span> Custom Format</div>
+                    <div class="modal-preset-desc">Formats input token date using custom token specifiers.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('age_days', '', '', '', '', '2026-09-01 09:00:00')">
+                    <div class="modal-preset-header"><span>⏱</span> Ticket Age (Days)</div>
+                    <div class="modal-preset-desc">Calculates elapsed days between creation date and now.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('is_past', '', '', '', '', '2026-09-01 00:00:00')">
+                    <div class="modal-preset-header"><span>❗</span> Is Overdue? (Bool)</div>
+                    <div class="modal-preset-desc">Evaluates boolean overdue condition (date &lt; now).</div>
+                </button>
             </div>
         </div>
     </div>
@@ -1478,6 +1732,66 @@
         generateFlowcode();
         showToast("Date preset loaded: " + op, "info");
     }
+
+    // Quick Action Templates Modal Controls
+    function openTemplatesModal() {
+        const modal = document.getElementById('templates-modal');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeTemplatesModal() {
+        const modal = document.getElementById('templates-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function closeTemplatesModalOnBackdrop(event) {
+        if (event.target === document.getElementById('templates-modal')) {
+            closeTemplatesModal();
+        }
+    }
+
+    function filterModalPresets(cat) {
+        const pills = document.querySelectorAll('.preset-filter-row .filter-pill');
+        pills.forEach(p => {
+            if (p.textContent.toLowerCase().includes(cat) || (cat === 'all' && p.textContent.startsWith('All'))) {
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+
+        const items = document.querySelectorAll('.modal-preset-btn');
+        items.forEach(btn => {
+            if (cat === 'all' || btn.getAttribute('data-cat') === cat) {
+                btn.style.display = 'flex';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+    }
+
+    function applyTemplateAndClose(...args) {
+        closeTemplatesModal();
+        applyTemplate(...args);
+    }
+
+    function applyDatePresetAndClose(...args) {
+        closeTemplatesModal();
+        applyDatePreset(...args);
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeTemplatesModal();
+        }
+    });
 
     function updateSmartMockDefaults() {
         if (isMock1ModifiedByUser) return; 

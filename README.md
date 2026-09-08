@@ -108,12 +108,13 @@ One-click presets instantly configure the variable, type conversions, operation 
 - **Ticket Age (Days)**: Calculates elapsed days since date logged.
 - **Is Overdue? (Boolean)**: Evaluates whether date has passed.
 
-### 5. 3-Column Panoramic UX Architecture
-- **Ultrawide & Multi-Screen Optimized**: Replaces rigid single-column stacking with a fluid, widescreen-friendly 3-column panoramic layout (`max-width: 2400px`) supporting 3440x1440 ultrawides, standard 1080p, and laptops:
-  - **Column 1 (Left)**: Primary Base Variable token and 14+ Quick Action Templates organized into categorized filter pills (`All`, `Date & Time`, `Math & VAT`, `Format & PII`, `Logic`).
-  - **Column 2 (Center)**: Operation Category, Type Casting radios, and **Operation Parameters**—guaranteed strictly **above the fold** without vertical scrolling.
-  - **Column 3 (Right)**: Sticky Live Output & Simulation Deck containing Live Preview Result + explanation, Generated Flowcode (`&[...]`), and integrated Mock Test Inputs.
-- **Client-Side Simulation Engine**: Runs an in-memory evaluation sandbox simulating Hornbill's Flowcode engine with **Smart Mock Defaults**.
+### 5. Condensed SaaS UX Architecture (1080p & Ultrawide Optimized)
+- **Full-Width Top Token Command Bar**: Elevated Step 1 above the workspace columns into a dedicated command bar with prominent `&[` prefix and `]` suffix delimiters. Accommodates long Hornbill tokens (e.g. `global['flowcoderefs']['myCustomNode']['result']`) without horizontal truncation.
+- **On-Demand Quick Action Templates Modal**: Replaced bulky on-page preset lists with a clean modal dialog triggered via the `⚡ Quick Action Templates (14)` button. Includes category filter pills (`All`, `Math`, `Logic`, `String`, `Date`), comprehensive template descriptions, and `Escape`/backdrop dismiss support.
+- **Compact 2-Column Responsive Workspace**:
+  - **Left Studio**: Category dropdown and Data Conversion radio pills unified into a single compact row (`category-cast-grid`), followed immediately by **Operation Parameters** strictly above the fold.
+  - **Right Live Deck**: Compact sticky card featuring Live Preview Result, Generated Flowcode box, and **Side-by-Side Simulation Mock Inputs** (`display: flex`) so primary and secondary mock inputs share horizontal space without vertical stacking.
+- **Zero Vertical Scrolling on 1080p**: Fine-tuned component paddings, form gaps, and typography ensure all primary controls, outputs, and simulations sit comfortably within the initial 900px viewport fold on standard 1920x1080 displays and ultrawide monitors.
 
 ### 6. Contextual Educational Guides & Collapsible Drawers
 - **Zero Vertical Clutter**: Documentation cards are streamlined into compact, one-line spec badges with click-to-expand drawers:
