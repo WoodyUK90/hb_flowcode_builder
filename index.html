@@ -1,0 +1,2787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hornbill Flowcode Advanced Builder</title>
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%231e88e5%22%20%2F%3E%3Cpath%20d%3D%22M%2040%2050%20C%2055%2050%2055%2030%2060%2030%20M%2040%2050%20C%2055%2050%2055%2070%2060%2070%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2250%22%20r%3D%2210%22%20fill%3D%22%23ffffff%22%20%2F%3E%3Ccircle%20cx%3D%2274%22%20cy%3D%2228%22%20r%3D%2210%22%20fill%3D%22%23ffffff%22%20%2F%3E%3Ccircle%20cx%3D%2274%22%20cy%3D%2272%22%20r%3D%2210%22%20fill%3D%22%23ffffff%22%20%2F%3E%3C%2Fsvg%3E">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --primary-light: #e0f2fe;
+            --primary-border: #7dd3fc;
+            --bg: #eaeff5;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --border-focus: #0284c7;
+            --code-bg: #0f172a;
+            --code-text: #f8fafc;
+            --preview-bg: #f0fdf4;
+            --preview-border: #86efac;
+            --preview-text: #14532d;
+            --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+            --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.1), 0 2px 4px -2px rgb(15 23 42 / 0.06);
+            --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.1), 0 4px 6px -4px rgb(15 23 42 / 0.05);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 24px 16px 60px 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1720px;
+            margin: 0 auto;
+            padding: 12px 18px 32px 18px;
+        }
+
+        /* Top Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .brand-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            margin: 2px 0 0 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            color: var(--primary-hover);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 9999px;
+        }
+
+        .badge-pill .dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        /* Top Token Command Bar */
+        .token-bar-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+        }
+
+        .token-bar-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .token-bar-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .template-trigger-btn {
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .template-trigger-btn:hover {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+            color: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        .template-count-badge {
+            background: #0284c7;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 9999px;
+        }
+
+        .token-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .token-input-prefix {
+            position: absolute;
+            left: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0284c7;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .token-input-field {
+            width: 100%;
+            padding: 7px 28px 7px 30px !important;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px !important;
+            font-weight: 600;
+            color: var(--text-main);
+            background: #f8fafc !important;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.15s ease-in-out;
+            outline: none;
+        }
+
+        .token-input-field:focus {
+            background: var(--surface) !important;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .token-input-suffix {
+            position: absolute;
+            right: 10px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0284c7;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* 2-Column Responsive Workspace Layout */
+        .app-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+            gap: 14px;
+            align-items: start;
+        }
+
+        @media (max-width: 1080px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 13px 15px;
+            margin-bottom: 12px;
+        }
+
+        .card:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .card-heading {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 9px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 3px;
+        }
+
+        .helper-label {
+            font-size: 11px;
+            font-weight: normal;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 6px 9px;
+            font-size: 12.5px;
+            color: var(--text-main);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.15s ease-in-out;
+            outline: none;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        /* Category & Conversion Row */
+        .category-cast-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) minmax(280px, 1.4fr);
+            gap: 10px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .category-cast-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Radio Pill Group for Conversion */
+        .radio-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 1px;
+        }
+
+        .radio-pill-item {
+            position: relative;
+        }
+
+        .radio-pill-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .radio-pill-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 7px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 11.5px;
+            font-weight: 500;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .pill-main {
+            font-weight: 600;
+        }
+
+        .pill-sub {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pill-sub code {
+            background: #f1f5f9;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-size: 10px;
+            color: #475569;
+        }
+
+        .radio-pill-item input[type="radio"]:checked + .radio-pill-label {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-hover);
+        }
+
+        .radio-pill-item input[type="radio"]:checked + .radio-pill-label .pill-sub {
+            color: var(--primary-hover);
+        }
+
+        .radio-pill-item input[type="radio"]:checked + .radio-pill-label .pill-sub code {
+            background: #bae6fd;
+            color: #0369a1;
+        }
+
+        .radio-pill-item input[type="radio"]:disabled + .radio-pill-label {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .date-quick-chip {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #475569;
+            padding: 1px 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .date-quick-chip:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-hover);
+        }
+
+        /* Dynamic Section Panels */
+        .dynamic-section {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            margin-top: 8px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .dynamic-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .inner-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+            margin-top: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Collapsible Description Cards */
+        .desc-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 11.5px;
+            line-height: 1.4;
+            color: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .desc-card-compact {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .desc-card-compact:hover .desc-card-badge {
+            color: var(--primary-hover);
+        }
+
+        .desc-card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .desc-card-toggle {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            padding: 1px 6px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .desc-card-toggle:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .desc-card-drawer {
+            display: none;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed #cbd5e1;
+            font-size: 11.5px;
+            color: #475569;
+        }
+
+        .desc-card.open .desc-card-drawer {
+            display: block;
+        }
+
+        .desc-card.open .desc-card-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .desc-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed #cbd5e1;
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        .desc-meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .desc-meta-tag strong {
+            color: #1e293b;
+        }
+
+        .preview-dot {
+            width: 7px;
+            height: 7px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            margin-right: 4px;
+        }
+
+        .preview-badge {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 1px solid #bae6fd;
+        }
+
+        /* Sticky Output & Live Preview Deck */
+        .sticky-deck {
+            position: sticky;
+            top: 12px;
+        }
+
+        .output-box {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12.5px;
+            line-height: 1.45;
+            word-break: break-all;
+            border: 1px solid #1e293b;
+            min-height: 38px;
+            margin-bottom: 10px;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .deck-btn-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .action-btn-secondary {
+            background: var(--surface);
+            color: #334155;
+            border: 1px solid var(--border);
+        }
+
+        .action-btn-secondary:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border-color: #cbd5e1;
+        }
+
+        .preview-box {
+            background-color: var(--preview-bg);
+            color: var(--preview-text);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 14px;
+            font-weight: 700;
+            border: 1px solid var(--preview-border);
+            min-height: 34px;
+            word-break: break-all;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-note {
+            background: #f0f9ff;
+            border-left: 3px solid #0284c7;
+            padding: 7px 10px;
+            font-size: 11.5px;
+            color: #0369a1;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        /* Modal Backdrop & Dialog */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+            animation: modalFadeIn 0.15s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 680px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: modalSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-icon {
+            font-size: 16px;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-subtitle {
+            margin: 1px 0 0 0;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .modal-body {
+            padding: 14px 16px;
+            overflow-y: auto;
+        }
+
+        .preset-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .filter-pill {
+            background: #e2e8f0;
+            border: none;
+            border-radius: 9999px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .filter-pill:hover {
+            background: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .filter-pill.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .modal-preset-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .modal-preset-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal-preset-header {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .modal-preset-desc {
+            font-size: 10.5px;
+            color: #64748b;
+            line-height: 1.35;
+        }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.3s;
+        }
+
+        .toast-success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast-info {
+            border-left: 4px solid #38bdf8;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+            </div>
+            <div>
+                <h1>Hornbill Flowcode Advanced Builder</h1>
+                <p class="subtitle">Design, test, and preview Hornbill Flowcode dynamic expressions with real-time in-memory simulation.</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="badge-pill">
+                <span class="dot"></span>
+                <span>Zero-Dependency &bull; UK Standard</span>
+            </div>
+            <button class="action-btn action-btn-secondary" onclick="copyShareableLink()" title="Generate and copy a direct link to this exact Flowcode setup">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                Share Link
+            </button>
+        </div>
+    </header>
+
+    <!-- Top Command Bar: Primary Base Variable & Quick Action Templates Trigger -->
+    <div class="token-bar-card">
+        <div class="token-bar-label-row">
+            <label for="variable" class="token-bar-label">
+                <span class="step-badge">1</span>
+                <span>Primary Base Variable / Token String</span>
+                <span class="helper-label">(&amp;[ and ] delimiters auto-stripped)</span>
+            </label>
+            <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
+                <span class="btn-icon">⚡</span>
+                <span>Quick Action Templates</span>
+                <span class="template-count-badge">14</span>
+            </button>
+        </div>
+        <div class="token-input-wrapper">
+            <span class="token-input-prefix">&amp;[</span>
+            <input type="text" id="variable" class="token-input-field" placeholder="Paste Hornbill token (e.g. global['flowcoderefs']['node']['result'])" value="global['flowcoderefs']['myCustomNode']['result']">
+            <span class="token-input-suffix">]</span>
+        </div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Left Column: Configuration Studio -->
+        <div class="builder-column">
+            <!-- Step 2: Category & Primary Conversion -->
+            <div class="card">
+                <div class="card-title-row" style="margin-bottom: 8px;">
+                    <h2 class="card-heading"><span class="step-badge">2</span> Category &amp; Type Casting</h2>
+                    <button type="button" class="desc-card-toggle" id="category-guide-btn" onclick="toggleCategoryGuide(event)" title="Toggle category best practices &amp; workflow guide">
+                        <span id="category-guide-label">Category Guide</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </div>
+                <div id="category-desc-drawer" style="display: none; background: #f8fafc; border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px;">
+                    <!-- Injected dynamically by updateDescriptions() -->
+                </div>
+
+                <div class="category-cast-grid">
+                    <div class="form-group">
+                        <label for="category">Operation Category</label>
+                        <select id="category" onchange="switchCategory(); generateFlowcode();">
+                            <option value="math">Mathematics (+, -, *, /)</option>
+                            <option value="routing">Modulus &amp; Routing Logic</option>
+                            <option value="string">Specialised Formatting (Padding, Masking, Encoding)</option>
+                            <option value="logic">Advanced Logic (Ternary, Fallback)</option>
+                            <option value="date">Date &amp; Time (Custom Fields, Offsets, Calculations)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px;">
+                            <label style="margin-bottom: 0;">Data Conversion <span class="helper-label">(Type Casting)</span></label>
+                            <span style="font-size: 11px; color: var(--text-muted);" title="Hornbill tokens are strings. Converting prevents text gluing (e.g. 100 + 20 = 120, not '10020').">💡 Why convert?</span>
+                        </div>
+                        <div class="radio-pills" id="conversion-radios">
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-none" value="None" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-none" title="Raw token value without conversion">
+                                    <span class="pill-main">Raw / As-Is</span>
+                                    <span class="pill-sub">None</span>
+                                </label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-number" value="Number" checked onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-number" title="General number (whole or decimal) for arithmetic calculation">
+                                    <span class="pill-main">Any Number</span>
+                                    <span class="pill-sub"><code>Number()</code></span>
+                                </label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-parseint" value="parseInt" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-parseint" title="Whole integer (no decimals). Used for counters, ticket IDs, routing">
+                                    <span class="pill-main">Whole Number</span>
+                                    <span class="pill-sub"><code>Integer</code></span>
+                                </label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-parsefloat" value="parseFloat" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-parsefloat" title="Decimal number with fractions. Used for currency, prices, VAT">
+                                    <span class="pill-main">Decimal / £</span>
+                                    <span class="pill-sub"><code>Float</code></span>
+                                </label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="convType" id="conv-string" value="String" onchange="generateFlowcode()">
+                                <label class="radio-pill-label" for="conv-string" title="Plain text format for text formatting, padding, masking">
+                                    <span class="pill-main">Text</span>
+                                    <span class="pill-sub"><code>String()</code></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Specific Category Configuration Panels -->
+            <div class="card">
+                <div class="card-title-row">
+                    <h2 class="card-heading"><span class="step-badge">3</span> Operation Parameters</h2>
+                </div>
+
+                <!-- Math Panel -->
+                <div id="section-math" class="dynamic-section active">
+                    <div class="form-group">
+                        <label for="math-op">Arithmetic Operation</label>
+                        <select id="math-op" onchange="updateDescriptions(); generateFlowcode()">
+                            <option value="add">Add (+)</option>
+                            <option value="subtract">Subtract (-)</option>
+                            <option value="multiply">Multiply (*)</option>
+                            <option value="divide">Divide (/)</option>
+                        </select>
+                    </div>
+
+                    <div class="desc-card" id="math-op-desc"></div>
+
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label>Modifier Type</label>
+                        <div class="radio-pills">
+                            <div class="radio-pill-item">
+                                <input type="radio" name="mathModType" id="math-mod-static" value="static" checked onchange="toggleMathInputs(); generateFlowcode()">
+                                <label class="radio-pill-label" for="math-mod-static">Static Value (e.g. 1.20)</label>
+                            </div>
+                            <div class="radio-pill-item">
+                                <input type="radio" name="mathModType" id="math-mod-variable" value="variable" onchange="toggleMathInputs(); generateFlowcode()">
+                                <label class="radio-pill-label" for="math-mod-variable">Secondary Variable Token</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inner-panel" id="math-static-panel">
+                        <label for="math-val">Static Modifier Value</label>
+                        <input type="number" id="math-val" value="1.20" step="any" oninput="generateFlowcode()">
+                    </div>
+
+                    <div class="inner-panel" id="math-variable-panel" style="display: none;">
+                        <div class="form-group">
+                            <label for="variable2">Secondary Base Variable / Token String</label>
+                            <input type="text" id="variable2" placeholder="global['flowcoderefs']['vatLookup']['result']" oninput="generateFlowcode()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="convType2">Secondary Data Conversion</label>
+                            <select id="convType2" onchange="generateFlowcode()">
+                                <option value="None">None</option>
+                                <option value="Number">Number()</option>
+                                <option value="parseInt">parseInt(val, 10)</option>
+                                <option value="parseFloat" selected>parseFloat()</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Routing Panel -->
+                <div id="section-routing" class="dynamic-section">
+                    <div class="form-group">
+                        <label for="routing-op">Modulus Routing Function</label>
+                        <select id="routing-op" onchange="updateDescriptions(); generateFlowcode()">
+                            <option value="decision">Modulus Decision (% === 0) &rarr; Boolean for Round-Robin Branches</option>
+                            <option value="remainder">Modulus Remainder (%) &rarr; Returns Remaining Int</option>
+                        </select>
+                    </div>
+
+                    <div class="desc-card" id="routing-op-desc"></div>
+
+                    <div class="inner-panel">
+                        <label for="mod-val">Divisor / Interval Target</label>
+                        <input type="number" id="mod-val" value="2" min="1" step="1" oninput="generateFlowcode()">
+                    </div>
+                </div>
+
+                <!-- String Panel -->
+                <div id="section-string" class="dynamic-section">
+                    <div class="form-group">
+                        <label for="string-op">Transformation Function</label>
+                        <select id="string-op" onchange="toggleStringInputs(); updateDescriptions(); generateFlowcode()">
+                            <optgroup label="Capitalisation">
+                                <option value="initcap">Capitalise First Character (InitCap)</option>
+                                <option value="titlecap">Capitalise All Words (Title Case)</option>
+                            </optgroup>
+                            <optgroup label="Padding &amp; Security">
+                                <option value="pad">Left Pad with Leading Zeros (000123)</option>
+                                <option value="mask">Mask Sensitive Data (PII / GDPR) (****0461)</option>
+                            </optgroup>
+                            <optgroup label="Formatting">
+                                <option value="currency">Strict Currency Format (15.00)</option>
+                            </optgroup>
+                            <optgroup label="URL Encoding (API Support)">
+                                <option value="encode1">Single URL Encode [encodeURIComponent(x)]</option>
+                                <option value="encode2">Double URL Encode (Nested REST APIs)</option>
+                                <option value="decode1">Single URL Decode</option>
+                                <option value="decode2">Double URL Decode</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="desc-card" id="string-op-desc"></div>
+
+                    <div class="inner-panel" id="string-pad-panel" style="display: none;">
+                        <label for="pad-len">Total String Target Length</label>
+                        <input type="number" id="pad-len" value="6" min="1" max="50" oninput="generateFlowcode()">
+                    </div>
+                </div>
+
+                <!-- Logic Panel -->
+                <div id="section-logic" class="dynamic-section">
+                    <div class="form-group">
+                        <label for="logic-op">Logical Construction</label>
+                        <select id="logic-op" onchange="toggleLogicInputs(); updateDescriptions(); generateFlowcode()">
+                            <option value="ternary">Ternary Expression (Inline IF / ELSE)</option>
+                            <option value="fallback">Null / Undefined Coalesce / Fallback</option>
+                        </select>
+                    </div>
+
+                    <div class="desc-card" id="logic-op-desc"></div>
+
+                    <div class="inner-panel" id="logic-ternary-panel">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="logic-cond">Comparison Operator</label>
+                                <select id="logic-cond" onchange="generateFlowcode()">
+                                    <option value="===">Strict Equal (===)</option>
+                                    <option value="!==">Strict Not Equal (!==)</option>
+                                    <option value=">">Greater Than (&gt;)</option>
+                                    <option value="<">Less Than (&lt;)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="logic-compare">Comparison Value</label>
+                                <input type="text" id="logic-compare" value="1" oninput="generateFlowcode()">
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="logic-true">Value if TRUE</label>
+                                <input type="text" id="logic-true" value="Active" oninput="generateFlowcode()">
+                            </div>
+                            <div class="form-group">
+                                <label for="logic-false">Value if FALSE</label>
+                                <input type="text" id="logic-false" value="Inactive" oninput="generateFlowcode()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inner-panel" id="logic-fallback-panel" style="display: none;">
+                        <label for="logic-fallback-val">Fallback Default Value (If Null, Undefined, or Empty)</label>
+                        <input type="text" id="logic-fallback-val" value="N/A" oninput="generateFlowcode()">
+                    </div>
+                </div>
+
+                <!-- Date & Time Panel -->
+                <div id="section-date" class="dynamic-section">
+                    <div class="form-group">
+                        <label for="date-op">Date / Time Function</label>
+                        <select id="date-op" onchange="toggleDateInputs(); updateDescriptions(); generateFlowcode()">
+                            <optgroup label="Formatted Output (Custom Fields, Display, API)">
+                                <option value="format_date" selected>Format / Convert Variable Date</option>
+                                <option value="now">Current Date / Time (Now)</option>
+                                <option value="offset_now">Today / Now &plusmn; Relative Offset (Add / Subtract Time)</option>
+                                <option value="offset_var">Variable Date &plusmn; Relative Offset (Add / Subtract Time)</option>
+                                <option value="extract_date">Fast Extract Date (strip time via space split) &rarr; YYYY-MM-DD</option>
+                            </optgroup>
+                            <optgroup label="Calculations &amp; Elapsed Time">
+                                <option value="age_days">Days Elapsed from Variable Date to Today (Ticket Age)</option>
+                                <option value="diff_days">Days Difference Between Two Date Variables</option>
+                                <option value="age_hours">Hours Elapsed from Variable Date to Today</option>
+                            </optgroup>
+                            <optgroup label="Workflow Decision Logic (True / False)">
+                                <option value="is_past">Is Date in the Past / Overdue? (Date &lt; Now)</option>
+                                <option value="is_future">Is Date in the Future? (Date &gt; Now)</option>
+                                <option value="expires_within">Target Date within next N Days?</option>
+                                <option value="is_weekend">Is Date on Weekend? (Saturday / Sunday)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="desc-card" id="date-op-desc"></div>
+
+                    <!-- Date Format Configuration -->
+                    <div class="inner-panel" id="date-format-container">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="date-format-select">Output Date &amp; Time Format</label>
+                                <select id="date-format-select" onchange="handleDateFormatSelect(); generateFlowcode()">
+                                    <optgroup label="Hornbill Formats">
+                                        <option value="YYYY-MM-DD" selected>YYYY-MM-DD (Hornbill Custom Field - Date Only)</option>
+                                        <option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss (Hornbill Custom Field / SQL DateTime)</option>
+                                    </optgroup>
+                                    <optgroup label="UK Standards">
+                                        <option value="DD/MM/YYYY">DD/MM/YYYY (UK Date Standard)</option>
+                                        <option value="DD/MM/YYYY HH:mm">DD/MM/YYYY HH:mm (UK Date &amp; Time - Short)</option>
+                                        <option value="DD/MM/YYYY HH:mm:ss">DD/MM/YYYY HH:mm:ss (UK DateTime Full)</option>
+                                        <option value="DD-MM-YYYY">DD-MM-YYYY (UK Hyphenated Date)</option>
+                                    </optgroup>
+                                    <optgroup label="Other Standard Formats">
+                                        <option value="YYYY/MM/DD">YYYY/MM/DD (Slash ISO)</option>
+                                        <option value="YYYYMMDD_HHmmss">YYYYMMDD_HHmmss (Compact Timestamp / Slug)</option>
+                                        <option value="HH:mm:ss">HH:mm:ss (Time Only - 24h)</option>
+                                        <option value="HH:mm">HH:mm (Time Only - Short 24h)</option>
+                                    </optgroup>
+                                    <optgroup label="Custom">
+                                        <option value="custom">Custom Format Pattern...</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="date-tz">Timezone Basis</label>
+                                <select id="date-tz" onchange="generateFlowcode()">
+                                    <option value="UTC" selected>UTC (Hornbill System Standard)</option>
+                                    <option value="local">Local Time (Browser / Regional)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="date-custom-input-group" style="display: none; margin-top: 8px;">
+                            <label for="date-custom-format">Custom Pattern String</label>
+                            <input type="text" id="date-custom-format" value="DD-MM-YYYY HH:mm" placeholder="e.g. DD-MM-YYYY HH:mm" oninput="generateFlowcode()">
+                            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 4px;">
+                                Tokens: <code>YYYY</code> (year), <code>YY</code> (2-digit yr), <code>MM</code> (month), <code>DD</code> (day), <code>HH</code> (24h), <code>mm</code> (min), <code>ss</code> (sec). Delimiters preserved.
+                            </div>
+                        </div>
+
+                        <div id="date-badge-panel" style="font-size: 12.5px; padding: 8px 12px; border-radius: var(--radius-sm); margin-top: 8px; border: 1px solid;"></div>
+                    </div>
+
+                    <!-- Offset Panel -->
+                    <div class="inner-panel" id="date-offset-panel" style="display: none;">
+                        <div class="grid-2">
+                            <div class="form-group" id="date-offset-dir-group">
+                                <label for="date-offset-dir">Direction</label>
+                                <select id="date-offset-dir" onchange="generateFlowcode()">
+                                    <option value="add" selected>Add (+)</option>
+                                    <option value="sub">Subtract (-)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label id="date-offset-val-label">Amount &amp; Unit</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="number" id="date-offset-val" value="5" min="1" step="1" style="flex: 1;" oninput="generateFlowcode()">
+                                    <select id="date-offset-unit" style="flex: 1;" onchange="generateFlowcode()">
+                                        <option value="days" selected>Days</option>
+                                        <option value="hours">Hours</option>
+                                        <option value="minutes">Minutes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Date Panel -->
+                    <div class="inner-panel" id="date-secondary-panel" style="display: none;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="variableDate2">Secondary Date Variable (Compare Against / Date 2)</label>
+                            <input type="text" id="variableDate2" placeholder="global['flowcoderefs']['resolveNode']['dateClosed']" value="global['flowcoderefs']['resolveNode']['dateClosed']" oninput="generateFlowcode()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 3: Live Output & Simulation Deck -->
+        <div class="col-preview-simulation">
+            <div class="sticky-deck">
+                <div class="card preview-card" style="box-shadow: var(--shadow-md);">
+                    <!-- 1. Integrated Mock Test Inputs (At the top) -->
+                    <div class="mock-section" style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                        <div class="mock-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11.5px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em;">🧪 Simulation Mock Values</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">In-Memory Test Inputs</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div class="form-group" style="flex: 1; min-width: 130px; margin-bottom: 0;">
+                                <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label" id="mock-val-1-helper">(token 1)</span></label>
+                                <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
+                                <div id="mock-quick-date-chips" style="display: none; gap: 4px; margin-top: 5px;">
+                                    <button type="button" class="date-quick-chip" onclick="setQuickMockDate('now')" title="Set to current date &amp; time">Now</button>
+                                    <button type="button" class="date-quick-chip" onclick="setQuickMockDate('past')" title="Set to 7 days ago (overdue condition test)">-7d (Overdue)</button>
+                                    <button type="button" class="date-quick-chip" onclick="setQuickMockDate('future')" title="Set to 7 days in future">+7d (Future)</button>
+                                </div>
+                            </div>
+                            <div class="form-group" id="mock-val-2-container" style="display: none; flex: 1; min-width: 130px; margin-bottom: 0;">
+                                <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label" id="mock-val-2-helper">(token 2)</span></label>
+                                <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Live Preview Result (Outcome directly beneath test inputs) -->
+                    <div class="card-title-row" style="margin-bottom: 8px;">
+                        <h2 class="card-heading" style="color: var(--primary-hover);">
+                            <span class="preview-dot"></span> Live Preview Result
+                        </h2>
+                        <span class="preview-badge">In-Memory</span>
+                    </div>
+                    <div class="preview-box" id="previewOutput">Result will appear here</div>
+                    <div class="info-note" id="explanation" style="margin-bottom: 14px;">
+                        Variables are cleanly structured inside standard script parsing syntax.
+                    </div>
+
+                    <!-- 3. Generated Flowcode Expression -->
+                    <div class="card-title-row" style="margin-bottom: 8px;">
+                        <h2 class="card-heading">Generated Flowcode</h2>
+                        <div class="deck-btn-group">
+                            <button class="action-btn" id="copyBtn" onclick="copyToClipboard()" title="Copy Flowcode expression">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                Copy Code
+                            </button>
+                        </div>
+                    </div>
+                    <div class="output-box" id="outputCode">&amp;[...]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Action Templates Modal -->
+<div class="modal-backdrop" id="templates-modal" onclick="closeTemplatesModalOnBackdrop(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <span class="modal-icon">⚡</span>
+                <div>
+                    <h3 class="modal-title" id="modal-title">Quick Action Templates</h3>
+                    <p class="modal-subtitle">Select a preconfigured workflow pattern to jump-start your Flowcode expression</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeTemplatesModal()" title="Close (Esc)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="preset-filter-row">
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (14)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (1)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (5)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
+            </div>
+            <div class="modal-preset-grid">
+                <!-- Math -->
+                <button type="button" class="modal-preset-btn" data-cat="math" onclick="applyTemplateAndClose('parseFloat', 'math', 'multiply', 'variable', '', '100', '1.20')">
+                    <div class="modal-preset-header"><span>✖</span> Cost &times; VAT (1.20)</div>
+                    <div class="modal-preset-desc">Multiplies base cost by secondary tax/VAT multiplier token.</div>
+                </button>
+                <!-- Logic -->
+                <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('Number', 'logic', 'ternary', '', '', '1', '')">
+                    <div class="modal-preset-header"><span>⚖</span> Ternary Status IF/ELSE</div>
+                    <div class="modal-preset-desc">Evaluates status code condition with custom True/False labels.</div>
+                </button>
+                <!-- String -->
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'titlecap', '', '', 'john doe', '')">
+                    <div class="modal-preset-header"><span>Aa</span> Title Case (John Doe)</div>
+                    <div class="modal-preset-desc">Capitalises first letter of each space-separated word.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'pad', '', '', '123', '')">
+                    <div class="modal-preset-header"><span>00</span> Zero-Pad (000123)</div>
+                    <div class="modal-preset-desc">Left-pads numeric reference strings up to a target width.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'mask', '', '', '07700900461', '')">
+                    <div class="modal-preset-header"><span>🔒</span> Mask PII (****0461)</div>
+                    <div class="modal-preset-desc">Obfuscates sensitive data leaving the last 4 digits visible.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('Number', 'string', 'currency', '', '', '15', '')">
+                    <div class="modal-preset-header"><span>£</span> Currency (.00)</div>
+                    <div class="modal-preset-desc">Formats numeric amounts to standard 2 decimal places.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'encode2', '', '', 'https://api.domain.com/?q=hello world', '')">
+                    <div class="modal-preset-header"><span>🔗</span> Double URL Encode</div>
+                    <div class="modal-preset-desc">Double URI encode for REST webhooks and external queries.</div>
+                </button>
+                <!-- Date -->
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('now', 'YYYY-MM-DD', '', '', '', '')">
+                    <div class="modal-preset-header"><span>📅</span> Today (YYYY-MM-DD)</div>
+                    <div class="modal-preset-desc">Current date formatted strictly for Hornbill custom fields.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('now', 'YYYY-MM-DD HH:mm:ss', '', '', '', '')">
+                    <div class="modal-preset-header"><span>🕒</span> Now (SQL DateTime)</div>
+                    <div class="modal-preset-desc">Current timestamp in standard SQL format (YYYY-MM-DD HH:mm:ss).</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('now', 'DD/MM/YYYY HH:mm', '', '', '', '')">
+                    <div class="modal-preset-header"><span>🇬🇧</span> Now (UK DateTime)</div>
+                    <div class="modal-preset-desc">Current UK human-readable timestamp (DD/MM/YYYY HH:mm).</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'requestDate\']')">
+                    <div class="modal-preset-header"><span>⏳</span> Due in 5 Days</div>
+                    <div class="modal-preset-desc">Offsets date by +5 days for Hornbill custom field targets.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm', 'global[\'flowcoderefs\'][\'resolveNode\'][\'resolvedDate\']')">
+                    <div class="modal-preset-header"><span>⚙</span> Custom Format</div>
+                    <div class="modal-preset-desc">Formats input token date using custom token specifiers.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('age_days', '', '', '', '', '2026-09-01 09:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'dateLogged\']')">
+                    <div class="modal-preset-header"><span>⏱</span> Ticket Age (Days)</div>
+                    <div class="modal-preset-desc">Calculates elapsed days between creation date and now.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('is_past', '', '', '', '', '2026-09-01 00:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'slaTargetDate\']')">
+                    <div class="modal-preset-header"><span>❗</span> Is Overdue? (Bool)</div>
+                    <div class="modal-preset-desc">Evaluates boolean overdue condition (date &lt; now).</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+    // State Tracking
+    let isMock1ModifiedByUser = false;
+    let isMock2ModifiedByUser = false;
+
+    function userModifiedMock1() { isMock1ModifiedByUser = true; }
+    function userModifiedMock2() { isMock2ModifiedByUser = true; }
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `<span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
+    // Comprehensive Descriptions Database
+    const categoryDescriptions = {
+        math: {
+            title: "Mathematics & Arithmetic Operations",
+            body: "Perform mathematical calculations (+, -, *, /) between tokens or static numbers with strict parenthesized precedence. Essential for pricing, VAT/taxes, SLA targets, and quotas.",
+            advice: "Always enforce numeric casting (<code>Number()</code>, <code>parseFloat()</code>, or <code>parseInt(val, 10)</code>) to prevent string concatenation bugs."
+        },
+        routing: {
+            title: "Modulus & Round-Robin Routing Logic",
+            body: "Calculate integer remainders or boolean conditions (<code>%</code>) for automated load balancing, round-robin assignments, and routing every <em>N</em>-th ticket.",
+            advice: "Input token should be cast to <code>Number()</code> or <code>parseInt(val, 10)</code> representing a sequential counter or ticket reference."
+        },
+        string: {
+            title: "Text Transformations, Formatting & Data Hygiene",
+            body: "Capitalise names into Title Case, left-pad reference numbers with zeros, mask sensitive GDPR/PII data, format currency to two decimals, or encode URLs for REST API webhooks.",
+            advice: "Uses <code>String()</code> conversion to ensure string methods operate safely across Hornbill node outputs."
+        },
+        logic: {
+            title: "Conditional Logic & Fallback Guardrails",
+            body: "Construct compact inline IF/ELSE (ternary) evaluations or guarantee safe fallback values when workflow nodes return null, undefined, or empty strings.",
+            advice: "Avoids creating complex multi-branch decision nodes for simple 2-way mappings or defaulting values."
+        },
+        date: {
+            title: "Date Calculations & Hornbill Custom Fields",
+            body: "Generate current timestamps, calculate relative target dates (add/subtract days, hours, minutes), compute ticket aging in days or hours, check overdue thresholds, or format dates for Hornbill custom fields (<code>YYYY-MM-DD</code>) and UK display (<code>DD/MM/YYYY</code>).",
+            advice: "For Hornbill Custom Date fields, enforce strict <code>YYYY-MM-DD</code> format without time."
+        }
+    };
+
+    const operationDescriptions = {
+        // Math
+        add: {
+            summary: "Adds modifier value to primary token.",
+            context: "Calculating totals (e.g. Base Cost + Shipping Surcharge, or extending quotas).",
+            inType: "Number / Float", outType: "Number"
+        },
+        subtract: {
+            summary: "Subtracts modifier from primary token.",
+            context: "Calculating remaining balance, budget headroom, or deduction amounts.",
+            inType: "Number / Float", outType: "Number"
+        },
+        multiply: {
+            summary: "Multiplies primary token by modifier value.",
+            context: "Applying tax multipliers (e.g. &times; 1.20 VAT) or quantity &times; unit price.",
+            inType: "Number / Float", outType: "Number"
+        },
+        divide: {
+            summary: "Divides primary token by divisor value.",
+            context: "Distributing costs evenly across departments or converting units.",
+            inType: "Number / Float", outType: "Number"
+        },
+        // Routing
+        decision: {
+            summary: "Evaluates whether primary value is an exact multiple of the divisor (remainder === 0).",
+            context: "Used in BPM Decision Nodes for round-robin triage (e.g. every 5th ticket to QA audit).",
+            inType: "Integer / Counter", outType: "Boolean (true / false)"
+        },
+        remainder: {
+            summary: "Returns the remainder after integer division.",
+            context: "Used for cyclic index calculation or custom rotation logic.",
+            inType: "Integer", outType: "Number (Integer)"
+        },
+        // String
+        initcap: {
+            summary: "Capitalises the very first character of the string, preserving remaining characters.",
+            context: "Standardising single words or the start of sentences in ticket summaries.",
+            inType: "String", outType: "String"
+        },
+        titlecap: {
+            summary: "Capitalises the first letter of each space-delimited word in the string.",
+            context: "Standardising customer full names, asset titles, and category descriptions.",
+            inType: "String", outType: "String"
+        },
+        pad: {
+            summary: "Left-pads string or number with leading '0' characters until reaching target length.",
+            context: "Formatting ticket identifiers into fixed-width codes (e.g. '123' &rarr; '000123').",
+            inType: "String / Number", outType: "String"
+        },
+        mask: {
+            summary: "Obfuscates sensitive identifiers, preserving only the final 4 characters.",
+            context: "GDPR/PCI compliance when logging credit cards, phone numbers, or account IDs.",
+            inType: "String", outType: "String"
+        },
+        currency: {
+            summary: "Enforces strict two-decimal currency representation via .toFixed(2).",
+            context: "Displaying money totals or storing formatted values into financial text fields.",
+            inType: "Number / Float", outType: "String (.00)"
+        },
+        encode: {
+            summary: "Single URL encoding of special characters and spaces.",
+            context: "Preparing query parameters for external HTTP REST API integration nodes.",
+            inType: "String", outType: "URL-Encoded String"
+        },
+        encode2: {
+            summary: "Twice-encoded URL parameter string.",
+            context: "Required by security gateways (e.g. VirusTotal API) where URLs are decoded twice.",
+            inType: "String", outType: "Double URL-Encoded String"
+        },
+        decode: {
+            summary: "Decodes single URL-encoded string back to standard characters.",
+            context: "Parsing inbound webhook parameters or decoding link payloads.",
+            inType: "Encoded String", outType: "Decoded String"
+        },
+        decode2: {
+            summary: "Decodes twice URL-encoded strings.",
+            context: "Handling double-encoded API responses or nested URI components.",
+            inType: "Double-Encoded String", outType: "Decoded String"
+        },
+        // Logic
+        ternary: {
+            summary: "Inline IF/THEN/ELSE condition returning value A if true, value B if false.",
+            context: "Mapping numeric codes to human labels (e.g. status 1 &rarr; 'Active' / 'Inactive').",
+            inType: "Comparable Value", outType: "String, Number, or Boolean"
+        },
+        fallback: {
+            summary: "Returns fallback default if token evaluates to null, undefined, or empty string.",
+            context: "Guarding downstream workflow tasks against failure from blank form fields.",
+            inType: "Token String", outType: "String or Number"
+        },
+        // Date
+        format_date: {
+            summary: "Parses an incoming date token and reformats it into the chosen standard or custom pattern.",
+            context: "Converting database dates or user inputs into custom fields or notification formats.",
+            inType: "Date / DateTime String", outType: "Formatted Date/Time String"
+        },
+        now: {
+            summary: "Generates current timestamp in UTC or Local time in the selected format.",
+            context: "Setting resolution timestamps or today's date in Hornbill custom fields.",
+            inType: "None", outType: "Formatted Date/Time String"
+        },
+        offset_now: {
+            summary: "Adds or subtracts days, hours, or minutes from the current moment.",
+            context: "Setting SLA targets, scheduled task due dates, or follow-up milestones.",
+            inType: "None", outType: "Formatted Date/Time String"
+        },
+        offset_var: {
+            summary: "Adds or subtracts relative time from a dynamic date variable.",
+            context: "Computing deadlines relative to ticket logged date or approval timestamp.",
+            inType: "Date / DateTime String", outType: "Formatted Date/Time String"
+        },
+        extract_date: {
+            summary: "Fast extraction of YYYY-MM-DD from SQL datetime by splitting on space.",
+            context: "Extracting date portion from SQL datetime fields without Date object overhead.",
+            inType: "SQL DateTime String", outType: "YYYY-MM-DD (String)"
+        },
+        age_days: {
+            summary: "Calculates full days elapsed from the given date until now.",
+            context: "Aging reports, stale ticket notifications, and SLA breach calculations.",
+            inType: "Date String", outType: "Number (Integer Days)"
+        },
+        diff_days: {
+            summary: "Calculates absolute difference in days between two date tokens.",
+            context: "Measuring duration between ticket opened and ticket resolved dates.",
+            inType: "Two Date Strings", outType: "Number (Integer Days)"
+        },
+        age_hours: {
+            summary: "Calculates full hours elapsed from the given date until now.",
+            context: "P1 / Critical incident resolution tracking within tight hourly SLAs.",
+            inType: "Date String", outType: "Number (Integer Hours)"
+        },
+        is_past: {
+            summary: "Returns true if the given date is in the past compared to current moment.",
+            context: "Evaluating whether SLA target has been breached in BPM Decision Nodes.",
+            inType: "Date String", outType: "Boolean (true / false)"
+        },
+        is_future: {
+            summary: "Returns true if the given date is in the future.",
+            context: "Validating that scheduled maintenance or booking dates are set in advance.",
+            inType: "Date String", outType: "Boolean (true / false)"
+        },
+        expires_within: {
+            summary: "Returns true if target date is in the future and within the next N days.",
+            context: "Triggering proactive contract, warranty, or certificate renewal notifications.",
+            inType: "Date String", outType: "Boolean (true / false)"
+        },
+        is_weekend: {
+            summary: "Returns true if date falls on Saturday or Sunday.",
+            context: "Branching workflow to on-call support or pausing SLA timers over weekends.",
+            inType: "Date String", outType: "Boolean (true / false)"
+        }
+    };
+
+    // Preset Filtering
+    let currentPresetFilter = 'all';
+
+    function filterPresets(cat) {
+        currentPresetFilter = cat;
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-filter') === cat);
+        });
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            const btnCat = btn.getAttribute('data-cat');
+            if (cat === 'all' || btnCat === cat) {
+                btn.style.display = 'inline-flex';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+    }
+
+    // Collapsible Description Drawers
+    function toggleCategoryGuide(e) {
+        if (e) e.stopPropagation();
+        const drawer = document.getElementById('category-desc-drawer');
+        const btn = document.getElementById('category-guide-btn');
+        if (drawer) {
+            const isHidden = drawer.style.display === 'none' || !drawer.style.display;
+            drawer.style.display = isHidden ? 'block' : 'none';
+            if (btn) {
+                btn.classList.toggle('active', isHidden);
+                const svg = btn.querySelector('svg');
+                if (svg) svg.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        }
+    }
+
+    function toggleOpGuide(elId, e) {
+        if (e) e.stopPropagation();
+        const card = document.getElementById(elId);
+        if (card) card.classList.toggle('open');
+    }
+
+    function updateDescriptions() {
+        const cat = document.getElementById('category').value;
+        const catDesc = categoryDescriptions[cat];
+        const catLabel = document.getElementById('category-guide-label');
+        const catDrawer = document.getElementById('category-desc-drawer');
+
+        if (catLabel && catDesc) {
+            const shortName = catDesc.title.split(' ')[0];
+            catLabel.textContent = `${shortName} Guide`;
+        }
+        if (catDrawer && catDesc) {
+            catDrawer.innerHTML = `
+                <div style="font-weight: 700; color: #0f172a; margin-bottom: 3px; font-size: 12px;">${catDesc.title}</div>
+                <div style="margin-bottom: 6px; font-size: 11.5px; color: #334155; line-height: 1.4;">${catDesc.body}</div>
+                <div style="font-size: 11.5px; color: #0369a1; background: #f0f9ff; border: 1px solid #bae6fd; padding: 4px 8px; border-radius: 4px;">💡 <strong>Best Practice:</strong> ${catDesc.advice}</div>
+            `;
+        }
+
+        let opKey = '';
+        let targetDescEl = null;
+
+        if (cat === 'math') {
+            opKey = document.getElementById('math-op').value;
+            targetDescEl = document.getElementById('math-op-desc');
+        } else if (cat === 'routing') {
+            opKey = document.getElementById('routing-op').value;
+            targetDescEl = document.getElementById('routing-op-desc');
+        } else if (cat === 'string') {
+            opKey = document.getElementById('string-op').value;
+            targetDescEl = document.getElementById('string-op-desc');
+        } else if (cat === 'logic') {
+            opKey = document.getElementById('logic-op').value;
+            targetDescEl = document.getElementById('logic-op-desc');
+        } else if (cat === 'date') {
+            opKey = document.getElementById('date-op').value;
+            targetDescEl = document.getElementById('date-op-desc');
+        }
+
+        if (targetDescEl && operationDescriptions[opKey]) {
+            const op = operationDescriptions[opKey];
+            const isOpen = targetDescEl.classList.contains('open');
+            targetDescEl.innerHTML = `
+                <div class="desc-card-compact" onclick="toggleOpGuide('${targetDescEl.id}')">
+                    <span class="desc-card-badge" style="font-size: 11.5px;">
+                        <strong>In:</strong> ${op.inType} &rarr; <strong>Out:</strong> ${op.outType}
+                    </span>
+                    <button type="button" class="desc-card-toggle" onclick="toggleOpGuide('${targetDescEl.id}', event)">
+                        <span>Details</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </div>
+                <div class="desc-card-drawer">
+                    <div style="font-weight: 600; color: #0f172a; margin-bottom: 3px;">${op.summary}</div>
+                    <div><strong>Hornbill Workflow Use Case:</strong> ${op.context}</div>
+                </div>
+            `;
+            if (isOpen) targetDescEl.classList.add('open');
+        }
+
+        updateMockHelperLabels();
+        updateMockInputTypes();
+    }
+
+    function updateMockHelperLabels() {
+        const cat = document.getElementById('category').value;
+        const helper1 = document.getElementById('mock-val-1-helper');
+        const helper2 = document.getElementById('mock-val-2-helper');
+        if (!helper1) return;
+
+        if (cat === 'math') {
+            helper1.textContent = '(token 1: numeric amount)';
+            if (helper2) helper2.textContent = '(token 2: modifier amount)';
+        } else if (cat === 'routing') {
+            helper1.textContent = '(token 1: counter / ticket ID)';
+        } else if (cat === 'string') {
+            helper1.textContent = '(token 1: input text)';
+        } else if (cat === 'logic') {
+            helper1.textContent = '(token 1: test value / condition)';
+        } else if (cat === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            if (dateOp === 'is_past') {
+                helper1.textContent = '(token 1: target / SLA date to check)';
+            } else if (dateOp === 'is_future') {
+                helper1.textContent = '(token 1: target date to test)';
+            } else if (dateOp === 'expires_within') {
+                helper1.textContent = '(token 1: expiration target date)';
+            } else if (dateOp === 'age_days' || dateOp === 'age_hours') {
+                helper1.textContent = '(token 1: ticket creation / logged date)';
+            } else if (dateOp === 'diff_days') {
+                helper1.textContent = '(token 1: start date)';
+                if (helper2) helper2.textContent = '(token 2: end date)';
+            } else if (dateOp === 'format_date' || dateOp === 'offset_var' || dateOp === 'extract_date' || dateOp === 'is_weekend') {
+                helper1.textContent = '(token 1: date string to evaluate)';
+            } else {
+                helper1.textContent = '(current system timestamp evaluated automatically)';
+            }
+        }
+    }
+
+    function updateMockInputTypes() {
+        const cat = document.getElementById('category').value;
+        const mock1 = document.getElementById('mock-val-1');
+        const mock2 = document.getElementById('mock-val-2');
+        const quickChips = document.getElementById('mock-quick-date-chips');
+        if (!mock1) return;
+
+        if (cat === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            if (dateOp === 'now' || dateOp === 'offset_now') {
+                mock1.type = 'text';
+                mock1.disabled = true;
+                mock1.style.background = '#f1f5f9';
+                mock1.style.color = '#64748b';
+                mock1.style.fontStyle = 'italic';
+                mock1.style.cursor = 'not-allowed';
+                mock1.value = '(current system timestamp evaluated automatically)';
+                if (quickChips) quickChips.style.display = 'none';
+            } else {
+                mock1.disabled = false;
+                mock1.style.background = '#ffffff';
+                mock1.style.color = 'var(--text-main)';
+                mock1.style.fontStyle = 'normal';
+                mock1.style.cursor = 'auto';
+                mock1.type = 'datetime-local';
+                if (quickChips) quickChips.style.display = 'flex';
+                if (mock1.value && !mock1.value.includes('T')) {
+                    mock1.value = mock1.value.replace(' ', 'T').slice(0, 16);
+                }
+            }
+
+            if (mock2) {
+                mock2.type = 'datetime-local';
+                if (mock2.value && !mock2.value.includes('T')) {
+                    mock2.value = mock2.value.replace(' ', 'T').slice(0, 16);
+                }
+            }
+        } else {
+            if (quickChips) quickChips.style.display = 'none';
+            mock1.disabled = false;
+            mock1.style.background = '#ffffff';
+            mock1.style.color = 'var(--text-main)';
+            mock1.style.fontStyle = 'normal';
+            mock1.style.cursor = 'auto';
+
+            if (cat === 'routing') {
+                mock1.type = 'number';
+                mock1.step = '1';
+                mock1.min = '1';
+            } else if (cat === 'math') {
+                mock1.type = 'number';
+                mock1.step = 'any';
+                mock1.removeAttribute('min');
+                if (mock2) {
+                    mock2.type = 'number';
+                    mock2.step = 'any';
+                    mock2.removeAttribute('min');
+                }
+            } else if (cat === 'string') {
+                const strOp = document.getElementById('string-op').value;
+                if (strOp === 'currency') {
+                    mock1.type = 'number';
+                    mock1.step = '0.01';
+                    mock1.removeAttribute('min');
+                } else {
+                    mock1.type = 'text';
+                    mock1.removeAttribute('step');
+                    mock1.removeAttribute('min');
+                }
+                if (mock2) {
+                    mock2.type = 'text';
+                    mock2.removeAttribute('step');
+                }
+            } else {
+                mock1.type = 'text';
+                mock1.removeAttribute('step');
+                mock1.removeAttribute('min');
+                if (mock2) {
+                    mock2.type = 'text';
+                    mock2.removeAttribute('step');
+                }
+            }
+        }
+    }
+
+    function setQuickMockDate(mode) {
+        const mock1 = document.getElementById('mock-val-1');
+        if (!mock1) return;
+        const now = new Date();
+        let target = new Date();
+        if (mode === 'past') {
+            target.setDate(now.getDate() - 7);
+        } else if (mode === 'future') {
+            target.setDate(now.getDate() + 7);
+        }
+        const p = n => String(n).padStart(2, '0');
+        const dtStr = `${target.getFullYear()}-${p(target.getMonth() + 1)}-${p(target.getDate())}T${p(target.getHours())}:${p(target.getMinutes())}`;
+        mock1.value = dtStr;
+        userModifiedMock1();
+        generateFlowcode();
+    }
+
+    function applyTemplate(convType, category, operation, modType, extraVal, mock1, mock2, tokenVar) {
+        isMock1ModifiedByUser = false;
+        isMock2ModifiedByUser = false;
+
+        if (tokenVar) {
+            document.getElementById('variable').value = tokenVar;
+        }
+
+        document.getElementById('category').value = category;
+        switchCategory();
+        
+        const radio = document.querySelector(`input[name="convType"][value="${convType}"]`);
+        if (radio) radio.checked = true;
+        
+        if (mock1 !== undefined) document.getElementById('mock-val-1').value = mock1;
+        if (mock2 !== undefined) document.getElementById('mock-val-2').value = mock2;
+
+        if (category === 'math') {
+            document.getElementById('math-op').value = operation;
+            const modRadio = document.querySelector(`input[name="mathModType"][value="${modType}"]`);
+            if (modRadio) modRadio.checked = true;
+            toggleMathInputs();
+        } 
+        else if (category === 'string') {
+            document.getElementById('string-op').value = operation;
+            toggleStringInputs();
+        }
+        else if (category === 'logic') {
+            document.getElementById('logic-op').value = operation;
+            toggleLogicInputs();
+        }
+
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Template applied: " + operation, "info");
+    }
+
+    function applyDatePreset(op, format, offsetDir, offsetVal, offsetUnit, mock1, customFmt, tokenVar) {
+        isMock1ModifiedByUser = false;
+        isMock2ModifiedByUser = false;
+
+        if (tokenVar) {
+            document.getElementById('variable').value = tokenVar;
+        }
+
+        document.getElementById('category').value = 'date';
+        switchCategory();
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        if (strRadio) strRadio.checked = true;
+
+        document.getElementById('date-op').value = op;
+        if (format) {
+            document.getElementById('date-format-select').value = format;
+            if (format === 'custom' && customFmt) {
+                document.getElementById('date-custom-format').value = customFmt;
+            }
+        }
+        if (offsetDir) document.getElementById('date-offset-dir').value = offsetDir;
+        if (offsetVal) document.getElementById('date-offset-val').value = offsetVal;
+        if (offsetUnit) document.getElementById('date-offset-unit').value = offsetUnit;
+
+        toggleDateInputs();
+
+        if (mock1 !== undefined && mock1 !== '') {
+            document.getElementById('mock-val-1').value = mock1;
+        }
+
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Date preset loaded: " + op, "info");
+    }
+
+    // Quick Action Templates Modal Controls
+    function openTemplatesModal() {
+        const modal = document.getElementById('templates-modal');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeTemplatesModal() {
+        const modal = document.getElementById('templates-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function closeTemplatesModalOnBackdrop(event) {
+        if (event.target === document.getElementById('templates-modal')) {
+            closeTemplatesModal();
+        }
+    }
+
+    function filterModalPresets(cat) {
+        const pills = document.querySelectorAll('.preset-filter-row .filter-pill');
+        pills.forEach(p => {
+            if (p.textContent.toLowerCase().includes(cat) || (cat === 'all' && p.textContent.startsWith('All'))) {
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+
+        const items = document.querySelectorAll('.modal-preset-btn');
+        items.forEach(btn => {
+            if (cat === 'all' || btn.getAttribute('data-cat') === cat) {
+                btn.style.display = 'flex';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+    }
+
+    function applyTemplateAndClose(...args) {
+        closeTemplatesModal();
+        applyTemplate(...args);
+    }
+
+    function applyDatePresetAndClose(...args) {
+        closeTemplatesModal();
+        applyDatePreset(...args);
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeTemplatesModal();
+        }
+    });
+
+    function updateSmartMockDefaults() {
+        if (isMock1ModifiedByUser) return; 
+
+        const category = document.getElementById('category').value;
+        let newMock1 = '100'; 
+
+        if (category === 'math') {
+            newMock1 = '100';
+            if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '1.20';
+        } 
+        else if (category === 'routing') {
+            newMock1 = '12';
+        } 
+        else if (category === 'string') {
+            const strOp = document.getElementById('string-op').value;
+            const strDefaults = {
+                'initcap': 'john doe',
+                'titlecap': 'john doe',
+                'pad': '123',
+                'mask': '07700900461',
+                'currency': '15.5',
+                'encode': 'https://api.domain.com/?q=hello world',
+                'encode2': 'https://api.domain.com/?q=hello world',
+                'decode': 'https%3A%2F%2Fapi.domain.com%2F%3Fq%3Dhello%20world',
+                'decode2': 'https%253A%252F%252Fapi.domain.com%252F%253Fq%253Dhello%2520world'
+            };
+            newMock1 = strDefaults[strOp] || 'test value';
+        } 
+        else if (category === 'logic') {
+            const logicOp = document.getElementById('logic-op').value;
+            newMock1 = (logicOp === 'ternary') ? '1' : ''; 
+        }
+        else if (category === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            if (dateOp === 'now' || dateOp === 'offset_now') {
+                newMock1 = new Date().toISOString().slice(0, 16);
+            } else if (dateOp === 'is_past') {
+                newMock1 = new Date(Date.now() - (7 * 86400000)).toISOString().slice(0, 16);
+            } else if (dateOp === 'is_future') {
+                newMock1 = new Date(Date.now() + (7 * 86400000)).toISOString().slice(0, 16);
+            } else if (dateOp === 'diff_days') {
+                newMock1 = '2026-09-01T09:00';
+                if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '2026-09-08T17:30';
+            } else if (dateOp === 'expires_within') {
+                newMock1 = new Date(Date.now() + (10 * 86400000)).toISOString().slice(0, 16);
+            } else {
+                newMock1 = '2026-09-08T14:30';
+            }
+        }
+        document.getElementById('mock-val-1').value = newMock1;
+        updateMockInputTypes();
+    }
+
+    function switchCategory() {
+        const category = document.getElementById('category').value;
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        const numRadios = document.querySelectorAll('input[name="convType"][value="Number"], input[name="convType"][value="parseInt"], input[name="convType"][value="parseFloat"]');
+        const noneRadio = document.querySelector('input[name="convType"][value="None"]');
+
+        document.getElementById('section-math').classList.remove('active');
+        document.getElementById('section-routing').classList.remove('active');
+        document.getElementById('section-string').classList.remove('active');
+        document.getElementById('section-logic').classList.remove('active');
+        document.getElementById('section-date').classList.remove('active');
+        
+        if (category === 'math' || category === 'routing') {
+            if (category === 'math') document.getElementById('section-math').classList.add('active');
+            if (category === 'routing') document.getElementById('section-routing').classList.add('active');
+            
+            strRadio.disabled = true;
+            numRadios.forEach(r => r.disabled = false);
+            noneRadio.disabled = false;
+
+            if (strRadio.checked) document.querySelector('input[name="convType"][value="Number"]').checked = true;
+            
+        } else if (category === 'string') {
+            document.getElementById('section-string').classList.add('active');
+            
+            numRadios.forEach(r => r.disabled = true);
+            strRadio.disabled = false;
+            noneRadio.disabled = false;
+
+            const isNumChecked = Array.from(numRadios).some(r => r.checked);
+            if (document.getElementById('string-op').value === 'currency') {
+                numRadios.forEach(r => r.disabled = false);
+            } else if (isNumChecked) {
+                strRadio.checked = true;
+            }
+
+        } else if (category === 'logic') {
+            document.getElementById('section-logic').classList.add('active');
+            strRadio.disabled = false;
+            numRadios.forEach(r => r.disabled = false);
+            noneRadio.disabled = false;
+        } else if (category === 'date') {
+            document.getElementById('section-date').classList.add('active');
+            numRadios.forEach(r => r.disabled = true);
+            strRadio.disabled = false;
+            noneRadio.disabled = false;
+            if (!noneRadio.checked && !strRadio.checked) {
+                strRadio.checked = true;
+            }
+            toggleDateInputs();
+        }
+
+        toggleMathInputs(); 
+        updateSmartMockDefaults();
+        updateDescriptions();
+    }
+
+    function toggleMathInputs() {
+        const modType = document.querySelector('input[name="mathModType"]:checked').value;
+        const category = document.getElementById('category').value;
+        if (category === 'math' && modType === 'variable') {
+            document.getElementById('math-static-panel').style.display = 'none';
+            document.getElementById('math-variable-panel').style.display = 'block';
+            document.getElementById('mock-val-2-container').style.display = 'block';
+        } else if (category === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            document.getElementById('mock-val-2-container').style.display = (dateOp === 'diff_days') ? 'block' : 'none';
+        } else {
+            document.getElementById('math-static-panel').style.display = 'block';
+            document.getElementById('math-variable-panel').style.display = 'none';
+            document.getElementById('mock-val-2-container').style.display = 'none';
+        }
+    }
+
+    function toggleStringInputs() {
+        const strOp = document.getElementById('string-op').value;
+        if (strOp === 'pad') {
+            document.getElementById('string-pad-panel').style.display = 'block';
+        } else {
+            document.getElementById('string-pad-panel').style.display = 'none';
+        }
+        
+        switchCategory(); 
+        updateSmartMockDefaults();
+        updateDescriptions();
+    }
+
+    function toggleLogicInputs() {
+        const logicOp = document.getElementById('logic-op').value;
+        if (logicOp === 'ternary') {
+            document.getElementById('logic-ternary-panel').style.display = 'block';
+            document.getElementById('logic-fallback-panel').style.display = 'none';
+        } else {
+            document.getElementById('logic-ternary-panel').style.display = 'none';
+            document.getElementById('logic-fallback-panel').style.display = 'block';
+        }
+        updateSmartMockDefaults();
+        updateDescriptions();
+    }
+
+    function getEffectiveDateFormat() {
+        const fmtSelect = document.getElementById('date-format-select').value;
+        if (fmtSelect === 'custom') {
+            return document.getElementById('date-custom-format').value.trim() || 'YYYY-MM-DD';
+        }
+        return fmtSelect;
+    }
+
+    function updateDateBadge(pattern) {
+        const badge = document.getElementById('date-badge-panel');
+        if (!badge) return;
+        if (pattern === 'YYYY-MM-DD') {
+            badge.style.background = '#e8f5e9';
+            badge.style.borderColor = '#a5d6a7';
+            badge.style.color = '#1b5e20';
+            badge.innerHTML = '📅 <strong>Hornbill Custom Field (Date Only):</strong> Strict <code>YYYY-MM-DD</code> format without time.';
+        } else if (pattern === 'YYYY-MM-DD HH:mm:ss') {
+            badge.style.background = '#e3f2fd';
+            badge.style.borderColor = '#90caf9';
+            badge.style.color = '#0d47a1';
+            badge.innerHTML = '🕒 <strong>Hornbill Custom Field / SQL DateTime:</strong> Full <code>YYYY-MM-DD HH:mm:ss</code> timestamp.';
+        } else if (pattern === 'DD/MM/YYYY') {
+            badge.style.background = '#ede7f6';
+            badge.style.borderColor = '#d1c4e9';
+            badge.style.color = '#4a148c';
+            badge.innerHTML = '🇬🇧 <strong>UK Date Standard:</strong> Human-readable <code>DD/MM/YYYY</code> format.';
+        } else {
+            badge.style.background = '#fff8e1';
+            badge.style.borderColor = '#ffe082';
+            badge.style.color = '#e65100';
+            badge.innerHTML = `⚙ <strong>Target Format:</strong> <code>${escapeHtml(pattern)}</code>`;
+        }
+    }
+
+    function handleDateFormatSelect() {
+        const fmtSelect = document.getElementById('date-format-select').value;
+        const customGroup = document.getElementById('date-custom-input-group');
+        if (fmtSelect === 'custom') {
+            customGroup.style.display = 'block';
+        } else {
+            customGroup.style.display = 'none';
+        }
+        updateDateBadge(getEffectiveDateFormat());
+    }
+
+    function toggleDateInputs() {
+        const dateOp = document.getElementById('date-op').value;
+        const formatContainer = document.getElementById('date-format-container');
+        const offsetPanel = document.getElementById('date-offset-panel');
+        const secondaryPanel = document.getElementById('date-secondary-panel');
+        const offsetDirGroup = document.getElementById('date-offset-dir-group');
+        const offsetValLabel = document.getElementById('date-offset-val-label');
+
+        const needsFormat = ['format_date', 'now', 'offset_now', 'offset_var'].includes(dateOp);
+        formatContainer.style.display = needsFormat ? 'block' : 'none';
+        if (needsFormat) handleDateFormatSelect();
+
+        if (dateOp === 'offset_now' || dateOp === 'offset_var') {
+            offsetPanel.style.display = 'block';
+            offsetDirGroup.style.display = 'block';
+            offsetValLabel.innerText = "Amount & Unit";
+        } else if (dateOp === 'expires_within') {
+            offsetPanel.style.display = 'block';
+            offsetDirGroup.style.display = 'none';
+            offsetValLabel.innerText = "Target Window (Days)";
+        } else {
+            offsetPanel.style.display = 'none';
+        }
+
+        secondaryPanel.style.display = (dateOp === 'diff_days') ? 'block' : 'none';
+        toggleMathInputs(); 
+        updateSmartMockDefaults();
+        updateDescriptions();
+    }
+
+    function escapeHtml(text) {
+        return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function cleanToken(token) {
+        if (!token) return "";
+        let cleaned = token.trim();
+        if (cleaned.startsWith('&[') && cleaned.endsWith(']')) {
+            cleaned = cleaned.substring(2, cleaned.length - 1).trim();
+        }
+        return cleaned;
+    }
+
+    function wrapVariable(rawVar, convType) {
+        if (!rawVar) return "";
+        switch(convType) {
+            case 'Number': return `Number(${rawVar})`;
+            case 'parseInt': return `parseInt(${rawVar}, 10)`;
+            case 'parseFloat': return `parseFloat(${rawVar})`;
+            case 'String': return `String(${rawVar})`;
+            default: return rawVar;
+        }
+    }
+
+    function formatDateByPattern(dateObj, pattern, useUTC = true) {
+        if (isNaN(dateObj.getTime())) return "Invalid Date";
+        const p = n => String(n).padStart(2, '0');
+        const YYYY = useUTC ? dateObj.getUTCFullYear() : dateObj.getFullYear();
+        const YY = String(YYYY).slice(-2);
+        const MM = p(useUTC ? (dateObj.getUTCMonth() + 1) : (dateObj.getMonth() + 1));
+        const DD = p(useUTC ? dateObj.getUTCDate() : dateObj.getDate());
+        const HH = p(useUTC ? dateObj.getUTCHours() : dateObj.getHours());
+        const mm = p(useUTC ? dateObj.getUTCMinutes() : dateObj.getMinutes());
+        const ss = p(useUTC ? dateObj.getUTCSeconds() : dateObj.getSeconds());
+
+        return pattern
+            .replace(/YYYY/g, YYYY)
+            .replace(/YY/g, YY)
+            .replace(/MM/g, MM)
+            .replace(/DD/g, DD)
+            .replace(/HH/g, HH)
+            .replace(/mm/g, mm)
+            .replace(/ss/g, ss);
+    }
+
+    function simulateExpression(convType1, category) {
+        const m1 = document.getElementById('mock-val-1').value;
+        const m2 = document.getElementById('mock-val-2').value;
+        
+        let c1;
+        switch(convType1) {
+            case 'Number': c1 = Number(m1); break;
+            case 'parseInt': c1 = parseInt(m1, 10); break;
+            case 'parseFloat': c1 = parseFloat(m1); break;
+            case 'String': c1 = String(m1); break;
+            default: c1 = m1; 
+        }
+
+        try {
+            if (category === 'math') {
+                const mathOp = document.getElementById('math-op').value;
+                const modType = document.querySelector('input[name="mathModType"]:checked').value;
+                let c2;
+                if (modType === 'static') {
+                    c2 = parseFloat(document.getElementById('math-val').value) || 0;
+                } else {
+                    const convType2 = document.getElementById('convType2').value;
+                    switch(convType2) {
+                        case 'Number': c2 = Number(m2); break;
+                        case 'parseInt': c2 = parseInt(m2, 10); break;
+                        case 'parseFloat': c2 = parseFloat(m2); break;
+                        default: c2 = m2;
+                    }
+                }
+                if (mathOp === 'add') return c1 + c2;
+                if (mathOp === 'subtract') return c1 - c2;
+                if (mathOp === 'multiply') return c1 * c2;
+                if (mathOp === 'divide') return c2 !== 0 ? (c1 / c2) : "Infinity (Div by 0)";
+            } 
+            else if (category === 'routing') {
+                const routOp = document.getElementById('routing-op').value;
+                const modVal = parseInt(document.getElementById('mod-val').value, 10) || 1;
+                if (routOp === 'decision') return (c1 % modVal === 0) ? "true" : "false";
+                if (routOp === 'remainder') return c1 % modVal;
+            } 
+            else if (category === 'string') {
+                const strOp = document.getElementById('string-op').value;
+                const strM1 = String(m1);
+                if (strOp === 'initcap') return strM1 ? strM1.charAt(0).toUpperCase() + strM1.slice(1) : "";
+                if (strOp === 'titlecap') return strM1 ? strM1.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : "";
+                if (strOp === 'pad') {
+                    const len = parseInt(document.getElementById('pad-len').value, 10) || 6;
+                    return strM1.padStart(len, '0');
+                }
+                if (strOp === 'mask') {
+                    return (strM1.length > 4) ? strM1.slice(-4).padStart(strM1.length, '*') : '****';
+                }
+                if (strOp === 'currency') return parseFloat(c1).toFixed(2);
+                if (strOp === 'encode') return encodeURIComponent(strM1);
+                if (strOp === 'encode2') return encodeURIComponent(encodeURIComponent(strM1));
+                if (strOp === 'decode') return decodeURIComponent(strM1);
+                if (strOp === 'decode2') return decodeURIComponent(decodeURIComponent(strM1));
+            } 
+            else if (category === 'logic') {
+                const logicOp = document.getElementById('logic-op').value;
+                if (logicOp === 'ternary') {
+                    const cond = document.getElementById('logic-cond').value;
+                    let comp = document.getElementById('logic-compare').value;
+                    const tVal = document.getElementById('logic-true').value;
+                    const fVal = document.getElementById('logic-false').value;
+
+                    let isMatch = false;
+                    let parsedComp = (!isNaN(comp) && comp.trim() !== '') ? Number(comp) : comp;
+                    if (cond === '===') isMatch = (c1 === parsedComp || String(c1) === String(comp));
+                    if (cond === '!==') isMatch = (c1 !== parsedComp && String(c1) !== String(comp));
+                    if (cond === '>') isMatch = (c1 > parsedComp);
+                    if (cond === '<') isMatch = (c1 < parsedComp);
+
+                    return isMatch ? tVal : fVal;
+                } else {
+                    const fallbackVal = document.getElementById('logic-fallback-val').value;
+                    return c1 || fallbackVal;
+                }
+            }
+            else if (category === 'date') {
+                const dateOp = document.getElementById('date-op').value;
+                const pattern = getEffectiveDateFormat();
+                const useUTC = document.getElementById('date-tz').value === 'UTC';
+                const offsetDir = document.getElementById('date-offset-dir').value;
+                const offsetVal = parseFloat(document.getElementById('date-offset-val').value) || 0;
+                const offsetUnit = document.getElementById('date-offset-unit').value;
+                
+                let unitMultiplier = 86400000;
+                if (offsetUnit === 'hours') unitMultiplier = 3600000;
+                if (offsetUnit === 'minutes') unitMultiplier = 60000;
+                const offsetMs = (offsetDir === 'sub' ? -1 : 1) * offsetVal * unitMultiplier;
+
+                if (dateOp === 'format_date') {
+                    const d = new Date(String(m1).replace(' ', 'T'));
+                    return formatDateByPattern(d, pattern, useUTC);
+                } else if (dateOp === 'now') {
+                    return formatDateByPattern(new Date(), pattern, useUTC);
+                } else if (dateOp === 'offset_now') {
+                    const d = new Date(Date.now() + offsetMs);
+                    return formatDateByPattern(d, pattern, useUTC);
+                } else if (dateOp === 'offset_var') {
+                    const d = new Date(new Date(String(m1).replace(' ', 'T')).getTime() + offsetMs);
+                    return formatDateByPattern(d, pattern, useUTC);
+                } else if (dateOp === 'extract_date') {
+                    return String(m1).split(' ')[0];
+                } else if (dateOp === 'age_days') {
+                    const past = new Date(String(m1).replace(' ', 'T')).getTime();
+                    return Math.floor((Date.now() - past) / 86400000) + " days";
+                } else if (dateOp === 'age_hours') {
+                    const past = new Date(String(m1).replace(' ', 'T')).getTime();
+                    return Math.floor((Date.now() - past) / 3600000) + " hours";
+                } else if (dateOp === 'diff_days') {
+                    const d1 = new Date(String(m1).replace(' ', 'T')).getTime();
+                    const d2 = new Date(String(m2).replace(' ', 'T')).getTime();
+                    return Math.round(Math.abs(d2 - d1) / 86400000) + " days";
+                } else if (dateOp === 'is_past') {
+                    const target = new Date(String(m1).replace(' ', 'T')).getTime();
+                    return (target < Date.now()) ? "true (Overdue / Past)" : "false (Future)";
+                } else if (dateOp === 'is_future') {
+                    const target = new Date(String(m1).replace(' ', 'T')).getTime();
+                    return (target > Date.now()) ? "true (Future)" : "false (Past / Overdue)";
+                } else if (dateOp === 'expires_within') {
+                    const diff = new Date(String(m1).replace(' ', 'T')).getTime() - Date.now();
+                    const windowMs = offsetVal * 86400000;
+                    return (diff > 0 && diff <= windowMs) ? `true (Expires within ${offsetVal} days)` : "false";
+                } else if (dateOp === 'is_weekend') {
+                    const day = new Date(String(m1).replace(' ', 'T')).getDay();
+                    return (day === 0 || day === 6) ? "true (Weekend)" : "false (Weekday)";
+                }
+            }
+        } catch(e) {
+            return "Simulation Error: " + e.message;
+        }
+
+        return "N/A";
+    }
+
+    function generateFlowcode() {
+        const rawVar1 = cleanToken(document.getElementById('variable').value) || "PRIMARY_VARIABLE";
+        const convType1 = document.querySelector('input[name="convType"]:checked').value;
+        const category = document.getElementById('category').value;
+        
+        let expressionVar1 = wrapVariable(rawVar1, convType1);
+        let innerExpression = "";
+        let expText = "";
+
+        if (category === 'math') {
+            const mathOp = document.getElementById('math-op').value;
+            const modType = document.querySelector('input[name="mathModType"]:checked').value;
+            let opChar = '+';
+            if (mathOp === 'subtract') opChar = '-';
+            if (mathOp === 'multiply') opChar = '*';
+            if (mathOp === 'divide') opChar = '/';
+
+            let modifier = "";
+            let modExplanation = "";
+
+            if (modType === 'static') {
+                modifier = document.getElementById('math-val').value;
+                modExplanation = `static numeric value <code>${modifier}</code>`;
+            } else {
+                const rawVar2 = cleanToken(document.getElementById('variable2').value) || "SECONDARY_VARIABLE";
+                const convType2 = document.getElementById('convType2').value;
+                modifier = wrapVariable(rawVar2, convType2);
+                modExplanation = `secondary variable <code>${modifier}</code>`;
+            }
+
+            innerExpression = `(${expressionVar1} ${opChar} ${modifier})`;
+            expText = `Performs arithmetic (<code>${opChar}</code>) between <code>${expressionVar1}</code> and ${modExplanation}. Wrapped in parentheses for explicit precedence.`;
+        } 
+        else if (category === 'routing') {
+            const routOp = document.getElementById('routing-op').value;
+            const modVal = document.getElementById('mod-val').value;
+
+            if (routOp === 'decision') {
+                innerExpression = `${expressionVar1} % ${modVal} === 0`;
+                expText = `Evaluates to <strong>true</strong> or <strong>false</strong>. Divides by <code>${modVal}</code> and checks if remainder is zero.`;
+            } else {
+                innerExpression = `${expressionVar1} % ${modVal}`;
+                expText = `Returns remainder after integer division by <code>${modVal}</code>.`;
+            }
+        } 
+        else if (category === 'string') {
+            const strOp = document.getElementById('string-op').value;
+            if (strOp === 'initcap') {
+                innerExpression = `${expressionVar1}.charAt(0).toUpperCase() + ${expressionVar1}.slice(1)`;
+                expText = `Capitalises the first character of the string, keeping remaining characters unchanged.`;
+            } else if (strOp === 'titlecap') {
+                innerExpression = `${expressionVar1}.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')`;
+                expText = `Splits by spaces and capitalises the first letter of each word (Title Case).`;
+            } else if (strOp === 'pad') {
+                const padLen = document.getElementById('pad-len').value;
+                innerExpression = `${expressionVar1}.padStart(${padLen}, '0')`;
+                expText = `Left-pads string to target length of <code>${padLen}</code> using zeros (<code>'0'</code>).`;
+            } else if (strOp === 'mask') {
+                innerExpression = `String(${rawVar1}).length > 4 ? String(${rawVar1}).slice(-4).padStart(String(${rawVar1}).length, '*') : '****'`;
+                expText = `Masks sensitive data (GDPR/PII), preserving only the last 4 characters.`;
+            } else if (strOp === 'currency') {
+                innerExpression = `${expressionVar1}.toFixed(2)`;
+                expText = `Formats numeric value into strict currency representation with two decimal places.`;
+            } else if (strOp === 'encode') {
+                innerExpression = `encodeURIComponent(${expressionVar1})`;
+                expText = `URL-encodes characters for HTTP query parameters.`;
+            } else if (strOp === 'encode2') {
+                innerExpression = `encodeURIComponent(encodeURIComponent(${expressionVar1}))`;
+                expText = `Double-encodes URI components for APIs requiring twice-nested parameter encoding.`;
+            } else if (strOp === 'decode') {
+                innerExpression = `decodeURIComponent(${expressionVar1})`;
+                expText = `Decodes single-encoded URL string.`;
+            } else if (strOp === 'decode2') {
+                innerExpression = `decodeURIComponent(decodeURIComponent(${expressionVar1}))`;
+                expText = `Decodes double URL-encoded string.`;
+            }
+        } 
+        else if (category === 'logic') {
+            const logicOp = document.getElementById('logic-op').value;
+            if (logicOp === 'ternary') {
+                const cond = document.getElementById('logic-cond').value;
+                let compareVal = document.getElementById('logic-compare').value;
+                let trueVal = document.getElementById('logic-true').value;
+                let falseVal = document.getElementById('logic-false').value;
+
+                if ((isNaN(compareVal) || compareVal.trim() === '') && compareVal !== "true" && compareVal !== "false") {
+                    compareVal = `"${compareVal}"`;
+                }
+                if (isNaN(trueVal) && trueVal !== "true" && trueVal !== "false") trueVal = `"${trueVal}"`;
+                if (isNaN(falseVal) && falseVal !== "true" && falseVal !== "false") falseVal = `"${falseVal}"`;
+
+                innerExpression = `${expressionVar1} ${cond} ${compareVal} ? ${trueVal} : ${falseVal}`;
+                expText = `Inline ternary condition: Evaluates <code>${expressionVar1} ${escapeHtml(cond)} ${compareVal}</code> &rarr; Returns ${trueVal} if true, ${falseVal} if false.`;
+            } else {
+                let fallbackVal = document.getElementById('logic-fallback-val').value;
+                if (isNaN(fallbackVal) && fallbackVal !== "true" && fallbackVal !== "false") {
+                    fallbackVal = `"${fallbackVal}"`;
+                }
+                innerExpression = `${expressionVar1} || ${fallbackVal}`;
+                expText = `Safe fallback: Outputs <code>${expressionVar1}</code>, or defaults to <code>${fallbackVal}</code> if null, empty, or undefined.`;
+            }
+        }
+        else if (category === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            const pattern = getEffectiveDateFormat();
+            const isUTC = document.getElementById('date-tz').value === 'UTC';
+            const offsetDir = document.getElementById('date-offset-dir').value;
+            const offsetVal = document.getElementById('date-offset-val').value;
+            const offsetUnit = document.getElementById('date-offset-unit').value;
+
+            let unitMs = 86400000;
+            if (offsetUnit === 'hours') unitMs = 3600000;
+            if (offsetUnit === 'minutes') unitMs = 60000;
+            const opSign = (offsetDir === 'sub') ? '-' : '+';
+            const offsetExpr = `(${offsetVal} * ${unitMs})`;
+
+            function buildDateCompiler(dateSourceExpr, fmt) {
+                if (fmt === 'YYYY-MM-DD' && isUTC) {
+                    return `new Date(${dateSourceExpr}).toISOString().slice(0, 10)`;
+                }
+                if (fmt === 'YYYY-MM-DD HH:mm:ss' && isUTC) {
+                    return `new Date(${dateSourceExpr}).toISOString().replace('T', ' ').slice(0, 19)`;
+                }
+                if (fmt === 'DD/MM/YYYY' && isUTC) {
+                    return `(() => { const d = new Date(${dateSourceExpr}); const p = n => String(n).padStart(2, '0'); return p(d.getUTCDate()) + '/' + p(d.getUTCMonth() + 1) + '/' + d.getUTCFullYear(); })()`;
+                }
+                
+                const fnPrefix = isUTC ? 'getUTC' : 'get';
+                const yr = `d.${fnPrefix}FullYear()`;
+                const mo = `p(d.${fnPrefix}Month() + 1)`;
+                const da = `p(d.${fnPrefix}Date())`;
+                const hr = `p(d.${fnPrefix}Hours())`;
+                const mi = `p(d.${fnPrefix}Minutes())`;
+                const sc = `p(d.${fnPrefix}Seconds())`;
+
+                return `(() => { const d = new Date(${dateSourceExpr}); const p = n => String(n).padStart(2, '0'); return "${fmt}".replace(/YYYY/g, ${yr}).replace(/YY/g, String(${yr}).slice(-2)).replace(/MM/g, ${mo}).replace(/DD/g, ${da}).replace(/HH/g, ${hr}).replace(/mm/g, ${mi}).replace(/ss/g, ${sc}); })()`;
+            }
+
+            if (dateOp === 'format_date') {
+                innerExpression = buildDateCompiler(`String(${rawVar1}).replace(' ', 'T')`, pattern);
+                expText = `Parses variable date and outputs formatted string in <code>${escapeHtml(pattern)}</code> (${isUTC ? 'UTC' : 'Local'}).`;
+            } else if (dateOp === 'now') {
+                innerExpression = buildDateCompiler('Date.now()', pattern);
+                expText = `Generates current timestamp in <code>${escapeHtml(pattern)}</code> (${isUTC ? 'UTC' : 'Local'}).`;
+            } else if (dateOp === 'offset_now') {
+                innerExpression = buildDateCompiler(`Date.now() ${opSign} ${offsetExpr}`, pattern);
+                expText = `Current timestamp ${opSign} ${offsetVal} ${offsetUnit}, formatted as <code>${escapeHtml(pattern)}</code>.`;
+            } else if (dateOp === 'offset_var') {
+                innerExpression = buildDateCompiler(`new Date(String(${rawVar1}).replace(' ', 'T')).getTime() ${opSign} ${offsetExpr}`, pattern);
+                expText = `Offsets variable date by ${opSign} ${offsetVal} ${offsetUnit}, formatted as <code>${escapeHtml(pattern)}</code>.`;
+            } else if (dateOp === 'extract_date') {
+                innerExpression = `String(${rawVar1}).split(' ')[0]`;
+                expText = `Extracts date portion (<strong>YYYY-MM-DD</strong>) from SQL datetime by splitting on space.`;
+            } else if (dateOp === 'age_days') {
+                innerExpression = `Math.floor((Date.now() - new Date(String(${rawVar1}).replace(' ', 'T')).getTime()) / 86400000)`;
+                expText = `Calculates full days elapsed from the specified date until today.`;
+            } else if (dateOp === 'age_hours') {
+                innerExpression = `Math.floor((Date.now() - new Date(String(${rawVar1}).replace(' ', 'T')).getTime()) / 3600000)`;
+                expText = `Calculates full hours elapsed from the specified date until now.`;
+            } else if (dateOp === 'diff_days') {
+                let rawVarDate2 = cleanToken(document.getElementById('variableDate2').value) || "SECONDARY_DATE";
+                innerExpression = `Math.round(Math.abs(new Date(String(${rawVarDate2}).replace(' ', 'T')) - new Date(String(${rawVar1}).replace(' ', 'T'))) / 86400000)`;
+                expText = `Calculates absolute difference in days between two date variables.`;
+            } else if (dateOp === 'is_past') {
+                innerExpression = `new Date(String(${rawVar1}).replace(' ', 'T')).getTime() < Date.now()`;
+                expText = `Evaluates to <strong>true</strong> if the date is in the past (overdue / SLA breached).`;
+            } else if (dateOp === 'is_future') {
+                innerExpression = `new Date(String(${rawVar1}).replace(' ', 'T')).getTime() > Date.now()`;
+                expText = `Evaluates to <strong>true</strong> if the date is in the future.`;
+            } else if (dateOp === 'expires_within') {
+                innerExpression = `(() => { const d = new Date(String(${rawVar1}).replace(' ', 'T')).getTime() - Date.now(); return d > 0 && d <= (${offsetVal} * 86400000); })()`;
+                expText = `Evaluates to <strong>true</strong> if date is in the future and within the next ${offsetVal} days.`;
+            } else if (dateOp === 'is_weekend') {
+                innerExpression = `[0, 6].includes(new Date(String(${rawVar1}).replace(' ', 'T')).getDay())`;
+                expText = `Evaluates to <strong>true</strong> if date falls on a weekend (Saturday or Sunday).`;
+            }
+        }
+
+        const finalOutput = `&[${innerExpression}]`;
+        document.getElementById('outputCode').innerText = finalOutput;
+        document.getElementById('explanation').innerHTML = expText;
+
+        const simResult = simulateExpression(convType1, category);
+        document.getElementById('previewOutput').innerText = simResult;
+
+        // Dynamically update browser address bar with current state & results
+        if (window.history && window.history.replaceState) {
+            try {
+                window.history.replaceState(null, '', getShareableUrl());
+            } catch (e) {
+                // Graceful fallback if running under local file:// protocol
+            }
+        }
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('outputCode').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            showToast("Flowcode copied to clipboard!");
+            const btn = document.getElementById('copyBtn');
+            const orig = btn.innerHTML;
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
+            setTimeout(() => { btn.innerHTML = orig; }, 1500);
+        });
+    }
+
+    // URL Parameter Serialization & Restoration
+    function getShareableUrl() {
+        const url = new URL(window.location.href.split('?')[0]);
+        const params = url.searchParams;
+
+        params.set('var', document.getElementById('variable').value);
+        params.set('cat', document.getElementById('category').value);
+        
+        const convRadio = document.querySelector('input[name="convType"]:checked');
+        if (convRadio) params.set('conv', convRadio.value);
+
+        const cat = document.getElementById('category').value;
+        if (cat === 'math') {
+            params.set('op', document.getElementById('math-op').value);
+            const mathModRadio = document.querySelector('input[name="mathModType"]:checked');
+            if (mathModRadio) params.set('modType', mathModRadio.value);
+            params.set('modVal', document.getElementById('math-val').value);
+            params.set('var2', document.getElementById('variable2').value);
+            params.set('conv2', document.getElementById('convType2').value);
+        } else if (cat === 'routing') {
+            params.set('op', document.getElementById('routing-op').value);
+            params.set('modVal', document.getElementById('mod-val').value);
+        } else if (cat === 'string') {
+            params.set('op', document.getElementById('string-op').value);
+            params.set('padLen', document.getElementById('pad-len').value);
+        } else if (cat === 'logic') {
+            params.set('op', document.getElementById('logic-op').value);
+            params.set('cond', document.getElementById('logic-cond').value);
+            params.set('compare', document.getElementById('logic-compare').value);
+            params.set('tVal', document.getElementById('logic-true').value);
+            params.set('fVal', document.getElementById('logic-false').value);
+            params.set('fallback', document.getElementById('logic-fallback-val').value);
+        } else if (cat === 'date') {
+            params.set('op', document.getElementById('date-op').value);
+            params.set('fmt', document.getElementById('date-format-select').value);
+            params.set('customFmt', document.getElementById('date-custom-format').value);
+            params.set('tz', document.getElementById('date-tz').value);
+            params.set('offsetDir', document.getElementById('date-offset-dir').value);
+            params.set('offsetVal', document.getElementById('date-offset-val').value);
+            params.set('offsetUnit', document.getElementById('date-offset-unit').value);
+            params.set('var2', document.getElementById('variableDate2').value);
+        }
+
+        if (isMock1ModifiedByUser) params.set('mock1', document.getElementById('mock-val-1').value);
+        if (isMock2ModifiedByUser) params.set('mock2', document.getElementById('mock-val-2').value);
+
+        const outCode = document.getElementById('outputCode');
+        if (outCode && outCode.innerText) {
+            params.set('result', outCode.innerText);
+        }
+        const prevOut = document.getElementById('previewOutput');
+        if (prevOut && prevOut.innerText) {
+            params.set('preview', prevOut.innerText);
+        }
+
+        return url.toString();
+    }
+
+    function copyShareableLink() {
+        const shareUrl = getShareableUrl();
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showToast("Shareable link copied to clipboard!");
+        });
+    }
+
+    function loadFromUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.toString()) return false;
+
+        if (params.has('var') || params.has('token')) {
+            document.getElementById('variable').value = params.get('var') || params.get('token');
+        }
+
+        if (params.has('cat') || params.has('category')) {
+            document.getElementById('category').value = params.get('cat') || params.get('category');
+        }
+
+        switchCategory();
+
+        if (params.has('conv')) {
+            const r = document.querySelector(`input[name="convType"][value="${params.get('conv')}"]`);
+            if (r && !r.disabled) r.checked = true;
+        }
+
+        const cat = document.getElementById('category').value;
+        const op = params.get('op') || params.get('operation');
+
+        if (cat === 'math') {
+            if (op) document.getElementById('math-op').value = op;
+            if (params.has('modType')) {
+                const mr = document.querySelector(`input[name="mathModType"][value="${params.get('modType')}"]`);
+                if (mr) mr.checked = true;
+            }
+            if (params.has('modVal')) document.getElementById('math-val').value = params.get('modVal');
+            if (params.has('var2')) document.getElementById('variable2').value = params.get('var2');
+            if (params.has('conv2')) document.getElementById('convType2').value = params.get('conv2');
+            toggleMathInputs();
+        } else if (cat === 'routing') {
+            if (op) document.getElementById('routing-op').value = op;
+            if (params.has('modVal')) document.getElementById('mod-val').value = params.get('modVal');
+        } else if (cat === 'string') {
+            if (op) document.getElementById('string-op').value = op;
+            if (params.has('padLen')) document.getElementById('pad-len').value = params.get('padLen');
+            toggleStringInputs();
+        } else if (cat === 'logic') {
+            if (op) document.getElementById('logic-op').value = op;
+            if (params.has('cond')) document.getElementById('logic-cond').value = params.get('cond');
+            if (params.has('compare')) document.getElementById('logic-compare').value = params.get('compare');
+            if (params.has('tVal')) document.getElementById('logic-true').value = params.get('tVal');
+            if (params.has('fVal')) document.getElementById('logic-false').value = params.get('fVal');
+            if (params.has('fallback')) document.getElementById('logic-fallback-val').value = params.get('fallback');
+            toggleLogicInputs();
+        } else if (cat === 'date') {
+            if (op) document.getElementById('date-op').value = op;
+            if (params.has('fmt') || params.has('format')) {
+                document.getElementById('date-format-select').value = params.get('fmt') || params.get('format');
+            }
+            if (params.has('customFmt')) document.getElementById('date-custom-format').value = params.get('customFmt');
+            if (params.has('tz')) document.getElementById('date-tz').value = params.get('tz');
+            if (params.has('offsetDir')) document.getElementById('date-offset-dir').value = params.get('offsetDir');
+            if (params.has('offsetVal')) document.getElementById('date-offset-val').value = params.get('offsetVal');
+            if (params.has('offsetUnit')) document.getElementById('date-offset-unit').value = params.get('offsetUnit');
+            if (params.has('var2')) document.getElementById('variableDate2').value = params.get('var2');
+            toggleDateInputs();
+        }
+
+        if (params.has('mock1')) {
+            document.getElementById('mock-val-1').value = params.get('mock1');
+            isMock1ModifiedByUser = true;
+        }
+        if (params.has('mock2')) {
+            document.getElementById('mock-val-2').value = params.get('mock2');
+            isMock2ModifiedByUser = true;
+        }
+
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Configuration loaded from URL parameters", "info");
+        return true;
+    }
+
+    // Initialization
+    document.getElementById('variable').addEventListener('input', generateFlowcode);
+    
+    // Check for URL parameters, otherwise initialize defaults
+    if (!loadFromUrlParams()) {
+        switchCategory();
+        toggleStringInputs();
+        toggleMathInputs();
+        toggleLogicInputs();
+        toggleDateInputs();
+        updateDescriptions();
+        generateFlowcode();
+    }
+</script>
+
+</body>
+</html>

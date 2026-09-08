@@ -187,3 +187,24 @@ The application is structured as a single, self-contained file (`Hornbill Flowco
 4. Review the contextual operation card for expected input and output data types.
 5. Configure parameters and review the **Live Preview Result** in the sticky right-hand deck.
 6. Click **Copy Code** to copy the formatted `&[...]` expression, or click **Share Link** to generate a direct URL for team members.
+
+---
+
+## 🌐 Free Hosting via GitHub Pages
+
+You can host this tool publicly for free using GitHub Pages with zero server maintenance:
+
+1. Push this repository to a public GitHub repository.
+2. In GitHub, go to **Settings** &rarr; **Pages**.
+3. Under **Build and deployment** &gt; **Branch**, select `main` and root `/`.
+4. Click **Save**. GitHub Pages will deploy your site at:
+   `https://<username>.github.io/<repo-name>/`
+
+Because `index.html` is provided in the repository root, it will load instantly with no build step or package dependencies required.
+
+---
+
+## 📄 License & Community Disclaimer
+
+- **License:** Released under the permissive [MIT License](LICENSE). Hornbill administrators, workflow designers, and Hornbill Technologies Ltd are free to use, modify, embed, and redistribute this software.
+- **Disclaimer:** *This is an independent community open-source utility designed to assist users of Hornbill Service Manager and Business Process automations. It is not an official product of, nor is it supported or endorsed by, Hornbill Technologies Ltd.*

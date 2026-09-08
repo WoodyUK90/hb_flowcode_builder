@@ -1,3 +1,7 @@
+# Internal Deployment & Infrastructure
+deploy.ps1
+*.bak
+
 # Operating System Files
 Thumbs.db
 Thumbs.db:encryptable
