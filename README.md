@@ -50,6 +50,7 @@ Hornbill variables are passed as string types across workflow stages (e.g. `'100
 | **String** | Capitalise All (Title Case) | `&[<var1>.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')]` | Converts multi-word strings into Title Case format. |
 | **String** | Zero-Pad Reference | `&[<var1>.padStart(<len>, '0')]` | Left-pads strings/numbers to a target length (e.g., `123` &rarr; `000123`). |
 | **String** | Mask Sensitive Data | `&[String(<rawVar>).slice(-4).padStart(String(<rawVar>).length, '*')]` | Obfuscates sensitive identifiers (GDPR/PII), preserving only the last 4 characters. |
+| **String** | Extract Between Delimiters | `&[(() => { const s = String(<var>); const i1 = s.indexOf('('); ... return s.substring(...).trim(); })()]` | Extracts text between two arbitrary substrings (e.g. parentheses, brackets, or XML/HTML tags) with optional whitespace trimming. |
 | **String** | Strict Currency Format | `&[Number(<var>).toFixed(2)]` | Enforces two decimal places (e.g. `15` &rarr; `15.00`). |
 | **String** | Single URL Encode | `&[encodeURIComponent(<var>)]` | Encodes URL parameters for external HTTP requests. |
 | **String** | Double URL Encode | `&[encodeURIComponent(encodeURIComponent(<var>))]` | Twice-encoded URL parameters for APIs requiring nested encoding (e.g., VirusTotal lookup endpoints). |
@@ -102,6 +103,8 @@ One-click presets instantly configure the variable, type conversions, operation 
 - **Title Case**: Converts `"john doe"` &rarr; `"John Doe"`.
 - **Zero-Pad Reference**: Pads `"123"` to length `6` &rarr; `"000123"`.
 - **Mask PII**: Masks phone/account numbers &rarr; `"*******0461"`.
+- **Extract Between ( )**: Extracts text enclosed in parentheses (e.g. `Incident (INC0012345)` &rarr; `INC0012345`).
+- **Extract XML Tag <name>**: Extracts content between custom tags (e.g. `<name>John Doe</name>` &rarr; `John Doe`).
 - **Format to Currency**: Formats numeric values to strict `.00` representation.
 - **Double Encode URL**: Encodes a full URL parameter for complex REST APIs.
 - **Today (YYYY-MM-DD)**: Outputs current date for Hornbill Custom Fields without time.
@@ -114,7 +117,7 @@ One-click presets instantly configure the variable, type conversions, operation 
 
 ### 5. Condensed SaaS UX Architecture (1080p & Ultrawide Optimized)
 - **Full-Width Top Token Command Bar**: Elevated Step 1 above the workspace columns into a dedicated command bar with prominent `&[` prefix and `]` suffix delimiters. Accommodates long Hornbill tokens (e.g. `global['flowcoderefs']['myCustomNode']['result']`) without horizontal truncation.
-- **On-Demand Quick Action Templates Modal**: Replaced bulky on-page preset lists with a clean modal dialog triggered via the `⚡ Quick Action Templates (14)` button. Includes category filter pills (`All`, `Math`, `Logic`, `String`, `Date`), comprehensive template descriptions, and `Escape`/backdrop dismiss support.
+- **On-Demand Quick Action Templates Modal**: Replaced bulky on-page preset lists with a clean modal dialog triggered via the `⚡ Quick Action Templates (16)` button. Includes category filter pills (`All`, `Math`, `Logic`, `String`, `Date`), comprehensive template descriptions, and `Escape`/backdrop dismiss support.
 - **Compact 2-Column Responsive Workspace**:
   - **Left Studio**: Category dropdown and human-friendly Data Conversion pills unified into a single compact row (`category-cast-grid`), followed immediately by **Operation Parameters** strictly above the fold.
   - **Right Live Deck (Input &rarr; Outcome &rarr; Code)**: Places **Simulation Mock Values** at the very top of the preview card with **Adaptive Input Selectors** (HTML5 DateTime picker with calendar and quick chips for dates, integer number controls for routing, decimals for currency). Directly below sits the **Live Preview Result** outcome, followed by the **Generated Flowcode** syntax box and one-click Copy button.

@@ -984,7 +984,7 @@
             <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
                 <span class="btn-icon">⚡</span>
                 <span>Quick Action Templates</span>
-                <span class="template-count-badge">14</span>
+                <span class="template-count-badge">16</span>
             </button>
         </div>
         <div class="token-input-wrapper">
@@ -1155,6 +1155,9 @@
                                 <option value="pad">Left Pad with Leading Zeros (000123)</option>
                                 <option value="mask">Mask Sensitive Data (PII / GDPR) (****0461)</option>
                             </optgroup>
+                            <optgroup label="Extraction &amp; Slicing">
+                                <option value="extract_between">Extract Between Delimiters [Left &amp; Right Strings]</option>
+                            </optgroup>
                             <optgroup label="Formatting">
                                 <option value="currency">Strict Currency Format (15.00)</option>
                             </optgroup>
@@ -1172,6 +1175,32 @@
                     <div class="inner-panel" id="string-pad-panel" style="display: none;">
                         <label for="pad-len">Total String Target Length</label>
                         <input type="number" id="pad-len" value="6" min="1" max="50" oninput="generateFlowcode()">
+                    </div>
+
+                    <!-- Extract Between Panel -->
+                    <div class="inner-panel" id="string-extract-panel" style="display: none;">
+                        <div class="grid-2" style="margin-bottom: 8px;">
+                            <div>
+                                <label for="extract-start">Start Delimiter / Left String</label>
+                                <input type="text" id="extract-start" value="(" placeholder="e.g. ( or <name>" oninput="generateFlowcode()">
+                            </div>
+                            <div>
+                                <label for="extract-end">End Delimiter / Right String</label>
+                                <input type="text" id="extract-end" value=")" placeholder="e.g. ) or </name>" oninput="generateFlowcode()">
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div>
+                                <label for="extract-fallback">Fallback if Not Found</label>
+                                <input type="text" id="extract-fallback" value="" placeholder="e.g. Empty or N/A" oninput="generateFlowcode()">
+                            </div>
+                            <div style="display: flex; align-items: center; padding-top: 18px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-bottom: 0;">
+                                    <input type="checkbox" id="extract-trim" checked onchange="generateFlowcode()">
+                                    <span>Trim surrounding whitespace (.trim())</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1426,10 +1455,10 @@
         </div>
         <div class="modal-body">
             <div class="preset-filter-row">
-                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (14)</button>
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (16)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (1)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (5)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (7)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
             </div>
             <div class="modal-preset-grid">
@@ -1448,13 +1477,21 @@
                     <div class="modal-preset-header"><span>Aa</span> Title Case (John Doe)</div>
                     <div class="modal-preset-desc">Capitalises first letter of each space-separated word.</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'pad', '', '', '123', '')">
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'pad', '', '6', '123', '')">
                     <div class="modal-preset-header"><span>00</span> Zero-Pad (000123)</div>
                     <div class="modal-preset-desc">Left-pads numeric reference strings up to a target width.</div>
                 </button>
                 <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'mask', '', '', '07700900461', '')">
                     <div class="modal-preset-header"><span>🔒</span> Mask PII (****0461)</div>
                     <div class="modal-preset-desc">Obfuscates sensitive data leaving the last 4 digits visible.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'extract_between', '', {start: '(', end: ')', fallback: '', trim: true}, 'Email: Incident (INC0012345) updated', '')">
+                    <div class="modal-preset-header"><span>🔍</span> Extract Between ( )</div>
+                    <div class="modal-preset-desc">Extracts text between parentheses with automatic trim.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'extract_between', '', {start: '&lt;name&gt;', end: '&lt;/name&gt;', fallback: '', trim: true}, 'Payload: &lt;name&gt;John Doe&lt;/name&gt;', '')">
+                    <div class="modal-preset-header"><span>🏷️</span> Extract XML Tag &lt;name&gt;</div>
+                    <div class="modal-preset-desc">Extracts tag content between &lt;name&gt; and &lt;/name&gt;.</div>
                 </button>
                 <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('Number', 'string', 'currency', '', '', '15', '')">
                     <div class="modal-preset-header"><span>£</span> Currency (.00)</div>
@@ -1606,6 +1643,11 @@
             summary: "Obfuscates sensitive identifiers, preserving only the final 4 characters.",
             context: "GDPR/PCI compliance when logging credit cards, phone numbers, or account IDs.",
             inType: "String", outType: "String"
+        },
+        extract_between: {
+            summary: "Extracts text between two specified delimiters (e.g. parentheses, brackets, or XML tags).",
+            context: "Extracting ticket references '(INC00123)' from email subjects or XML/webhook payloads '<name>value</name>'.",
+            inType: "String", outType: "String (Extracted Substring)"
         },
         currency: {
             summary: "Enforces strict two-decimal currency representation via .toFixed(2).",
@@ -1972,6 +2014,14 @@
         } 
         else if (category === 'string') {
             document.getElementById('string-op').value = operation;
+            if (operation === 'pad' && extraVal) {
+                document.getElementById('pad-len').value = extraVal;
+            } else if (operation === 'extract_between' && extraVal && typeof extraVal === 'object') {
+                if (extraVal.start !== undefined) document.getElementById('extract-start').value = extraVal.start;
+                if (extraVal.end !== undefined) document.getElementById('extract-end').value = extraVal.end;
+                if (extraVal.fallback !== undefined) document.getElementById('extract-fallback').value = extraVal.fallback;
+                if (extraVal.trim !== undefined) document.getElementById('extract-trim').checked = !!extraVal.trim;
+            }
             toggleStringInputs();
         }
         else if (category === 'logic') {
@@ -2099,6 +2149,7 @@
                 'titlecap': 'john doe',
                 'pad': '123',
                 'mask': '07700900461',
+                'extract_between': 'Email subject: Incident (INC0012345) has been assigned',
                 'currency': '15.5',
                 'encode': 'https://api.domain.com/?q=hello world',
                 'encode2': 'https://api.domain.com/?q=hello world',
@@ -2208,11 +2259,11 @@
 
     function toggleStringInputs() {
         const strOp = document.getElementById('string-op').value;
-        if (strOp === 'pad') {
-            document.getElementById('string-pad-panel').style.display = 'block';
-        } else {
-            document.getElementById('string-pad-panel').style.display = 'none';
-        }
+        const padPanel = document.getElementById('string-pad-panel');
+        const extractPanel = document.getElementById('string-extract-panel');
+
+        if (padPanel) padPanel.style.display = (strOp === 'pad') ? 'block' : 'none';
+        if (extractPanel) extractPanel.style.display = (strOp === 'extract_between') ? 'block' : 'none';
         
         switchCategory(); 
         updateSmartMockDefaults();
@@ -2404,6 +2455,20 @@
                 if (strOp === 'mask') {
                     return (strM1.length > 4) ? strM1.slice(-4).padStart(strM1.length, '*') : '****';
                 }
+                if (strOp === 'extract_between') {
+                    const startDelim = document.getElementById('extract-start').value;
+                    const endDelim = document.getElementById('extract-end').value;
+                    const fallback = document.getElementById('extract-fallback').value;
+                    const doTrim = document.getElementById('extract-trim').checked;
+
+                    const startIdx = startDelim ? strM1.indexOf(startDelim) : 0;
+                    if (startIdx === -1) return fallback;
+                    const fromIdx = startIdx + startDelim.length;
+                    const endIdx = endDelim ? strM1.indexOf(endDelim, fromIdx) : strM1.length;
+                    if (endIdx === -1) return fallback;
+                    const extracted = strM1.substring(fromIdx, endIdx);
+                    return doTrim ? extracted.trim() : extracted;
+                }
                 if (strOp === 'currency') return parseFloat(c1).toFixed(2);
                 if (strOp === 'encode') return encodeURIComponent(strM1);
                 if (strOp === 'encode2') return encodeURIComponent(encodeURIComponent(strM1));
@@ -2549,6 +2614,37 @@
             } else if (strOp === 'mask') {
                 innerExpression = `String(${rawVar1}).length > 4 ? String(${rawVar1}).slice(-4).padStart(String(${rawVar1}).length, '*') : '****'`;
                 expText = `Masks sensitive data (GDPR/PII), preserving only the last 4 characters.`;
+            } else if (strOp === 'extract_between') {
+                const sDelim = document.getElementById('extract-start').value;
+                const eDelim = document.getElementById('extract-end').value;
+                const fallback = document.getElementById('extract-fallback').value;
+                const doTrim = document.getElementById('extract-trim').checked;
+
+                const escapedStart = JSON.stringify(sDelim);
+                const escapedEnd = JSON.stringify(eDelim);
+                const escapedFallback = JSON.stringify(fallback);
+
+                let extractionLogic = `const s = String(${rawVar1}); `;
+                if (sDelim) {
+                    extractionLogic += `const i1 = s.indexOf(${escapedStart}); if (i1 === -1) return ${escapedFallback}; const from = i1 + ${sDelim.length}; `;
+                } else {
+                    extractionLogic += `const from = 0; `;
+                }
+
+                if (eDelim) {
+                    extractionLogic += `const i2 = s.indexOf(${escapedEnd}, from); if (i2 === -1) return ${escapedFallback}; const res = s.substring(from, i2); `;
+                } else {
+                    extractionLogic += `const res = s.substring(from); `;
+                }
+
+                if (doTrim) {
+                    extractionLogic += `return res.trim();`;
+                } else {
+                    extractionLogic += `return res;`;
+                }
+
+                innerExpression = `(() => { ${extractionLogic} })()`;
+                expText = `Extracts text located between <code>${escapeHtml(sDelim || 'start')}</code> and <code>${escapeHtml(eDelim || 'end')}</code>${doTrim ? ' with <code>.trim()</code> applied' : ''}. Returns <code>${escapeHtml(escapedFallback)}</code> if not found.`;
             } else if (strOp === 'currency') {
                 innerExpression = `${expressionVar1}.toFixed(2)`;
                 expText = `Formats numeric value into strict currency representation with two decimal places.`;
@@ -2720,6 +2816,10 @@
         } else if (cat === 'string') {
             params.set('op', document.getElementById('string-op').value);
             params.set('padLen', document.getElementById('pad-len').value);
+            params.set('extStart', document.getElementById('extract-start').value);
+            params.set('extEnd', document.getElementById('extract-end').value);
+            params.set('extFallback', document.getElementById('extract-fallback').value);
+            params.set('extTrim', document.getElementById('extract-trim').checked ? '1' : '0');
         } else if (cat === 'logic') {
             params.set('op', document.getElementById('logic-op').value);
             params.set('cond', document.getElementById('logic-cond').value);
@@ -2798,6 +2898,10 @@
         } else if (cat === 'string') {
             if (op) document.getElementById('string-op').value = op;
             if (params.has('padLen')) document.getElementById('pad-len').value = params.get('padLen');
+            if (params.has('extStart')) document.getElementById('extract-start').value = params.get('extStart');
+            if (params.has('extEnd')) document.getElementById('extract-end').value = params.get('extEnd');
+            if (params.has('extFallback')) document.getElementById('extract-fallback').value = params.get('extFallback');
+            if (params.has('extTrim')) document.getElementById('extract-trim').checked = (params.get('extTrim') === '1');
             toggleStringInputs();
         } else if (cat === 'logic') {
             if (op) document.getElementById('logic-op').value = op;
