@@ -111,56 +111,75 @@ One-click presets instantly configure the variable, type conversions, operation 
 ### 5. Live Simulation Engine
 - Runs a client-side execution sandbox simulating Hornbill's evaluation engine against mock input data.
 - Features **Smart Mock Defaults**: updates mock inputs to contextually relevant defaults (e.g., sample URLs, sample phone numbers, or numeric values) unless explicitly modified by the user.
-- Emits real-time live preview results alongside the generated expression.
+- Emits real-time live preview results alongside the generated expression in a sticky desktop preview deck.
+
+### 6. Contextual Educational Guides
+- Every **Operation Category** includes an explanatory guide describing when to use it in Hornbill workflows and casting recommendations.
+- Every **Individual Operation** features a dedicated card detailing:
+  - Concise plain-English summary
+  - Realistic Hornbill BPM / Flowcode use case
+  - Expected input data types and resulting output data types
+
+### 7. URL Query Parameters & Shareable Links
+- Pre-populate any builder configuration directly via URL query parameters:
+  - `var` / `token`: Primary variable token
+  - `cat` / `category`: Category (`math`, `routing`, `string`, `logic`, `date`)
+  - `op` / `operation`: Specific operation key
+  - `conv`: Conversion (`None`, `Number`, `parseInt`, `parseFloat`, `String`)
+  - `mock1`, `mock2`: Custom mock input values
+  - `fmt`, `customFmt`, `tz`, `offsetDir`, `offsetVal`, `offsetUnit`: Date parameters
+  - `modType`, `modVal`, `var2`, `conv2`: Math parameters
+  - `padLen`, `cond`, `compare`, `tVal`, `fVal`, `fallback`: String and Logic parameters
+- **"Share Link"** button in the header automatically serializes the active state and copies a shareable URL to the clipboard.
+- Displays non-intrusive floating toast notifications for copy and configuration load events.
+
+---
+
+## 🚀 IIS Deployment (`deploy.ps1`)
+
+An automated PowerShell script is provided for deploying directly to the production IIS tools server:
+
+```powershell
+# Default deployment to \\wdc-tsadmin02\F$\Hornbill IIS\Tools\FlowcodeHelper
+.\deploy.ps1
+
+# Dry-run / preview changes
+.\deploy.ps1 -WhatIf
+
+# Deploy without generating a backup of the previous release
+.\deploy.ps1 -NoBackup
+```
+
+**Key Features of Deployment Script:**
+- Validates source file existence and network UNC connectivity.
+- Automatically creates a timestamped backup of the existing `index.html` (e.g. `index.html.20260908_163757.bak`).
+- Deploys the application as both `index.html` (the IIS default document) and `Hornbill Flowcode Advanced Builder.html`.
 
 ---
 
 ## 🛠️ Architecture & Implementation
 
 The application is structured as a single, self-contained file (`Hornbill Flowcode Advanced Builder.html`):
-- **HTML5**: Semantic layout with form groups, dynamic panels, and action preset buttons.
-- **CSS3**: Responsive container layout with modern custom properties (`:root`), card elevation, dynamic disabled state opacity transitions, and responsive grid columns (`.grid-2`).
+- **HTML5**: Responsive 2-column layout (configuration builder on left, sticky live preview deck on right) with semantic structure and SVG iconography.
+- **CSS3**: Modern custom properties (`:root`), elevation shadows, responsive grid columns (`.grid-2`, `.app-layout`), focus rings, card styling, and animated toast alerts.
 - **SVG Favicon**: Embedded data URI favicon styled with Hornbill-inspired branch/flow iconography.
 - **Vanilla JavaScript (ES6+)**:
   - `cleanToken()`: Token string sanitizer.
   - `wrapVariable()`: Conditional type-wrapper.
-  - `switchCategory()`: Dynamic DOM section visibility and conversion radio state management.
+  - `switchCategory()`: Dynamic section visibility and conversion radio state management.
+  - `updateDescriptions()`: Injects contextual category and operation guides dynamically.
   - `simulateExpression()`: Safe calculation engine displaying preview outputs.
   - `generateFlowcode()`: Expression builder and explanation generator.
-  - `copyToClipboard()`: Clipboard API integration with temporary visual confirmation.
-
----
-
-## 🔍 Code Review & Observations
-
-### Strengths
-1. **Zero External Dependencies**: Operates 100% client-side with no CDN dependencies or build steps; can run offline or directly from any shared filesystem or portal.
-2. **Context-Sensitive Validation**: Restricts conversion choices based on operation category, preventing invalid configurations (e.g., applying `String()` to mathematical arithmetic).
-3. **Smart Mock Feedback Loop**: Automatically updates test data as users switch operations without overwriting user-customized inputs (`isMock1ModifiedByUser`, `isMock2ModifiedByUser`).
-
-### Edge Cases & Improvement Opportunities
-1. **Empty String Comparison in Ternary**:
-   - In JavaScript, `isNaN("")` evaluates to `false` (as `Number("") === 0`). In `generateFlowcode()`:
-     ```javascript
-     if (isNaN(compareVal) && compareVal !== "true" && compareVal !== "false") {
-         compareVal = `"${compareVal}"`;
-     }
-     ```
-     If a user compares against an empty string `""`, `compareVal` is not quoted, resulting in `=== 0`. Adding an explicit check for empty string (`compareVal.trim() === ""`) ensures empty string literals are properly quoted (`""`).
-2. **PII Masking for Strings Shorter than 4 Characters**:
-   - `strM1.slice(-4).padStart(strM1.length, '*')` works well for strings longer than 4 characters. For inputs under 4 characters, the slice captures the entire string, resulting in no masking asterisks.
-3. **Radix in Secondary Conversion**:
-   - `convType2` for secondary variables currently outputs `parseInt(${rawVar2})` without specifying `10`, whereas primary conversion outputs `parseInt(${rawVar1}, 10)`. Standardizing both to explicit base-10 improves consistency.
-4. **HTML Escaping in Explanations**:
-   - The explanation string is set via `innerHTML`. While currently safe because values are internally constructed or simple numbers, escaping user inputs prior to rendering in HTML notes is a best practice.
+  - `getShareableUrl()` & `loadFromUrlParams()`: URL query parameter sync and link generator.
+  - `showToast()`: Animated toast feedback system.
 
 ---
 
 ## 💻 How to Use
 
-1. Double-click or open `Hornbill Flowcode Advanced Builder.html` in any modern web browser (Chrome, Edge, Firefox, Safari).
-2. Paste your Hornbill variable reference into field **1. Primary Base Variable / Token String** (or pick an **Action Template**).
-3. Select your **Operation Category** (Math, Routing, String, or Logic).
-4. Configure the relevant parameters (operator, modifier, padding length, or condition).
-5. Review the **Live Preview Result** using mock data to verify output correctness.
-6. Click **Copy Code** to copy the formatted `&[...]` expression and paste it directly into your Hornbill workflow node.
+1. Double-click or open `Hornbill Flowcode Advanced Builder.html` in any modern web browser (or navigate to the IIS portal).
+2. Paste your Hornbill variable reference into field **1. Primary Token** (or pick an **Action Template**).
+3. Select your **Operation Category** (Math, Routing, String, Logic, or Date).
+4. Review the contextual operation card for expected input and output data types.
+5. Configure parameters and review the **Live Preview Result** in the sticky right-hand deck.
+6. Click **Copy Code** to copy the formatted `&[...]` expression, or click **Share Link** to generate a direct URL for team members.
