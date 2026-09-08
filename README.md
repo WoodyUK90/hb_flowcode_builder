@@ -146,20 +146,18 @@ One-click presets instantly configure the variable, type conversions, operation 
 An automated PowerShell script is provided for deploying directly to the production IIS tools server:
 
 ```powershell
-# Default deployment to \\wdc-tsadmin02\F$\Hornbill IIS\Tools\FlowcodeHelper
+# Deploy cleanly to \\wdc-tsadmin02\F$\Hornbill IIS\Tools\FlowcodeHelper
 .\deploy.ps1
 
 # Dry-run / preview changes
 .\deploy.ps1 -WhatIf
-
-# Deploy without generating a backup of the previous release
-.\deploy.ps1 -NoBackup
 ```
 
 **Key Features of Deployment Script:**
 - Validates source file existence and network UNC connectivity.
-- Automatically creates a timestamped backup of the existing `index.html` (e.g. `index.html.20260908_163757.bak`).
-- Deploys the application as both `index.html` (the IIS default document) and `Hornbill Flowcode Advanced Builder.html`.
+- Deploys the application exclusively as `index.html` (the IIS default document), leaving no `.bak` backup files or original filenames in the production directory.
+- Automatically purges any legacy `.bak` files or duplicate HTML files on each run to guarantee a clean production deployment.
+- Full version history is maintained via Git in the source repository.
 
 ---
 

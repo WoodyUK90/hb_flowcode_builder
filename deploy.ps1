@@ -4,7 +4,8 @@
 
 .DESCRIPTION
     Copies the standalone HTML application to \\wdc-tsadmin02\F$\Hornbill IIS\Tools\FlowcodeHelper
-    as index.html (the IIS default document) and creates a timestamped backup of the previous version.
+    exclusively as index.html (the IIS default document) without generating backup artifacts (.bak)
+    or extraneous filenames in the production directory. Version history is preserved in Git.
 
 .EXAMPLE
     .\deploy.ps1
@@ -14,8 +15,7 @@
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
     [string]$TargetDir = "\\wdc-tsadmin02\F$\Hornbill IIS\Tools\FlowcodeHelper",
-    [string]$SourceFile = "Hornbill Flowcode Advanced Builder.html",
-    [switch]$NoBackup
+    [string]$SourceFile = "Hornbill Flowcode Advanced Builder.html"
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,26 +44,28 @@ if (-not (Test-Path $TargetDir)) {
     }
 }
 
-# 3. Create Backup of Existing index.html
+# 3. Clean up any legacy .bak files or original filename in target directory
+$legacyFiles = Get-ChildItem -Path $TargetDir -File -Filter "*.bak" -ErrorAction SilentlyContinue
+$legacyHtml = Join-Path $TargetDir $SourceFile
+if (Test-Path $legacyHtml) {
+    if ($PSCmdlet.ShouldProcess($legacyHtml, "Remove legacy file")) {
+        Remove-Item -Path $legacyHtml -Force
+        Write-Host "[CLEANUP] Removed legacy file: $SourceFile" -ForegroundColor Yellow
+    }
+}
+foreach ($bak in $legacyFiles) {
+    if ($PSCmdlet.ShouldProcess($bak.FullName, "Remove legacy backup")) {
+        Remove-Item -Path $bak.FullName -Force
+        Write-Host "[CLEANUP] Removed legacy backup: $($bak.Name)" -ForegroundColor Yellow
+    }
+}
+
+# 4. Deploy strictly as index.html
 $targetIndexPath = Join-Path $TargetDir "index.html"
-if ((Test-Path $targetIndexPath) -and (-not $NoBackup)) {
-    $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-    $backupPath = Join-Path $TargetDir "index.html.$timestamp.bak"
-    if ($PSCmdlet.ShouldProcess($targetIndexPath, "Backup to $backupPath")) {
-        Copy-Item -Path $targetIndexPath -Destination $backupPath -Force
-        Write-Host "[BACKUP] Created backup: $backupPath" -ForegroundColor DarkGray
-    }
+if ($PSCmdlet.ShouldProcess($sourcePath, "Deploy to $targetIndexPath")) {
+    Copy-Item -Path $sourcePath -Destination $targetIndexPath -Force
+    Write-Host "[DEPLOYED] index.html -> $targetIndexPath" -ForegroundColor Green
 }
 
-# 4. Deploy Files
-$destFiles = @("index.html", $SourceFile)
-foreach ($destName in $destFiles) {
-    $destPath = Join-Path $TargetDir $destName
-    if ($PSCmdlet.ShouldProcess($sourcePath, "Copy to $destPath")) {
-        Copy-Item -Path $sourcePath -Destination $destPath -Force
-        Write-Host "[DEPLOYED] $destName -> $destPath" -ForegroundColor Green
-    }
-}
-
-Write-Host "`nDeployment complete successfully!" -ForegroundColor Green
+Write-Host "`nDeployment complete successfully! Target directory contains solely index.html." -ForegroundColor Green
 Write-Host "IIS URL: http://wdc-tsadmin02/Tools/FlowcodeHelper/ (or custom IIS binding)`n" -ForegroundColor Cyan
