@@ -4,16 +4,20 @@ A lightweight, standalone web application designed for Hornbill administrators, 
 
 ---
 
-## 📌 Overview
+## 📌 Overview & Platform Context
 
-In Hornbill Business Process (BPM) and Flowcode automations, dynamic values and data manipulations often require JavaScript expressions wrapped inside the `&[...]` evaluation syntax. Writing these expressions manually can lead to syntax errors, type-mismatch bugs (such as string concatenation occurring during mathematical addition), or unexpected runtime behavior.
+In the Hornbill Service Manager and Business Process (BPM) environment, dynamic values are traditionally inserted via the built-in **Variable Picker** using standard tokens (e.g. `&[global["flowcoderefs"]["node"]["result"]]` or `&[global["flowcode"]["summary"]]`).
 
-The **Hornbill Flowcode Advanced Builder** provides an interactive interface to:
-- Select and clean Hornbill token paths (e.g. `global['flowcoderefs']['node']['result']`).
-- Apply explicit type conversions (`Number()`, `parseInt()`, `parseFloat()`, `String()`).
-- Configure complex mathematical, routing, string formatting, and conditional logic.
-- Preview the generated Flowcode expression with an interactive, client-side live simulation engine using smart mock data.
-- Copy production-ready expressions directly to the clipboard with one click.
+However, performing complex in-line transformations—such as arithmetic, string slicing, custom date formatting, and conditional fallbacks—relies on **an advanced, non-standard evaluation technique**: embedding custom JavaScript logic directly within the `&[...]` wrapper.
+
+> [!WARNING]
+> ### ⚠️ Advanced Platform Behaviour & Workflow Validation Warning
+> - **Non-Standard Expression Usage:** Writing custom JavaScript functions and arithmetic within `&[...]` takes advantage of Hornbill's backend JavaScript evaluation engine. This is an advanced workflow technique and is **not officially documented as standard platform functionality**.
+> - **Workflow Designer Validation Warnings:** When pasting `&[...]` expressions into non-variable fields (such as text, date, or numeric input fields), the Hornbill Workflow Designer will frequently flag the field with a **yellow validation warning banner** (e.g., *Invalid format* or *Unexpected format*).
+> - **Publishing & Runtime Execution:** In Hornbill workflow validation, yellow warning messages **do not prevent the workflow from being published or activated**. At runtime, Hornbill's backend execution engine parses and evaluates the expression cleanly.
+> - **Platform Risk:** Because this leverages advanced engine evaluation rather than a supported GUI feature, there is always a chance that Hornbill Technologies could restrict, validate against, or modify this execution behaviour in future platform releases. **Always test all expressions in a non-production or staging instance before applying to business-critical workflows.**
+
+The **Hornbill Flowcode Advanced Builder** provides an interactive workbench to safely formulate, type-cast, and simulate these expressions prior to pasting them into your workflow nodes.
 
 ---
 
