@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hornbill Flowcode Advanced Builder</title>
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%231e88e5%22%20%2F%3E%3Cpath%20d%3D%22M%2040%2050%20C%2055%2050%2055%2030%2060%2030%20M%2040%2050%20C%2055%2050%2055%2070%2060%2070%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2250%22%20r%3D%2210%22%20fill%3D%22%23ffffff%22%20%2F%3E%3Ccircle%20cx%3D%2274%22%20cy%3D%2228%22%20r%3D%2210%22%20fill%3D%22%23ffffff%22%20%2F%3E%3Ccircle%20cx%3D%2274%22%20cy%3D%2272%22%20r%3D%2210%22%20fill%3D%22%23ffffff%22%20%2F%3E%3C%2Fsvg%3E">
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #1e88e5;
+            --primary-hover: #1565c0;
+            --border-color: #cccccc;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --preview-bg: #e8f5e9;
+            --preview-text: #1b5e20;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            margin: 0 0 5px 0;
+            font-size: 24px;
+            color: #0d47a1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .presets {
+            margin-top: 8px;
+            background: #f0f4f8;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px dashed #bbdefb;
+        }
+
+        .preset-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        
+        .radio-label {
+            font-weight: normal;
+            transition: opacity 0.3s;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .dynamic-section {
+            display: none;
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .dynamic-section.active {
+            display: block;
+        }
+
+        .inner-panel {
+            background: #ffffff;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .output-box {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 15px;
+            border-radius: 6px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 15px;
+            position: relative;
+            word-break: break-all;
+            border: 1px solid #333;
+            min-height: 24px;
+            margin-bottom: 15px;
+        }
+
+        .preview-box {
+            background-color: var(--preview-bg);
+            color: var(--preview-text);
+            padding: 15px;
+            border-radius: 6px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #a5d6a7;
+            min-height: 24px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            float: right;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .info-note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 10px;
+            font-size: 13px;
+            margin-top: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Hornbill Flowcode Advanced Builder</h1>
+        <p style="margin: 0; color: #666; font-size: 14px;">Generate precise expressions and preview their outputs instantly.</p>
+    </header>
+
+    <div class="card">
+        <div class="form-group">
+            <label for="variable">1. Primary Base Variable / Token String</label>
+            <input type="text" id="variable" placeholder="Paste your primary Hornbill variable here..." value="global['flowcoderefs']['myCustomNode']['result']">
+            
+            <div class="presets">
+                <span style="display: block; font-size: 12px; font-weight: bold; color: #1565c0; margin-bottom: 8px;">Action Templates:</span>
+                <button class="preset-btn" onclick="applyTemplate('parseFloat', 'math', 'multiply', 'variable', '', '100', '1.20')">Cost * VAT</button>
+                <button class="preset-btn" onclick="applyTemplate('Number', 'logic', 'ternary', '', '', '1', '')">Ternary Status IF/ELSE</button>
+                <button class="preset-btn" onclick="applyTemplate('String', 'string', 'titlecap', '', '', 'john doe', '')">Title Case (John Doe)</button>
+                <button class="preset-btn" onclick="applyTemplate('String', 'string', 'pad', '', '', '123', '')">Zero-Pad Reference (00001)</button>
+                <button class="preset-btn" onclick="applyTemplate('String', 'string', 'mask', '', '', '07700900461', '')">Mask PII (****1234)</button>
+                <button class="preset-btn" onclick="applyTemplate('Number', 'string', 'currency', '', '', '15', '')">Format to Currency (.00)</button>
+                <button class="preset-btn" onclick="applyTemplate('String', 'string', 'encode2', '', '', 'https://api.domain.com/?q=hello world', '')">Double Encode URL</button>
+                <button class="preset-btn" onclick="applyDatePreset('now', 'YYYY-MM-DD', '', '', '', '')">Today (YYYY-MM-DD)</button>
+                <button class="preset-btn" onclick="applyDatePreset('now', 'YYYY-MM-DD HH:mm:ss', '', '', '', '')">Now (SQL DateTime)</button>
+                <button class="preset-btn" onclick="applyDatePreset('now', 'DD/MM/YYYY HH:mm', '', '', '', '')">Now (UK DD/MM/YYYY HH:mm)</button>
+                <button class="preset-btn" onclick="applyDatePreset('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00')">Due in 5 Days (Custom Field)</button>
+                <button class="preset-btn" onclick="applyDatePreset('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm')">Custom (DD-MM-YYYY HH:mm)</button>
+                <button class="preset-btn" onclick="applyDatePreset('age_days', '', '', '', '', '2026-09-01 09:00:00')">Ticket Age (Days)</button>
+                <button class="preset-btn" onclick="applyDatePreset('is_past', '', '', '', '', '2026-09-01 00:00:00')">Is Overdue? (Boolean)</button>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label style="color: #2e7d32;">Mock Primary Value (For Preview)</label>
+                <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
+            </div>
+            <div class="form-group" id="mock-val-2-container" style="display: none;">
+                <label style="color: #2e7d32;">Mock Secondary Value</label>
+                <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="category">2. Operation Category</label>
+            <select id="category" onchange="switchCategory(); generateFlowcode();">
+                <option value="math">Mathematics (+, -, *, /)</option>
+                <option value="routing">Modulus & Routing Logic</option>
+                <option value="string">Specialised Formatting (Padding, Masking, Encoding)</option>
+                <option value="logic">Advanced Logic (Ternary, Fallback)</option>
+                <option value="date">Date & Time (Custom Fields, Offsets, Calculations)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>3. Primary Data Conversion (Restricted by Category)</label>
+            <div class="radio-group" id="conversion-radios">
+                <label class="radio-label"><input type="radio" name="convType" value="None" onchange="generateFlowcode()"> None</label>
+                <label class="radio-label"><input type="radio" name="convType" value="Number" checked onchange="generateFlowcode()"> <code>Number()</code></label>
+                <label class="radio-label"><input type="radio" name="convType" value="parseInt" onchange="generateFlowcode()"> <code>parseInt()</code></label>
+                <label class="radio-label"><input type="radio" name="convType" value="parseFloat" onchange="generateFlowcode()"> <code>parseFloat()</code></label>
+                <label class="radio-label" id="label-string"><input type="radio" name="convType" value="String" onchange="generateFlowcode()"> <code>String()</code></label>
+            </div>
+        </div>
+
+        <div id="section-math" class="dynamic-section active">
+            <div class="form-group">
+                <label>Operation</label>
+                <select id="math-op" onchange="generateFlowcode()">
+                    <option value="add">Add (+)</option>
+                    <option value="subtract">Subtract (-)</option>
+                    <option value="multiply">Multiply (*)</option>
+                    <option value="divide">Divide (/)</option>
+                </select>
+            </div>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Modifier Type</label>
+                <div class="radio-group">
+                    <label style="font-weight: normal;"><input type="radio" name="mathModType" value="static" checked onchange="toggleMathInputs(); generateFlowcode()"> Static Value (e.g. 1.20)</label>
+                    <label style="font-weight: normal;"><input type="radio" name="mathModType" value="variable" onchange="toggleMathInputs(); generateFlowcode()"> Second Variable (e.g. Dynamic VAT lookup)</label>
+                </div>
+            </div>
+
+            <div class="inner-panel" id="math-static-panel">
+                <label>Static Modifier Value</label>
+                <input type="number" id="math-val" value="1.20" step="any" oninput="generateFlowcode()">
+            </div>
+
+            <div class="inner-panel" id="math-variable-panel" style="display: none;">
+                <div class="form-group">
+                    <label>Secondary Base Variable / Token String</label>
+                    <input type="text" id="variable2" placeholder="global['flowcoderefs']['vatLookup']['result']" oninput="generateFlowcode()">
+                </div>
+                <div class="form-group">
+                    <label>Secondary Data Conversion</label>
+                    <select id="convType2" onchange="generateFlowcode()">
+                        <option value="None">None</option>
+                        <option value="Number">Number()</option>
+                        <option value="parseInt">parseInt()</option>
+                        <option value="parseFloat" selected>parseFloat()</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-routing" class="dynamic-section grid-2">
+            <div class="form-group">
+                <label>Increment / Divisor</label>
+                <input type="number" id="route-val" value="5" step="1" oninput="generateFlowcode()">
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; margin-top: 20px;">
+                <label style="font-weight: normal; cursor: pointer;">
+                    <input type="checkbox" id="route-bool" checked onchange="generateFlowcode()"> Output as True/False decision (=== 0)
+                </label>
+            </div>
+        </div>
+
+        <div id="section-string" class="dynamic-section">
+            <div class="form-group">
+                <label>Text Operation</label>
+                <select id="string-op" onchange="toggleStringInputs(); generateFlowcode()">
+                    <option value="initcap">Capitalise First Letter Only (InitCap)</option>
+                    <option value="titlecap">Capitalise All Words (Title Case)</option>
+                    <option value="pad">Zero-Pad Reference Number (padStart)</option>
+                    <option value="mask">Mask Sensitive Data (Keep Last 4 Digits)</option>
+                    <option value="currency">Strict Currency Output (Force 2 Decimals)</option>
+                    <option value="encode">Single URL Encode - encodeURIComponent()</option>
+                    <option value="encode2">Double URL Encode (For APIs like VirusTotal)</option>
+                    <option value="decode">Single URL Decode - decodeURIComponent()</option>
+                    <option value="decode2">Double URL Decode</option>
+                </select>
+            </div>
+            
+            <div class="inner-panel" id="string-pad-panel" style="display: none;">
+                <div class="form-group">
+                    <label>Target Length (e.g. 6 means '123' becomes '000123')</label>
+                    <input type="number" id="pad-length" value="6" min="1" step="1" oninput="generateFlowcode()">
+                </div>
+            </div>
+        </div>
+
+        <div id="section-logic" class="dynamic-section">
+            <div class="form-group">
+                <label>Logic Operator</label>
+                <select id="logic-op" onchange="toggleLogicInputs(); generateFlowcode()">
+                    <option value="ternary">Ternary (Inline IF/ELSE)</option>
+                    <option value="fallback">Fallback (Apply default if variable is empty)</option>
+                </select>
+            </div>
+
+            <div class="inner-panel" id="logic-ternary-panel">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Condition</label>
+                        <select id="ternary-condition" onchange="generateFlowcode()">
+                            <option value="===">Equals (===)</option>
+                            <option value="!==">Does Not Equal (!==)</option>
+                            <option value=">">Is Greater Than (>)</option>
+                            <option value="<">Is Less Than (<)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Compare Against (e.g. 1 or "Closed")</label>
+                        <input type="text" id="ternary-compare" value="1" oninput="generateFlowcode()">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Output if TRUE</label>
+                        <input type="text" id="ternary-true" value="Active" oninput="generateFlowcode()">
+                    </div>
+                    <div class="form-group">
+                        <label>Output if FALSE</label>
+                        <input type="text" id="ternary-false" value="Inactive" oninput="generateFlowcode()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="inner-panel" id="logic-fallback-panel" style="display: none;">
+                <div class="form-group">
+                    <label>Fallback Value (If variable is null/empty)</label>
+                    <input type="text" id="logic-fallback-val" value="Not Provided" oninput="generateFlowcode()">
+                </div>
+            </div>
+        </div>
+
+        <div id="section-date" class="dynamic-section">
+            <div class="form-group">
+                <label>Date Operation</label>
+                <select id="date-op" onchange="toggleDateInputs(); generateFlowcode()">
+                    <optgroup label="Formatted Output (Custom Fields, Display, API)">
+                        <option value="format_date" selected>Format / Convert Variable Date</option>
+                        <option value="now">Current Date / Time (Now)</option>
+                        <option value="offset_now">Today / Now &plusmn; Relative Offset (Add / Subtract Time)</option>
+                        <option value="offset_var">Variable Date &plusmn; Relative Offset (Add / Subtract Time)</option>
+                        <option value="extract_date">Fast Extract Date (strip time via space split) &rarr; YYYY-MM-DD</option>
+                    </optgroup>
+                    <optgroup label="Calculations & Elapsed Time">
+                        <option value="age_days">Days Elapsed from Variable Date to Today (Ticket Age)</option>
+                        <option value="diff_days">Days Difference Between Two Date Variables</option>
+                        <option value="age_hours">Hours Elapsed from Variable Date to Today</option>
+                    </optgroup>
+                    <optgroup label="Workflow Decision Logic (True / False)">
+                        <option value="is_past">Is Date in the Past / Overdue? (Date &lt; Now)</option>
+                        <option value="is_future">Is Date in the Future? (Date &gt; Now)</option>
+                        <option value="expires_within">Target Date within next N Days?</option>
+                        <option value="is_weekend">Is Date on Weekend? (Saturday / Sunday)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- Dynamic Format Configuration Panel (Shown for format_date, now, offset_now, offset_var) -->
+            <div class="inner-panel" id="date-format-container">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Output Date &amp; Time Format</label>
+                        <select id="date-format-select" onchange="handleDateFormatSelect(); generateFlowcode()">
+                            <optgroup label="Hornbill Formats">
+                                <option value="YYYY-MM-DD" selected>YYYY-MM-DD (Hornbill Custom Field - Date Only)</option>
+                                <option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss (Hornbill Custom Field / SQL DateTime)</option>
+                            </optgroup>
+                            <optgroup label="UK Standards">
+                                <option value="DD/MM/YYYY">DD/MM/YYYY (UK Date Standard)</option>
+                                <option value="DD/MM/YYYY HH:mm">DD/MM/YYYY HH:mm (UK Date &amp; Time - Short)</option>
+                                <option value="DD/MM/YYYY HH:mm:ss">DD/MM/YYYY HH:mm:ss (UK DateTime Full)</option>
+                                <option value="DD-MM-YYYY">DD-MM-YYYY (UK Hyphenated Date)</option>
+                            </optgroup>
+                            <optgroup label="Other Standard Formats">
+                                <option value="YYYY/MM/DD">YYYY/MM/DD (Slash ISO)</option>
+                                <option value="YYYYMMDD_HHmmss">YYYYMMDD_HHmmss (Compact Timestamp / Slug)</option>
+                                <option value="HH:mm:ss">HH:mm:ss (Time Only - 24h)</option>
+                                <option value="HH:mm">HH:mm (Time Only - Short 24h)</option>
+                            </optgroup>
+                            <optgroup label="Custom">
+                                <option value="custom">Custom Format Pattern...</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Timezone Basis</label>
+                        <select id="date-tz" onchange="generateFlowcode()">
+                            <option value="UTC" selected>UTC (Hornbill System Standard)</option>
+                            <option value="local">Local Time (Browser / Regional)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="date-custom-input-group" style="display: none; margin-top: 5px;">
+                    <label>Custom Pattern String</label>
+                    <input type="text" id="date-custom-format" value="DD-MM-YYYY HH:mm" placeholder="e.g. DD-MM-YYYY HH:mm" oninput="generateFlowcode()">
+                    <div style="font-size: 11px; color: #666; margin-top: 4px;">
+                        Available tokens: <code>YYYY</code> (4-digit year), <code>YY</code> (2-digit year), <code>MM</code> (01-12), <code>DD</code> (01-31), <code>HH</code> (00-23), <code>mm</code> (00-59), <code>ss</code> (00-59). All delimiters and text are preserved.
+                    </div>
+                </div>
+
+                <div id="date-badge-panel" style="background: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e20; font-size: 13px; font-weight: bold; padding: 8px 12px; border-radius: 4px; margin-top: 8px;">
+                    📅 <strong>Hornbill Custom Field (Date Only):</strong> Strict <code>YYYY-MM-DD</code> format without time.
+                </div>
+            </div>
+
+            <!-- Dynamic Offset Panel (Shown for offset_now, offset_var, expires_within) -->
+            <div class="inner-panel" id="date-offset-panel" style="display: none;">
+                <div class="grid-2">
+                    <div class="form-group" id="date-offset-dir-group">
+                        <label>Direction</label>
+                        <select id="date-offset-dir" onchange="generateFlowcode()">
+                            <option value="add" selected>Add (+)</option>
+                            <option value="sub">Subtract (-)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="date-offset-val-label">Amount &amp; Unit</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="date-offset-val" value="5" min="1" step="1" style="flex: 1;" oninput="generateFlowcode()">
+                            <select id="date-offset-unit" style="flex: 1;" onchange="generateFlowcode()">
+                                <option value="days" selected>Days</option>
+                                <option value="hours">Hours</option>
+                                <option value="minutes">Minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Secondary Panel (Shown for diff_days) -->
+            <div class="inner-panel" id="date-secondary-panel" style="display: none;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Secondary Date Variable (Compare Against / Date 2)</label>
+                    <input type="text" id="variableDate2" placeholder="global['flowcoderefs']['resolveNode']['dateClosed']" value="global['flowcoderefs']['resolveNode']['dateClosed']" oninput="generateFlowcode()">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <label style="display: inline-block;">Generated Flowcode Expression</label>
+        <button class="copy-btn" onclick="copyToClipboard()">Copy Code</button>
+        <div class="clear"></div>
+        <div class="output-box" id="outputCode">&amp;[...]</div>
+        
+        <label>Live Preview Result (Using Mock Values)</label>
+        <div class="preview-box" id="previewOutput">Result will appear here</div>
+
+        <div class="info-note" id="explanation">
+            Variables are cleanly structured inside standard script parsing syntax.
+        </div>
+    </div>
+</div>
+
+<script>
+    let isMock1ModifiedByUser = false;
+    let isMock2ModifiedByUser = false;
+
+    function userModifiedMock1() { isMock1ModifiedByUser = true; }
+    function userModifiedMock2() { isMock2ModifiedByUser = true; }
+
+    function applyTemplate(convType, category, operation, modType, extraVal, mock1, mock2) {
+        isMock1ModifiedByUser = false;
+        isMock2ModifiedByUser = false;
+
+        document.getElementById('category').value = category;
+        switchCategory();
+        
+        document.querySelector(`input[name="convType"][value="${convType}"]`).checked = true;
+        
+        if (mock1 !== undefined) document.getElementById('mock-val-1').value = mock1;
+        if (mock2 !== undefined) document.getElementById('mock-val-2').value = mock2;
+
+        if (category === 'math') {
+            document.getElementById('math-op').value = operation;
+            document.querySelector(`input[name="mathModType"][value="${modType}"]`).checked = true;
+            toggleMathInputs();
+        } 
+        else if (category === 'string') {
+            document.getElementById('string-op').value = operation;
+            toggleStringInputs();
+        }
+        else if (category === 'logic') {
+            document.getElementById('logic-op').value = operation;
+            toggleLogicInputs();
+        }
+
+        generateFlowcode();
+    }
+
+    function applyDatePreset(op, format, offsetDir, offsetVal, offsetUnit, mock1, customFmt) {
+        isMock1ModifiedByUser = false;
+        isMock2ModifiedByUser = false;
+
+        document.getElementById('category').value = 'date';
+        switchCategory();
+        document.querySelector('input[name="convType"][value="String"]').checked = true;
+
+        document.getElementById('date-op').value = op;
+        if (format) {
+            document.getElementById('date-format-select').value = format;
+            if (format === 'custom' && customFmt) {
+                document.getElementById('date-custom-format').value = customFmt;
+            }
+        }
+        if (offsetDir) document.getElementById('date-offset-dir').value = offsetDir;
+        if (offsetVal) document.getElementById('date-offset-val').value = offsetVal;
+        if (offsetUnit) document.getElementById('date-offset-unit').value = offsetUnit;
+
+        toggleDateInputs();
+
+        if (mock1 !== undefined && mock1 !== '') {
+            document.getElementById('mock-val-1').value = mock1;
+        }
+
+        generateFlowcode();
+    }
+
+    function updateSmartMockDefaults() {
+        if (isMock1ModifiedByUser) return; 
+
+        const category = document.getElementById('category').value;
+        let newMock1 = '100'; 
+
+        if (category === 'math') {
+            newMock1 = '100';
+            if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '1.20';
+        } 
+        else if (category === 'routing') {
+            newMock1 = '12';
+        } 
+        else if (category === 'string') {
+            const strOp = document.getElementById('string-op').value;
+            const strDefaults = {
+                'initcap': 'john doe',
+                'titlecap': 'john doe',
+                'pad': '123',
+                'mask': '07700900461',
+                'currency': '15.5',
+                'encode': 'https://api.domain.com/?q=hello world',
+                'encode2': 'https://api.domain.com/?q=hello world',
+                'decode': 'https%3A%2F%2Fapi.domain.com%2F%3Fq%3Dhello%20world',
+                'decode2': 'https%253A%252F%252Fapi.domain.com%252F%253Fq%253Dhello%2520world'
+            };
+            newMock1 = strDefaults[strOp] || 'test value';
+        } 
+        else if (category === 'logic') {
+            const logicOp = document.getElementById('logic-op').value;
+            newMock1 = (logicOp === 'ternary') ? '1' : ''; 
+        }
+        else if (category === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            if (dateOp === 'now' || dateOp === 'offset_now') {
+                newMock1 = new Date().toISOString().replace('T', ' ').slice(0, 19);
+            } else if (dateOp === 'diff_days') {
+                newMock1 = '2026-09-01 09:00:00';
+                if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '2026-09-08 17:30:00';
+            } else if (dateOp === 'expires_within') {
+                const futureDate = new Date(Date.now() + (10 * 86400000)).toISOString().replace('T', ' ').slice(0, 19);
+                newMock1 = futureDate;
+            } else {
+                newMock1 = '2026-09-08 14:30:00';
+            }
+        }
+
+        document.getElementById('mock-val-1').value = newMock1;
+    }
+
+    function switchCategory() {
+        const category = document.getElementById('category').value;
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        const numRadios = document.querySelectorAll('input[name="convType"][value="Number"], input[name="convType"][value="parseInt"], input[name="convType"][value="parseFloat"]');
+
+        document.getElementById('section-math').classList.remove('active');
+        document.getElementById('section-routing').classList.remove('active');
+        document.getElementById('section-string').classList.remove('active');
+        document.getElementById('section-logic').classList.remove('active');
+        document.getElementById('section-date').classList.remove('active');
+        
+        if (category === 'math' || category === 'routing') {
+            if (category === 'math') document.getElementById('section-math').classList.add('active');
+            if (category === 'routing') document.getElementById('section-routing').classList.add('active');
+            
+            strRadio.disabled = true;
+            strRadio.parentElement.style.opacity = '0.4';
+            numRadios.forEach(r => { r.disabled = false; r.parentElement.style.opacity = '1'; });
+
+            if (strRadio.checked) document.querySelector('input[name="convType"][value="Number"]').checked = true;
+            
+        } else if (category === 'string') {
+            document.getElementById('section-string').classList.add('active');
+            
+            numRadios.forEach(r => { r.disabled = true; r.parentElement.style.opacity = '0.4'; });
+            strRadio.disabled = false;
+            strRadio.parentElement.style.opacity = '1';
+
+            const isNumChecked = Array.from(numRadios).some(r => r.checked);
+            if (document.getElementById('string-op').value === 'currency') {
+                numRadios.forEach(r => { r.disabled = false; r.parentElement.style.opacity = '1'; });
+            } else if (isNumChecked) {
+                strRadio.checked = true;
+            }
+
+        } else if (category === 'logic') {
+            document.getElementById('section-logic').classList.add('active');
+            strRadio.disabled = false;
+            strRadio.parentElement.style.opacity = '1';
+            numRadios.forEach(r => { r.disabled = false; r.parentElement.style.opacity = '1'; });
+        } else if (category === 'date') {
+            document.getElementById('section-date').classList.add('active');
+            numRadios.forEach(r => { r.disabled = true; r.parentElement.style.opacity = '0.4'; });
+            strRadio.disabled = false;
+            strRadio.parentElement.style.opacity = '1';
+            const noneRadio = document.querySelector('input[name="convType"][value="None"]');
+            noneRadio.disabled = false;
+            noneRadio.parentElement.style.opacity = '1';
+            if (!noneRadio.checked && !strRadio.checked) {
+                strRadio.checked = true;
+            }
+            toggleDateInputs();
+        }
+
+        toggleMathInputs(); 
+        updateSmartMockDefaults();
+    }
+
+    function toggleMathInputs() {
+        const modType = document.querySelector('input[name="mathModType"]:checked').value;
+        const category = document.getElementById('category').value;
+
+        if (category === 'math' && modType === 'variable') {
+            document.getElementById('math-static-panel').style.display = 'none';
+            document.getElementById('math-variable-panel').style.display = 'block';
+            document.getElementById('mock-val-2-container').style.display = 'block';
+        } else if (category === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            document.getElementById('mock-val-2-container').style.display = (dateOp === 'diff_days') ? 'block' : 'none';
+        } else {
+            document.getElementById('math-static-panel').style.display = 'block';
+            document.getElementById('math-variable-panel').style.display = 'none';
+            document.getElementById('mock-val-2-container').style.display = 'none';
+        }
+    }
+
+    function toggleStringInputs() {
+        const strOp = document.getElementById('string-op').value;
+        if (strOp === 'pad') {
+            document.getElementById('string-pad-panel').style.display = 'block';
+        } else {
+            document.getElementById('string-pad-panel').style.display = 'none';
+        }
+        
+        switchCategory(); 
+        updateSmartMockDefaults();
+    }
+
+    function toggleLogicInputs() {
+        const logicOp = document.getElementById('logic-op').value;
+        if (logicOp === 'ternary') {
+            document.getElementById('logic-ternary-panel').style.display = 'block';
+            document.getElementById('logic-fallback-panel').style.display = 'none';
+        } else {
+            document.getElementById('logic-ternary-panel').style.display = 'none';
+            document.getElementById('logic-fallback-panel').style.display = 'block';
+        }
+        updateSmartMockDefaults();
+    }
+
+    function getEffectiveDateFormat() {
+        const fmtSelect = document.getElementById('date-format-select').value;
+        if (fmtSelect === 'custom') {
+            return document.getElementById('date-custom-format').value.trim() || 'YYYY-MM-DD';
+        }
+        return fmtSelect;
+    }
+
+    function updateDateBadge(pattern) {
+        const badge = document.getElementById('date-badge-panel');
+        if (!badge) return;
+        if (pattern === 'YYYY-MM-DD') {
+            badge.style.background = '#e8f5e9';
+            badge.style.borderColor = '#a5d6a7';
+            badge.style.color = '#1b5e20';
+            badge.innerHTML = '📅 <strong>Hornbill Custom Field (Date Only):</strong> Strict <code>YYYY-MM-DD</code> format without time.';
+        } else if (pattern === 'YYYY-MM-DD HH:mm:ss') {
+            badge.style.background = '#e3f2fd';
+            badge.style.borderColor = '#90caf9';
+            badge.style.color = '#0d47a1';
+            badge.innerHTML = '🕒 <strong>Hornbill Custom Field / SQL DateTime:</strong> Full <code>YYYY-MM-DD HH:mm:ss</code> timestamp.';
+        } else if (pattern === 'DD/MM/YYYY') {
+            badge.style.background = '#ede7f6';
+            badge.style.borderColor = '#d1c4e9';
+            badge.style.color = '#4a148c';
+            badge.innerHTML = '🇬🇧 <strong>UK Date Standard:</strong> Human-readable <code>DD/MM/YYYY</code> format.';
+        } else {
+            badge.style.background = '#fff8e1';
+            badge.style.borderColor = '#ffe082';
+            badge.style.color = '#b78103';
+            badge.innerHTML = `⚙️ <strong>Output Format:</strong> Formatted with pattern <code>${pattern}</code>.`;
+        }
+    }
+
+    function formatDateByPattern(d, pattern, isUTC) {
+        if (!d || isNaN(d.getTime())) return "Invalid Date";
+        const pad = n => String(n).padStart(2, '0');
+        const YYYY = isUTC ? d.getUTCFullYear() : d.getFullYear();
+        const YY = String(YYYY).slice(-2);
+        const MM = pad(isUTC ? (d.getUTCMonth() + 1) : (d.getMonth() + 1));
+        const DD = pad(isUTC ? d.getUTCDate() : d.getDate());
+        const HH = pad(isUTC ? d.getUTCHours() : d.getHours());
+        const mm = pad(isUTC ? d.getUTCMinutes() : d.getMinutes());
+        const ss = pad(isUTC ? d.getUTCSeconds() : d.getSeconds());
+
+        return pattern
+            .replace(/YYYY/g, YYYY)
+            .replace(/YY/g, YY)
+            .replace(/MM/g, MM)
+            .replace(/DD/g, DD)
+            .replace(/HH/g, HH)
+            .replace(/mm/g, mm)
+            .replace(/ss/g, ss);
+    }
+
+    function handleDateFormatSelect() {
+        const fmt = document.getElementById('date-format-select').value;
+        const customGroup = document.getElementById('date-custom-input-group');
+        if (customGroup) {
+            customGroup.style.display = (fmt === 'custom') ? 'block' : 'none';
+        }
+        updateDateBadge(getEffectiveDateFormat());
+    }
+
+    function toggleDateInputs() {
+        const dateOp = document.getElementById('date-op').value;
+        const category = document.getElementById('category').value;
+        const formatContainer = document.getElementById('date-format-container');
+        const offsetPanel = document.getElementById('date-offset-panel');
+        const secondaryPanel = document.getElementById('date-secondary-panel');
+        const mock2Container = document.getElementById('mock-val-2-container');
+        const offsetDirGroup = document.getElementById('date-offset-dir-group');
+        const offsetValLabel = document.getElementById('date-offset-val-label');
+
+        const hasFormat = ['format_date', 'now', 'offset_now', 'offset_var'].includes(dateOp);
+        const hasOffset = ['offset_now', 'offset_var', 'expires_within'].includes(dateOp);
+        const hasSecondary = dateOp === 'diff_days';
+
+        if (formatContainer) formatContainer.style.display = hasFormat ? 'block' : 'none';
+        if (offsetPanel) offsetPanel.style.display = hasOffset ? 'block' : 'none';
+        if (secondaryPanel) secondaryPanel.style.display = hasSecondary ? 'block' : 'none';
+
+        if (category === 'date') {
+            mock2Container.style.display = hasSecondary ? 'block' : 'none';
+        }
+
+        if (dateOp === 'expires_within') {
+            if (offsetDirGroup) offsetDirGroup.style.display = 'none';
+            if (offsetValLabel) offsetValLabel.innerText = 'Threshold (Days Ahead)';
+        } else {
+            if (offsetDirGroup) offsetDirGroup.style.display = 'block';
+            if (offsetValLabel) offsetValLabel.innerText = 'Amount & Unit';
+        }
+
+        handleDateFormatSelect();
+        updateSmartMockDefaults();
+    }
+
+    function cleanToken(token) {
+        let clean = token.trim();
+        if (clean.startsWith('&[')) clean = clean.substring(2);
+        if (clean.endsWith(']')) clean = clean.substring(0, clean.length - 1);
+        return clean;
+    }
+
+    function wrapVariable(token, convType) {
+        if (convType === "Number") return `Number(${token})`;
+        if (convType === "parseInt") return `parseInt(${token}, 10)`;
+        if (convType === "parseFloat") return `parseFloat(${token})`;
+        if (convType === "String") return `String(${token})`;
+        return token;
+    }
+
+    // SIMULATION ENGINE
+    function simulateExpression(convType1, category) {
+        try {
+            let m1 = document.getElementById('mock-val-1').value;
+            
+            if (convType1 === "Number") m1 = Number(m1);
+            else if (convType1 === "parseInt") m1 = parseInt(m1, 10);
+            else if (convType1 === "parseFloat") m1 = parseFloat(m1);
+            else if (convType1 === "String") m1 = String(m1);
+
+            if (category === 'math') {
+                const mathOp = document.getElementById('math-op').value;
+                const modType = document.querySelector('input[name="mathModType"]:checked').value;
+                let m2 = 0;
+
+                if (modType === 'static') {
+                    m2 = Number(document.getElementById('math-val').value) || 0;
+                } else {
+                    let rawM2 = document.getElementById('mock-val-2').value;
+                    let convType2 = document.getElementById('convType2').value;
+                    if (convType2 === "Number") m2 = Number(rawM2);
+                    else if (convType2 === "parseInt") m2 = parseInt(rawM2, 10);
+                    else if (convType2 === "parseFloat") m2 = parseFloat(rawM2);
+                    else m2 = rawM2;
+                }
+
+                if (mathOp === 'add') return m1 + m2;
+                if (mathOp === 'subtract') return m1 - m2;
+                if (mathOp === 'multiply') return m1 * m2;
+                if (mathOp === 'divide') return m2 !== 0 ? m1 / m2 : "Error: Divide by zero";
+            }
+            
+            else if (category === 'routing') {
+                const divisor = Number(document.getElementById('route-val').value) || 1;
+                const isBool = document.getElementById('route-bool').checked;
+                if (isBool) return (m1 % divisor === 0);
+                return m1 % divisor;
+            }
+
+            else if (category === 'string') {
+                const strOp = document.getElementById('string-op').value;
+                let strM1 = String(m1);
+
+                if (strOp === 'initcap') return strM1.charAt(0).toUpperCase() + strM1.slice(1);
+                if (strOp === 'titlecap') return strM1.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                if (strOp === 'pad') {
+                    const targetLen = parseInt(document.getElementById('pad-length').value) || 6;
+                    return strM1.padStart(targetLen, '0');
+                }
+                if (strOp === 'mask') return strM1.slice(-4).padStart(strM1.length, '*');
+                if (strOp === 'currency') return Number(m1).toFixed(2);
+                if (strOp === 'encode') return encodeURIComponent(strM1);
+                if (strOp === 'encode2') return encodeURIComponent(encodeURIComponent(strM1));
+                if (strOp === 'decode') return decodeURIComponent(strM1);
+                if (strOp === 'decode2') return decodeURIComponent(decodeURIComponent(strM1));
+            }
+
+            else if (category === 'logic') {
+                const logicOp = document.getElementById('logic-op').value;
+                if (logicOp === 'ternary') {
+                    const condition = document.getElementById('ternary-condition').value;
+                    let comp = document.getElementById('ternary-compare').value;
+                    const tVal = document.getElementById('ternary-true').value;
+                    const fVal = document.getElementById('ternary-false').value;
+
+                    if (!isNaN(comp) && comp.trim() !== "") comp = Number(comp);
+                    else if (comp === "true") comp = true;
+                    else if (comp === "false") comp = false;
+
+                    let isTrue = false;
+                    if (condition === "===") isTrue = (m1 === comp);
+                    if (condition === "!==") isTrue = (m1 !== comp);
+                    if (condition === ">") isTrue = (m1 > comp);
+                    if (condition === "<") isTrue = (m1 < comp);
+
+                    return isTrue ? tVal : fVal;
+                }
+                if (logicOp === 'fallback') {
+                    const fallback = document.getElementById('logic-fallback-val').value;
+                    return m1 || fallback;
+                }
+            }
+
+            else if (category === 'date') {
+                const dateOp = document.getElementById('date-op').value;
+                const pattern = getEffectiveDateFormat();
+                const isUTC = document.getElementById('date-tz').value === 'UTC';
+                const offsetDir = document.getElementById('date-offset-dir').value === 'sub' ? -1 : 1;
+                const offsetVal = Number(document.getElementById('date-offset-val').value) || 0;
+                const offsetUnit = document.getElementById('date-offset-unit').value;
+                const mult = offsetUnit === 'days' ? 86400000 : offsetUnit === 'hours' ? 3600000 : 60000;
+                let strM1 = String(m1).trim();
+
+                function parseDate(s) {
+                    if (!s) return NaN;
+                    if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(s)) {
+                        const parts = s.split(' ')[0].split('/');
+                        const time = s.split(' ')[1] ? 'T' + s.split(' ')[1] : 'T00:00:00';
+                        return new Date(`${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}${time}`).getTime();
+                    }
+                    return new Date(s.replace(' ', 'T')).getTime();
+                }
+
+                if (['format_date', 'now', 'offset_now', 'offset_var'].includes(dateOp)) {
+                    let ts = 0;
+                    if (dateOp === 'now') {
+                        ts = Date.now();
+                    } else if (dateOp === 'offset_now') {
+                        ts = Date.now() + (offsetDir * offsetVal * mult);
+                    } else if (dateOp === 'format_date') {
+                        ts = parseDate(strM1);
+                    } else if (dateOp === 'offset_var') {
+                        const baseTs = parseDate(strM1);
+                        ts = isNaN(baseTs) ? NaN : baseTs + (offsetDir * offsetVal * mult);
+                    }
+                    if (isNaN(ts)) return "Invalid Date";
+                    return formatDateByPattern(new Date(ts), pattern, isUTC);
+                }
+
+                if (dateOp === 'extract_date') {
+                    return strM1.split(' ')[0];
+                }
+                if (dateOp === 'age_days') {
+                    const ts = parseDate(strM1);
+                    return isNaN(ts) ? "Invalid Date" : Math.floor((Date.now() - ts) / 86400000);
+                }
+                if (dateOp === 'age_hours') {
+                    const ts = parseDate(strM1);
+                    return isNaN(ts) ? "Invalid Date" : Math.floor((Date.now() - ts) / 3600000);
+                }
+                if (dateOp === 'diff_days') {
+                    let strM2 = String(document.getElementById('mock-val-2').value).trim();
+                    const ts1 = parseDate(strM1);
+                    const ts2 = parseDate(strM2);
+                    return (isNaN(ts1) || isNaN(ts2)) ? "Invalid Date" : Math.round(Math.abs(ts2 - ts1) / 86400000);
+                }
+                if (dateOp === 'is_past') {
+                    const ts = parseDate(strM1);
+                    return isNaN(ts) ? "Invalid Date" : ts < Date.now();
+                }
+                if (dateOp === 'is_future') {
+                    const ts = parseDate(strM1);
+                    return isNaN(ts) ? "Invalid Date" : ts > Date.now();
+                }
+                if (dateOp === 'expires_within') {
+                    const ts = parseDate(strM1);
+                    if (isNaN(ts)) return "Invalid Date";
+                    const diff = ts - Date.now();
+                    return diff > 0 && diff <= (offsetVal * 86400000);
+                }
+                if (dateOp === 'is_weekend') {
+                    const ts = parseDate(strM1);
+                    if (isNaN(ts)) return "Invalid Date";
+                    const day = new Date(ts).getDay();
+                    return day === 0 || day === 6;
+                }
+            }
+        } catch (e) {
+            return "Calculation Error - Check Inputs";
+        }
+        return "";
+    }
+
+    function generateFlowcode() {
+        let rawVar1 = cleanToken(document.getElementById('variable').value);
+        if (rawVar1 === "") rawVar1 = "PRIMARY_VARIABLE";
+
+        const convType1 = document.querySelector('input[name="convType"]:checked').value;
+        const category = document.getElementById('category').value;
+        
+        let wrappedVar1 = wrapVariable(rawVar1, convType1);
+        let innerExpression = wrappedVar1;
+        let expText = "";
+
+        if (category === 'math') {
+            const mathOp = document.getElementById('math-op').value;
+            const modType = document.querySelector('input[name="mathModType"]:checked').value;
+            
+            let modifierString = "";
+            if (modType === 'static') {
+                modifierString = document.getElementById('math-val').value || "0";
+            } else {
+                let rawVar2 = cleanToken(document.getElementById('variable2').value);
+                if (rawVar2 === "") rawVar2 = "SECONDARY_VARIABLE";
+                const convType2 = document.getElementById('convType2').value;
+                modifierString = wrapVariable(rawVar2, convType2);
+            }
+
+            let opSymbol = "";
+            if (mathOp === 'add') opSymbol = "+";
+            else if (mathOp === 'subtract') opSymbol = "-";
+            else if (mathOp === 'multiply') opSymbol = "*";
+            else if (mathOp === 'divide') opSymbol = "/";
+
+            innerExpression = `(${wrappedVar1} ${opSymbol} ${modifierString})`;
+            expText = `Executes mathematical operation. The expression is wrapped in brackets to preserve execution order.`;
+        } 
+        
+        else if (category === 'routing') {
+            const divisor = document.getElementById('route-val').value || "1";
+            const isBool = document.getElementById('route-bool').checked;
+            
+            if (isBool) {
+                innerExpression = `${wrappedVar1} % ${divisor} === 0`;
+                expText = `Evaluates to <strong>true</strong> every time the counter hits an increment of ${divisor}.`;
+            } else {
+                innerExpression = `${wrappedVar1} % ${divisor}`;
+                expText = `Returns the raw remainder left over when divided by ${divisor}.`;
+            }
+        } 
+        
+        else if (category === 'string') {
+            const strOp = document.getElementById('string-op').value;
+            
+            if (strOp === 'initcap') {
+                innerExpression = `${wrappedVar1}.charAt(0).toUpperCase() + ${wrappedVar1}.slice(1)`;
+                expText = `Forces the very first character to Uppercase and appends the rest of the original string.`;
+            } else if (strOp === 'titlecap') {
+                innerExpression = `${wrappedVar1}.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')`;
+                expText = `Splits the string into individual words, forces the first character of each word to Uppercase, and joins them back together.`;
+            } else if (strOp === 'pad') {
+                const targetLen = document.getElementById('pad-length').value || "6";
+                innerExpression = `${wrappedVar1}.padStart(${targetLen}, '0')`;
+                expText = `Adds '0' to the front of the variable until it reaches exactly ${targetLen} characters in length.`;
+            } else if (strOp === 'mask') {
+                innerExpression = `String(${rawVar1}).slice(-4).padStart(String(${rawVar1}).length, '*')`;
+                expText = `Extracts only the last 4 characters and masks the remainder of the length with asterisks.`;
+            } else if (strOp === 'currency') {
+                let safeNum = convType1 === 'String' || convType1 === 'None' ? `Number(${rawVar1})` : wrappedVar1;
+                innerExpression = `${safeNum}.toFixed(2)`;
+                expText = `Forces the variable to output as a strict floating decimal to two places (e.g. 15.00).`;
+            } else if (strOp === 'encode') {
+                innerExpression = `encodeURIComponent(${wrappedVar1})`;
+                expText = `Encodes the string for safe use in URLs. Ignore safe characters like periods (.).`;
+            } else if (strOp === 'encode2') {
+                innerExpression = `encodeURIComponent(encodeURIComponent(${wrappedVar1}))`;
+                expText = `Encodes the string twice for complex API gateways. Ignore safe characters like periods (.).`;
+            } else if (strOp === 'decode') {
+                innerExpression = `decodeURIComponent(${wrappedVar1})`;
+                expText = `Decodes a single URL-encoded string.`;
+            } else if (strOp === 'decode2') {
+                innerExpression = `decodeURIComponent(decodeURIComponent(${wrappedVar1}))`;
+                expText = `Decodes a doubly URL-encoded string.`;
+            }
+        }
+
+        else if (category === 'logic') {
+            const logicOp = document.getElementById('logic-op').value;
+
+            if (logicOp === 'ternary') {
+                const condition = document.getElementById('ternary-condition').value;
+                let compareVal = document.getElementById('ternary-compare').value;
+                
+                if (isNaN(compareVal) && compareVal !== "true" && compareVal !== "false") {
+                    compareVal = `"${compareVal}"`;
+                }
+
+                const trueVal = document.getElementById('ternary-true').value.replace(/"/g, '\\"');
+                const falseVal = document.getElementById('ternary-false').value.replace(/"/g, '\\"');
+
+                innerExpression = `${wrappedVar1} ${condition} ${compareVal} ? "${trueVal}" : "${falseVal}"`;
+                expText = `Acts as an inline IF/ELSE statement. If the condition is met, it outputs "${trueVal}", otherwise it outputs "${falseVal}".`;
+            } else if (logicOp === 'fallback') {
+                const fallbackVal = document.getElementById('logic-fallback-val').value.replace(/"/g, '\\"');
+                innerExpression = `${wrappedVar1} || "${fallbackVal}"`;
+                expText = `If the Hornbill variable returns empty, null, or undefined, it will safely output your Fallback Value instead.`;
+            }
+        }
+
+        else if (category === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            const pattern = getEffectiveDateFormat();
+            const isUTC = document.getElementById('date-tz').value === 'UTC';
+            const offsetDir = document.getElementById('date-offset-dir').value === 'sub' ? '-' : '+';
+            const offsetVal = document.getElementById('date-offset-val').value || "5";
+            const offsetUnit = document.getElementById('date-offset-unit').value;
+            const mult = offsetUnit === 'days' ? 86400000 : offsetUnit === 'hours' ? 3600000 : 60000;
+            const offsetMs = `(${offsetVal} * ${mult})`;
+
+            updateDateBadge(pattern);
+
+            if (['format_date', 'now', 'offset_now', 'offset_var'].includes(dateOp)) {
+                let dateArg = "";
+                if (dateOp === 'now') {
+                    dateArg = `Date.now()`;
+                } else if (dateOp === 'offset_now') {
+                    dateArg = `Date.now() ${offsetDir} ${offsetMs}`;
+                } else if (dateOp === 'format_date') {
+                    dateArg = `String(${rawVar1}).replace(' ', 'T')`;
+                } else if (dateOp === 'offset_var') {
+                    dateArg = `new Date(String(${rawVar1}).replace(' ', 'T')).getTime() ${offsetDir} ${offsetMs}`;
+                }
+
+                if (pattern === 'YYYY-MM-DD' && isUTC) {
+                    innerExpression = `new Date(${dateArg}).toISOString().slice(0, 10)`;
+                    expText = `Formats output to Hornbill Custom Field standard (<strong>YYYY-MM-DD</strong> without time).`;
+                } else if (pattern === 'YYYY-MM-DD HH:mm:ss' && isUTC) {
+                    innerExpression = `new Date(${dateArg}).toISOString().replace('T', ' ').slice(0, 19)`;
+                    expText = `Formats output to Hornbill SQL DateTime standard (<strong>YYYY-MM-DD HH:mm:ss</strong>).`;
+                } else if (pattern === 'DD/MM/YYYY' && isUTC) {
+                    innerExpression = `(() => { const d = new Date(${dateArg}); const p = n => String(n).padStart(2, '0'); return \`\${p(d.getUTCDate())}/\${p(d.getUTCMonth() + 1)}/\${d.getUTCFullYear()}\`; })()`;
+                    expText = `Formats output to UK Date standard (<strong>DD/MM/YYYY</strong>).`;
+                } else {
+                    const Y = isUTC ? 'd.getUTCFullYear()' : 'd.getFullYear()';
+                    const M = isUTC ? 'd.getUTCMonth() + 1' : 'd.getMonth() + 1';
+                    const D = isUTC ? 'd.getUTCDate()' : 'd.getDate()';
+                    const H = isUTC ? 'd.getUTCHours()' : 'd.getHours()';
+                    const m = isUTC ? 'd.getUTCMinutes()' : 'd.getMinutes()';
+                    const s = isUTC ? 'd.getUTCSeconds()' : 'd.getSeconds()';
+
+                    innerExpression = `(() => { const d = new Date(${dateArg}); const p = n => String(n).padStart(2, '0'); return "${pattern.replace(/"/g, '\\"')}".replace(/YYYY/g, ${Y}).replace(/YY/g, String(${Y}).slice(-2)).replace(/MM/g, p(${M})).replace(/DD/g, p(${D})).replace(/HH/g, p(${H})).replace(/mm/g, p(${m})).replace(/ss/g, p(${s})); })()`;
+                    expText = `Formats output using pattern <strong>${pattern}</strong> (${isUTC ? 'UTC' : 'Local Time'}).`;
+                }
+            } else if (dateOp === 'extract_date') {
+                innerExpression = `String(${rawVar1}).split(' ')[0]`;
+                expText = `Extracts the date portion (<strong>YYYY-MM-DD</strong>) from a SQL datetime string by splitting on space.`;
+            } else if (dateOp === 'age_days') {
+                innerExpression = `Math.floor((Date.now() - new Date(String(${rawVar1}).replace(' ', 'T')).getTime()) / 86400000)`;
+                expText = `Calculates number of full days elapsed since the specified date.`;
+            } else if (dateOp === 'age_hours') {
+                innerExpression = `Math.floor((Date.now() - new Date(String(${rawVar1}).replace(' ', 'T')).getTime()) / 3600000)`;
+                expText = `Calculates number of full hours elapsed since the specified date.`;
+            } else if (dateOp === 'diff_days') {
+                let rawVarDate2 = cleanToken(document.getElementById('variableDate2').value) || "SECONDARY_DATE";
+                innerExpression = `Math.round(Math.abs(new Date(String(${rawVarDate2}).replace(' ', 'T')) - new Date(String(${rawVar1}).replace(' ', 'T'))) / 86400000)`;
+                expText = `Calculates the absolute difference in days between two date variables.`;
+            } else if (dateOp === 'is_past') {
+                innerExpression = `new Date(String(${rawVar1}).replace(' ', 'T')).getTime() < Date.now()`;
+                expText = `Evaluates to <strong>true</strong> if the date is in the past (overdue / SLA breached).`;
+            } else if (dateOp === 'is_future') {
+                innerExpression = `new Date(String(${rawVar1}).replace(' ', 'T')).getTime() > Date.now()`;
+                expText = `Evaluates to <strong>true</strong> if the date is in the future.`;
+            } else if (dateOp === 'expires_within') {
+                innerExpression = `(() => { const d = new Date(String(${rawVar1}).replace(' ', 'T')).getTime() - Date.now(); return d > 0 && d <= (${offsetVal} * 86400000); })()`;
+                expText = `Evaluates to <strong>true</strong> if the date is in the future and within the next ${offsetVal} days.`;
+            } else if (dateOp === 'is_weekend') {
+                innerExpression = `[0, 6].includes(new Date(String(${rawVar1}).replace(' ', 'T')).getDay())`;
+                expText = `Evaluates to <strong>true</strong> if the date falls on a weekend (Saturday or Sunday).`;
+            }
+        }
+
+        const finalOutput = `&[${innerExpression}]`;
+        document.getElementById('outputCode').innerText = finalOutput;
+        document.getElementById('explanation').innerHTML = expText;
+
+        // Run Simulation
+        const simResult = simulateExpression(convType1, category);
+        document.getElementById('previewOutput').innerText = simResult;
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('outputCode').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.querySelector('.copy-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Copied!";
+            btn.style.background = "#2e7d32";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "";
+            }, 1500);
+        });
+    }
+
+    document.getElementById('variable').addEventListener('input', generateFlowcode);
+    switchCategory();
+    toggleStringInputs();
+    toggleMathInputs();
+    toggleLogicInputs();
+    toggleDateInputs();
+    generateFlowcode();
+</script>
+
+</body>
+</html>
