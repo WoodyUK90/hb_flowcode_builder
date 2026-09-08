@@ -2,6 +2,11 @@
 deploy.ps1
 *.bak
 
+# Internal Assistant & Workspace Files
+GEMINI.md
+COMMUNITY_POST_TEMPLATE.md
+.agents/
+
 # Operating System Files
 Thumbs.db
 Thumbs.db:encryptable
