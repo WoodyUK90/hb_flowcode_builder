@@ -371,7 +371,8 @@
         .radio-pill-label {
             display: inline-flex;
             align-items: center;
-            padding: 4px 8px;
+            gap: 5px;
+            padding: 4px 7px;
             background: #ffffff;
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
@@ -383,23 +384,59 @@
             user-select: none;
         }
 
-        .radio-pill-label code {
-            background: #e2e8f0;
+        .pill-main {
+            font-weight: 600;
+        }
+
+        .pill-sub {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pill-sub code {
+            background: #f1f5f9;
             padding: 1px 3px;
             border-radius: 3px;
-            font-size: 11px;
+            font-size: 10px;
+            color: #475569;
         }
 
         .radio-pill-item input[type="radio"]:checked + .radio-pill-label {
             background: var(--primary-light);
             border-color: var(--primary);
             color: var(--primary-hover);
-            font-weight: 600;
+        }
+
+        .radio-pill-item input[type="radio"]:checked + .radio-pill-label .pill-sub {
+            color: var(--primary-hover);
+        }
+
+        .radio-pill-item input[type="radio"]:checked + .radio-pill-label .pill-sub code {
+            background: #bae6fd;
+            color: #0369a1;
         }
 
         .radio-pill-item input[type="radio"]:disabled + .radio-pill-label {
             opacity: 0.35;
             cursor: not-allowed;
+        }
+
+        .date-quick-chip {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #475569;
+            padding: 1px 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .date-quick-chip:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-hover);
         }
 
         /* Dynamic Section Panels */
@@ -914,9 +951,13 @@
             <div class="card">
                 <div class="card-title-row" style="margin-bottom: 8px;">
                     <h2 class="card-heading"><span class="step-badge">2</span> Category &amp; Type Casting</h2>
-                    <div id="category-desc-card">
-                        <!-- Injected dynamically by updateDescriptions() -->
-                    </div>
+                    <button type="button" class="desc-card-toggle" id="category-guide-btn" onclick="toggleCategoryGuide(event)" title="Toggle category best practices &amp; workflow guide">
+                        <span id="category-guide-label">Category Guide</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </div>
+                <div id="category-desc-drawer" style="display: none; background: #f8fafc; border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px;">
+                    <!-- Injected dynamically by updateDescriptions() -->
                 </div>
 
                 <div class="category-cast-grid">
@@ -932,27 +973,45 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Data Conversion <span class="helper-label">(Guarded by Category)</span></label>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px;">
+                            <label style="margin-bottom: 0;">Data Conversion <span class="helper-label">(Type Casting)</span></label>
+                            <span style="font-size: 11px; color: var(--text-muted);" title="Hornbill tokens are strings. Converting prevents text gluing (e.g. 100 + 20 = 120, not '10020').">💡 Why convert?</span>
+                        </div>
                         <div class="radio-pills" id="conversion-radios">
                             <div class="radio-pill-item">
                                 <input type="radio" name="convType" id="conv-none" value="None" onchange="generateFlowcode()">
-                                <label class="radio-pill-label" for="conv-none">None</label>
+                                <label class="radio-pill-label" for="conv-none" title="Raw token value without conversion">
+                                    <span class="pill-main">Raw / As-Is</span>
+                                    <span class="pill-sub">None</span>
+                                </label>
                             </div>
                             <div class="radio-pill-item">
                                 <input type="radio" name="convType" id="conv-number" value="Number" checked onchange="generateFlowcode()">
-                                <label class="radio-pill-label" for="conv-number"><code>Number()</code></label>
+                                <label class="radio-pill-label" for="conv-number" title="General number (whole or decimal) for arithmetic calculation">
+                                    <span class="pill-main">Any Number</span>
+                                    <span class="pill-sub"><code>Number()</code></span>
+                                </label>
                             </div>
                             <div class="radio-pill-item">
                                 <input type="radio" name="convType" id="conv-parseint" value="parseInt" onchange="generateFlowcode()">
-                                <label class="radio-pill-label" for="conv-parseint"><code>parseInt(val, 10)</code></label>
+                                <label class="radio-pill-label" for="conv-parseint" title="Whole integer (no decimals). Used for counters, ticket IDs, routing">
+                                    <span class="pill-main">Whole Number</span>
+                                    <span class="pill-sub"><code>Integer</code></span>
+                                </label>
                             </div>
                             <div class="radio-pill-item">
                                 <input type="radio" name="convType" id="conv-parsefloat" value="parseFloat" onchange="generateFlowcode()">
-                                <label class="radio-pill-label" for="conv-parsefloat"><code>parseFloat()</code></label>
+                                <label class="radio-pill-label" for="conv-parsefloat" title="Decimal number with fractions. Used for currency, prices, VAT">
+                                    <span class="pill-main">Decimal / £</span>
+                                    <span class="pill-sub"><code>Float</code></span>
+                                </label>
                             </div>
                             <div class="radio-pill-item">
                                 <input type="radio" name="convType" id="conv-string" value="String" onchange="generateFlowcode()">
-                                <label class="radio-pill-label" for="conv-string"><code>String()</code></label>
+                                <label class="radio-pill-label" for="conv-string" title="Plain text format for text formatting, padding, masking">
+                                    <span class="pill-main">Text</span>
+                                    <span class="pill-sub"><code>String()</code></span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -1227,7 +1286,30 @@
         <div class="col-preview-simulation">
             <div class="sticky-deck">
                 <div class="card preview-card" style="box-shadow: var(--shadow-md);">
-                    <!-- 1. Live Preview Result (At the top per user selection) -->
+                    <!-- 1. Integrated Mock Test Inputs (At the top) -->
+                    <div class="mock-section" style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                        <div class="mock-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11.5px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em;">🧪 Simulation Mock Values</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">In-Memory Test Inputs</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div class="form-group" style="flex: 1; min-width: 130px; margin-bottom: 0;">
+                                <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label" id="mock-val-1-helper">(token 1)</span></label>
+                                <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
+                                <div id="mock-quick-date-chips" style="display: none; gap: 4px; margin-top: 5px;">
+                                    <button type="button" class="date-quick-chip" onclick="setQuickMockDate('now')" title="Set to current date &amp; time">Now</button>
+                                    <button type="button" class="date-quick-chip" onclick="setQuickMockDate('past')" title="Set to 7 days ago (overdue condition test)">-7d (Overdue)</button>
+                                    <button type="button" class="date-quick-chip" onclick="setQuickMockDate('future')" title="Set to 7 days in future">+7d (Future)</button>
+                                </div>
+                            </div>
+                            <div class="form-group" id="mock-val-2-container" style="display: none; flex: 1; min-width: 130px; margin-bottom: 0;">
+                                <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label" id="mock-val-2-helper">(token 2)</span></label>
+                                <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Live Preview Result (Outcome directly beneath test inputs) -->
                     <div class="card-title-row" style="margin-bottom: 8px;">
                         <h2 class="card-heading" style="color: var(--primary-hover);">
                             <span class="preview-dot"></span> Live Preview Result
@@ -1235,11 +1317,11 @@
                         <span class="preview-badge">In-Memory</span>
                     </div>
                     <div class="preview-box" id="previewOutput">Result will appear here</div>
-                    <div class="info-note" id="explanation" style="margin-bottom: 16px;">
+                    <div class="info-note" id="explanation" style="margin-bottom: 14px;">
                         Variables are cleanly structured inside standard script parsing syntax.
                     </div>
 
-                    <!-- 2. Generated Flowcode Expression -->
+                    <!-- 3. Generated Flowcode Expression -->
                     <div class="card-title-row" style="margin-bottom: 8px;">
                         <h2 class="card-heading">Generated Flowcode</h2>
                         <div class="deck-btn-group">
@@ -1250,24 +1332,6 @@
                         </div>
                     </div>
                     <div class="output-box" id="outputCode">&amp;[...]</div>
-
-                    <!-- 3. Integrated Mock Test Inputs (At the bottom per user selection) -->
-                    <div class="mock-section" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);">
-                        <div class="mock-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                            <span style="font-size: 11.5px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em;">🧪 Simulation Mock Values</span>
-                            <span style="font-size: 11px; color: var(--text-muted);">In-Memory Test Data</span>
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <div class="form-group" style="flex: 1; min-width: 130px; margin-bottom: 0;">
-                                <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label" id="mock-val-1-helper">(token 1)</span></label>
-                                <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
-                            </div>
-                            <div class="form-group" id="mock-val-2-container" style="display: none; flex: 1; min-width: 130px; margin-bottom: 0;">
-                                <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label" id="mock-val-2-helper">(token 2)</span></label>
-                                <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1595,8 +1659,17 @@
     // Collapsible Description Drawers
     function toggleCategoryGuide(e) {
         if (e) e.stopPropagation();
-        const card = document.getElementById('category-desc-card');
-        if (card) card.classList.toggle('open');
+        const drawer = document.getElementById('category-desc-drawer');
+        const btn = document.getElementById('category-guide-btn');
+        if (drawer) {
+            const isHidden = drawer.style.display === 'none' || !drawer.style.display;
+            drawer.style.display = isHidden ? 'block' : 'none';
+            if (btn) {
+                btn.classList.toggle('active', isHidden);
+                const svg = btn.querySelector('svg');
+                if (svg) svg.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        }
     }
 
     function toggleOpGuide(elId, e) {
@@ -1608,23 +1681,19 @@
     function updateDescriptions() {
         const cat = document.getElementById('category').value;
         const catDesc = categoryDescriptions[cat];
-        const catCard = document.getElementById('category-desc-card');
-        if (catCard && catDesc) {
-            const isOpen = catCard.classList.contains('open');
-            catCard.innerHTML = `
-                <div class="desc-card-compact" onclick="toggleCategoryGuide()">
-                    <span class="desc-card-badge">${catDesc.title}</span>
-                    <button type="button" class="desc-card-toggle" onclick="toggleCategoryGuide(event)">
-                        <span>Guide</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                </div>
-                <div class="desc-card-drawer">
-                    <div style="margin-bottom: 6px;">${catDesc.body}</div>
-                    <div style="font-size: 11.5px; color: #475569;">💡 <strong>Best Practice:</strong> ${catDesc.advice}</div>
-                </div>
+        const catLabel = document.getElementById('category-guide-label');
+        const catDrawer = document.getElementById('category-desc-drawer');
+
+        if (catLabel && catDesc) {
+            const shortName = catDesc.title.split(' ')[0];
+            catLabel.textContent = `${shortName} Guide`;
+        }
+        if (catDrawer && catDesc) {
+            catDrawer.innerHTML = `
+                <div style="font-weight: 700; color: #0f172a; margin-bottom: 3px; font-size: 12px;">${catDesc.title}</div>
+                <div style="margin-bottom: 6px; font-size: 11.5px; color: #334155; line-height: 1.4;">${catDesc.body}</div>
+                <div style="font-size: 11.5px; color: #0369a1; background: #f0f9ff; border: 1px solid #bae6fd; padding: 4px 8px; border-radius: 4px;">💡 <strong>Best Practice:</strong> ${catDesc.advice}</div>
             `;
-            if (isOpen) catCard.classList.add('open');
         }
 
         let opKey = '';
@@ -1669,6 +1738,7 @@
         }
 
         updateMockHelperLabels();
+        updateMockInputTypes();
     }
 
     function updateMockHelperLabels() {
@@ -1702,9 +1772,111 @@
             } else if (dateOp === 'format_date' || dateOp === 'offset_var' || dateOp === 'extract_date' || dateOp === 'is_weekend') {
                 helper1.textContent = '(token 1: date string to evaluate)';
             } else {
-                helper1.textContent = '(system clock used automatically)';
+                helper1.textContent = '(current system timestamp evaluated automatically)';
             }
         }
+    }
+
+    function updateMockInputTypes() {
+        const cat = document.getElementById('category').value;
+        const mock1 = document.getElementById('mock-val-1');
+        const mock2 = document.getElementById('mock-val-2');
+        const quickChips = document.getElementById('mock-quick-date-chips');
+        if (!mock1) return;
+
+        if (cat === 'date') {
+            const dateOp = document.getElementById('date-op').value;
+            if (dateOp === 'now' || dateOp === 'offset_now') {
+                mock1.type = 'text';
+                mock1.disabled = true;
+                mock1.style.background = '#f1f5f9';
+                mock1.style.color = '#64748b';
+                mock1.style.fontStyle = 'italic';
+                mock1.style.cursor = 'not-allowed';
+                mock1.value = '(current system timestamp evaluated automatically)';
+                if (quickChips) quickChips.style.display = 'none';
+            } else {
+                mock1.disabled = false;
+                mock1.style.background = '#ffffff';
+                mock1.style.color = 'var(--text-main)';
+                mock1.style.fontStyle = 'normal';
+                mock1.style.cursor = 'auto';
+                mock1.type = 'datetime-local';
+                if (quickChips) quickChips.style.display = 'flex';
+                if (mock1.value && !mock1.value.includes('T')) {
+                    mock1.value = mock1.value.replace(' ', 'T').slice(0, 16);
+                }
+            }
+
+            if (mock2) {
+                mock2.type = 'datetime-local';
+                if (mock2.value && !mock2.value.includes('T')) {
+                    mock2.value = mock2.value.replace(' ', 'T').slice(0, 16);
+                }
+            }
+        } else {
+            if (quickChips) quickChips.style.display = 'none';
+            mock1.disabled = false;
+            mock1.style.background = '#ffffff';
+            mock1.style.color = 'var(--text-main)';
+            mock1.style.fontStyle = 'normal';
+            mock1.style.cursor = 'auto';
+
+            if (cat === 'routing') {
+                mock1.type = 'number';
+                mock1.step = '1';
+                mock1.min = '1';
+            } else if (cat === 'math') {
+                mock1.type = 'number';
+                mock1.step = 'any';
+                mock1.removeAttribute('min');
+                if (mock2) {
+                    mock2.type = 'number';
+                    mock2.step = 'any';
+                    mock2.removeAttribute('min');
+                }
+            } else if (cat === 'string') {
+                const strOp = document.getElementById('string-op').value;
+                if (strOp === 'currency') {
+                    mock1.type = 'number';
+                    mock1.step = '0.01';
+                    mock1.removeAttribute('min');
+                } else {
+                    mock1.type = 'text';
+                    mock1.removeAttribute('step');
+                    mock1.removeAttribute('min');
+                }
+                if (mock2) {
+                    mock2.type = 'text';
+                    mock2.removeAttribute('step');
+                }
+            } else {
+                mock1.type = 'text';
+                mock1.removeAttribute('step');
+                mock1.removeAttribute('min');
+                if (mock2) {
+                    mock2.type = 'text';
+                    mock2.removeAttribute('step');
+                }
+            }
+        }
+    }
+
+    function setQuickMockDate(mode) {
+        const mock1 = document.getElementById('mock-val-1');
+        if (!mock1) return;
+        const now = new Date();
+        let target = new Date();
+        if (mode === 'past') {
+            target.setDate(now.getDate() - 7);
+        } else if (mode === 'future') {
+            target.setDate(now.getDate() + 7);
+        }
+        const p = n => String(n).padStart(2, '0');
+        const dtStr = `${target.getFullYear()}-${p(target.getMonth() + 1)}-${p(target.getDate())}T${p(target.getHours())}:${p(target.getMinutes())}`;
+        mock1.value = dtStr;
+        userModifiedMock1();
+        generateFlowcode();
     }
 
     function applyTemplate(convType, category, operation, modType, extraVal, mock1, mock2, tokenVar) {
@@ -1874,18 +2046,22 @@
         else if (category === 'date') {
             const dateOp = document.getElementById('date-op').value;
             if (dateOp === 'now' || dateOp === 'offset_now') {
-                newMock1 = new Date().toISOString().replace('T', ' ').slice(0, 19);
+                newMock1 = new Date().toISOString().slice(0, 16);
+            } else if (dateOp === 'is_past') {
+                newMock1 = new Date(Date.now() - (7 * 86400000)).toISOString().slice(0, 16);
+            } else if (dateOp === 'is_future') {
+                newMock1 = new Date(Date.now() + (7 * 86400000)).toISOString().slice(0, 16);
             } else if (dateOp === 'diff_days') {
-                newMock1 = '2026-09-01 09:00:00';
-                if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '2026-09-08 17:30:00';
+                newMock1 = '2026-09-01T09:00';
+                if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '2026-09-08T17:30';
             } else if (dateOp === 'expires_within') {
-                const futureDate = new Date(Date.now() + (10 * 86400000)).toISOString().replace('T', ' ').slice(0, 19);
-                newMock1 = futureDate;
+                newMock1 = new Date(Date.now() + (10 * 86400000)).toISOString().slice(0, 16);
             } else {
-                newMock1 = '2026-09-08 14:30:00';
+                newMock1 = '2026-09-08T14:30';
             }
         }
         document.getElementById('mock-val-1').value = newMock1;
+        updateMockInputTypes();
     }
 
     function switchCategory() {

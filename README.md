@@ -23,16 +23,16 @@ The **Hornbill Flowcode Advanced Builder** provides an interactive interface to:
 - Automatically strips any accidental leading `&[` and trailing `]` wrappers if tokens are pasted with them included.
 - Provides default fallback token names (`PRIMARY_VARIABLE`, `SECONDARY_VARIABLE`) if fields are left blank.
 
-### 2. Explicit Type Casting & Category Guardrails
-Hornbill variables are frequently passed as string types across workflow stages. The builder offers safe casting:
-- `None` (raw variable)
-- `Number(var)`
-- `parseInt(var, 10)` (with explicit base-10 radix)
-- `parseFloat(var)`
-- `String(var)`
+### 2. Human-Friendly Type Casting & Category Guardrails
+Hornbill variables are passed as string types across workflow stages (e.g. `'100'`). Without explicit type conversion, mathematical addition glues strings together (`'100' + 20` = `'10020'`). The builder provides human-friendly conversion pills paired with technical code badges:
+- **Raw / As-Is** (`None`): Raw variable value without type casting.
+- **Any Number** (`Number()`): General numeric conversion for calculations (integers or decimals).
+- **Whole Number** (`parseInt(val, 10)`): Whole numbers with explicit base-10 radix (ideal for counters, ticket IDs, round-robin indexes).
+- **Decimal / £** (`parseFloat()`): Decimal numbers with fractional values (ideal for currency, rates, VAT).
+- **Text** (`String()`): Converts values into plain text strings.
 
 **Category-Based Guardrails:**
-- Selecting **Mathematics** or **Routing** automatically disables and dims the `String()` option to prevent runtime calculation issues.
+- Selecting **Mathematics** or **Routing** automatically disables and dims the `Text` option to prevent calculation bugs.
 - Selecting **Specialised Formatting** dims numeric conversions (with dynamic exception handling for the `currency` operation).
 
 ### 3. Comprehensive Operation Categories
@@ -112,8 +112,8 @@ One-click presets instantly configure the variable, type conversions, operation 
 - **Full-Width Top Token Command Bar**: Elevated Step 1 above the workspace columns into a dedicated command bar with prominent `&[` prefix and `]` suffix delimiters. Accommodates long Hornbill tokens (e.g. `global['flowcoderefs']['myCustomNode']['result']`) without horizontal truncation.
 - **On-Demand Quick Action Templates Modal**: Replaced bulky on-page preset lists with a clean modal dialog triggered via the `⚡ Quick Action Templates (14)` button. Includes category filter pills (`All`, `Math`, `Logic`, `String`, `Date`), comprehensive template descriptions, and `Escape`/backdrop dismiss support.
 - **Compact 2-Column Responsive Workspace**:
-  - **Left Studio**: Category dropdown and Data Conversion radio pills unified into a single compact row (`category-cast-grid`), followed immediately by **Operation Parameters** strictly above the fold.
-  - **Right Live Deck**: Compact sticky card featuring Live Preview Result, Generated Flowcode box, and **Side-by-Side Simulation Mock Inputs** (`display: flex`) so primary and secondary mock inputs share horizontal space without vertical stacking.
+  - **Left Studio**: Category dropdown and human-friendly Data Conversion pills unified into a single compact row (`category-cast-grid`), followed immediately by **Operation Parameters** strictly above the fold.
+  - **Right Live Deck (Input &rarr; Outcome &rarr; Code)**: Places **Simulation Mock Values** at the very top of the preview card with **Adaptive Input Selectors** (HTML5 DateTime picker with calendar and quick chips for dates, integer number controls for routing, decimals for currency). Directly below sits the **Live Preview Result** outcome, followed by the **Generated Flowcode** syntax box and one-click Copy button.
 - **Zero Vertical Scrolling on 1080p**: Fine-tuned component paddings, form gaps, and typography ensure all primary controls, outputs, and simulations sit comfortably within the initial 900px viewport fold on standard 1920x1080 displays and ultrawide monitors.
 
 ### 6. Contextual Educational Guides & Collapsible Drawers
