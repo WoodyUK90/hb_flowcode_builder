@@ -45,8 +45,17 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 95vw;
+            max-width: 2400px;
             margin: 0 auto;
+            padding: 16px 20px 40px 20px;
+        }
+
+        @media (min-width: 2200px) {
+            .container {
+                max-width: 2600px;
+                padding: 20px 32px 50px 32px;
+            }
         }
 
         /* Top Header */
@@ -56,8 +65,8 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 16px;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -129,12 +138,28 @@
             border-radius: 50%;
         }
 
-        /* 2-Column Responsive Layout */
+        /* 3-Column Panoramic Responsive Layout */
         .app-layout {
             display: grid;
-            grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-            gap: 24px;
+            grid-template-columns: 340px minmax(420px, 1fr) 420px;
+            gap: 20px;
             align-items: start;
+        }
+
+        @media (min-width: 2000px) {
+            .app-layout {
+                grid-template-columns: 380px minmax(480px, 1.25fr) 460px;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .app-layout {
+                grid-template-columns: minmax(320px, 1fr) minmax(380px, 1.1fr);
+            }
+            .col-token-templates {
+                grid-column: 1 / -1;
+            }
         }
 
         @media (max-width: 960px) {
@@ -149,8 +174,8 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
         }
 
         .card-title-row {
@@ -225,28 +250,58 @@
             box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
         }
 
-        /* Action Templates Pills */
+        /* Action Templates & Filter Pills */
         .presets-wrapper {
-            margin-top: 12px;
-            background: #f1f5f9;
+            margin-top: 14px;
+            background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: var(--radius-md);
-            padding: 14px;
+            padding: 12px;
         }
 
         .presets-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .presets-title {
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
             color: #334155;
             text-transform: uppercase;
             letter-spacing: 0.04em;
+        }
+
+        .preset-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .filter-pill {
+            background: #e2e8f0;
+            border: none;
+            border-radius: 9999px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .filter-pill:hover {
+            background: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .filter-pill.active {
+            background: var(--primary);
+            color: white;
         }
 
         .preset-grid {
@@ -258,10 +313,10 @@
         .preset-btn {
             background: var(--surface);
             border: 1px solid #cbd5e1;
-            padding: 5px 10px;
+            padding: 5px 9px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 500;
             color: #334155;
             display: inline-flex;
@@ -375,36 +430,87 @@
             }
         }
 
-        /* Description Cards */
+        /* Collapsible Description Cards */
         .desc-card {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            margin-top: 12px;
-            font-size: 12.5px;
-            line-height: 1.5;
+            padding: 8px 12px;
+            margin-top: 10px;
+            font-size: 12px;
+            line-height: 1.45;
             color: #334155;
+            transition: all 0.2s ease;
         }
 
-        .desc-card-title {
-            font-weight: 700;
-            color: #0f172a;
+        .desc-card-compact {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .desc-card-compact:hover .desc-card-badge {
+            color: var(--primary-hover);
+        }
+
+        .desc-card-badge {
+            display: inline-flex;
+            align-items: center;
             gap: 6px;
-            margin-bottom: 4px;
-            font-size: 13px;
+            font-weight: 600;
+            font-size: 12px;
+            color: #1e293b;
+        }
+
+        .desc-card-toggle {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            padding: 2px 7px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .desc-card-toggle:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .desc-card-drawer {
+            display: none;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #cbd5e1;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .desc-card.open .desc-card-drawer {
+            display: block;
+        }
+
+        .desc-card.open .desc-card-toggle svg {
+            transform: rotate(180deg);
         }
 
         .desc-card-meta {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-top: 8px;
-            padding-top: 8px;
+            margin-top: 6px;
+            padding-top: 6px;
             border-top: 1px dashed #cbd5e1;
-            font-size: 11.5px;
+            font-size: 11px;
             color: #64748b;
         }
 
@@ -416,6 +522,28 @@
 
         .desc-meta-tag strong {
             color: #1e293b;
+        }
+
+        .preview-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            margin-right: 4px;
+        }
+
+        .preview-badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            border: 1px solid #bae6fd;
         }
 
         /* Sticky Output & Live Preview Deck */
@@ -576,16 +704,15 @@
     </header>
 
     <div class="app-layout">
-        <!-- Left Column: Builder Configuration -->
-        <div class="builder-column">
-            <!-- Step 1: Base Variable -->
+        <!-- Column 1: Primary Token & Categorized Action Templates -->
+        <div class="col-token-templates">
             <div class="card">
                 <div class="card-title-row">
-                    <h2 class="card-heading"><span class="step-badge">1</span> Primary Token &amp; Action Templates</h2>
+                    <h2 class="card-heading"><span class="step-badge">1</span> Primary Token &amp; Presets</h2>
                 </div>
 
                 <div class="form-group">
-                    <label for="variable">Primary Base Variable / Token String <span class="helper-label">(leading &amp;[ and trailing ] stripped automatically)</span></label>
+                    <label for="variable">Primary Base Variable / Token String <span class="helper-label">(&amp;[ and ] auto-stripped)</span></label>
                     <input type="text" id="variable" placeholder="Paste Hornbill token (e.g. global['flowcoderefs']['node']['result'])" value="global['flowcoderefs']['myCustomNode']['result']">
                 </div>
 
@@ -593,29 +720,40 @@
                     <div class="presets-header">
                         <span class="presets-title">⚡ Quick Action Templates</span>
                     </div>
+                    <!-- Categorized Filter Pills -->
+                    <div class="preset-filter-row">
+                        <button type="button" class="filter-pill active" data-filter="all" onclick="filterPresets('all')">All (14)</button>
+                        <button type="button" class="filter-pill" data-filter="date" onclick="filterPresets('date')">Date &amp; Time (7)</button>
+                        <button type="button" class="filter-pill" data-filter="math" onclick="filterPresets('math')">Math &amp; VAT (1)</button>
+                        <button type="button" class="filter-pill" data-filter="string" onclick="filterPresets('string')">Format &amp; PII (5)</button>
+                        <button type="button" class="filter-pill" data-filter="logic" onclick="filterPresets('logic')">Logic (1)</button>
+                    </div>
                     <div class="preset-grid">
-                        <button class="preset-btn" onclick="applyTemplate('parseFloat', 'math', 'multiply', 'variable', '', '100', '1.20')"><span class="icon">✖</span> Cost * VAT</button>
-                        <button class="preset-btn" onclick="applyTemplate('Number', 'logic', 'ternary', '', '', '1', '')"><span class="icon">⚖</span> Ternary Status IF/ELSE</button>
-                        <button class="preset-btn" onclick="applyTemplate('String', 'string', 'titlecap', '', '', 'john doe', '')"><span class="icon">Aa</span> Title Case (John Doe)</button>
-                        <button class="preset-btn" onclick="applyTemplate('String', 'string', 'pad', '', '', '123', '')"><span class="icon">00</span> Zero-Pad (000123)</button>
-                        <button class="preset-btn" onclick="applyTemplate('String', 'string', 'mask', '', '', '07700900461', '')"><span class="icon">🔒</span> Mask PII (****0461)</button>
-                        <button class="preset-btn" onclick="applyTemplate('Number', 'string', 'currency', '', '', '15', '')"><span class="icon">£</span> Currency (.00)</button>
-                        <button class="preset-btn" onclick="applyTemplate('String', 'string', 'encode2', '', '', 'https://api.domain.com/?q=hello world', '')"><span class="icon">🔗</span> Double URL Encode</button>
-                        <button class="preset-btn" onclick="applyDatePreset('now', 'YYYY-MM-DD', '', '', '', '')"><span class="icon">📅</span> Today (YYYY-MM-DD)</button>
-                        <button class="preset-btn" onclick="applyDatePreset('now', 'YYYY-MM-DD HH:mm:ss', '', '', '', '')"><span class="icon">🕒</span> Now (SQL DateTime)</button>
-                        <button class="preset-btn" onclick="applyDatePreset('now', 'DD/MM/YYYY HH:mm', '', '', '', '')"><span class="icon">🇬🇧</span> Now (UK DateTime)</button>
-                        <button class="preset-btn" onclick="applyDatePreset('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00')"><span class="icon">⏳</span> Due in 5 Days</button>
-                        <button class="preset-btn" onclick="applyDatePreset('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm')"><span class="icon">⚙</span> Custom Format</button>
-                        <button class="preset-btn" onclick="applyDatePreset('age_days', '', '', '', '', '2026-09-01 09:00:00')"><span class="icon">⏱</span> Ticket Age (Days)</button>
-                        <button class="preset-btn" onclick="applyDatePreset('is_past', '', '', '', '', '2026-09-01 00:00:00')"><span class="icon">❗</span> Is Overdue? (Bool)</button>
+                        <button type="button" class="preset-btn" data-cat="math" onclick="applyTemplate('parseFloat', 'math', 'multiply', 'variable', '', '100', '1.20')"><span class="icon">✖</span> Cost * VAT</button>
+                        <button type="button" class="preset-btn" data-cat="logic" onclick="applyTemplate('Number', 'logic', 'ternary', '', '', '1', '')"><span class="icon">⚖</span> Ternary Status IF/ELSE</button>
+                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'titlecap', '', '', 'john doe', '')"><span class="icon">Aa</span> Title Case (John Doe)</button>
+                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'pad', '', '', '123', '')"><span class="icon">00</span> Zero-Pad (000123)</button>
+                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'mask', '', '', '07700900461', '')"><span class="icon">🔒</span> Mask PII (****0461)</button>
+                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('Number', 'string', 'currency', '', '', '15', '')"><span class="icon">£</span> Currency (.00)</button>
+                        <button type="button" class="preset-btn" data-cat="string" onclick="applyTemplate('String', 'string', 'encode2', '', '', 'https://api.domain.com/?q=hello world', '')"><span class="icon">🔗</span> Double URL Encode</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('now', 'YYYY-MM-DD', '', '', '', '')"><span class="icon">📅</span> Today (YYYY-MM-DD)</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('now', 'YYYY-MM-DD HH:mm:ss', '', '', '', '')"><span class="icon">🕒</span> Now (SQL DateTime)</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('now', 'DD/MM/YYYY HH:mm', '', '', '', '')"><span class="icon">🇬🇧</span> Now (UK DateTime)</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('offset_var', 'YYYY-MM-DD', 'add', '5', 'days', '2026-09-08 09:00:00')"><span class="icon">⏳</span> Due in 5 Days</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('format_date', 'custom', '', '', '', '2026-09-08 14:30:00', 'DD-MM-YYYY HH:mm')"><span class="icon">⚙</span> Custom Format</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('age_days', '', '', '', '', '2026-09-01 09:00:00')"><span class="icon">⏱</span> Ticket Age (Days)</button>
+                        <button type="button" class="preset-btn" data-cat="date" onclick="applyDatePreset('is_past', '', '', '', '', '2026-09-01 00:00:00')"><span class="icon">❗</span> Is Overdue? (Bool)</button>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- Column 2: Operation Category, Type Casting & Operation Parameters -->
+        <div class="col-category-params">
             <!-- Step 2: Category & Primary Conversion -->
             <div class="card">
                 <div class="card-title-row">
-                    <h2 class="card-heading"><span class="step-badge">2</span> Operation Category &amp; Type Casting</h2>
+                    <h2 class="card-heading"><span class="step-badge">2</span> Category &amp; Type Casting</h2>
                 </div>
 
                 <div class="form-group">
@@ -923,46 +1061,50 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Step 4: Mock Values -->
-            <div class="card">
-                <div class="card-title-row">
-                    <h2 class="card-heading"><span class="step-badge">4</span> Simulation Mock Data</h2>
-                </div>
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label for="mock-val-1">Mock Primary Value <span class="helper-label">(Simulates input token)</span></label>
-                        <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
-                    </div>
-                    <div class="form-group" id="mock-val-2-container" style="display: none;">
-                        <label for="mock-val-2">Mock Secondary Value <span class="helper-label">(Second variable)</span></label>
-                        <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Right Column: Sticky Preview & Code Deck -->
-        <div class="preview-column">
+        <!-- Column 3: Live Output & Simulation Deck -->
+        <div class="col-preview-simulation">
             <div class="sticky-deck">
-                <div class="card" style="box-shadow: var(--shadow-md);">
-                    <div class="card-title-row" style="margin-bottom: 12px;">
-                        <h2 class="card-heading">Generated Flowcode Expression</h2>
+                <div class="card preview-card" style="box-shadow: var(--shadow-md);">
+                    <!-- 1. Live Preview Result (At the top per user selection) -->
+                    <div class="card-title-row" style="margin-bottom: 8px;">
+                        <h2 class="card-heading" style="color: var(--primary-hover);">
+                            <span class="preview-dot"></span> Live Preview Result
+                        </h2>
+                        <span class="preview-badge">In-Memory</span>
+                    </div>
+                    <div class="preview-box" id="previewOutput">Result will appear here</div>
+                    <div class="info-note" id="explanation" style="margin-bottom: 16px;">
+                        Variables are cleanly structured inside standard script parsing syntax.
+                    </div>
+
+                    <!-- 2. Generated Flowcode Expression -->
+                    <div class="card-title-row" style="margin-bottom: 8px;">
+                        <h2 class="card-heading">Generated Flowcode</h2>
                         <div class="deck-btn-group">
-                            <button class="action-btn" id="copyBtn" onclick="copyToClipboard()">
+                            <button class="action-btn" id="copyBtn" onclick="copyToClipboard()" title="Copy Flowcode expression">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 Copy Code
                             </button>
                         </div>
                     </div>
-                    
                     <div class="output-box" id="outputCode">&amp;[...]</div>
 
-                    <label style="margin-bottom: 8px;">Live Preview Result <span class="helper-label">(Client-Side Evaluation)</span></label>
-                    <div class="preview-box" id="previewOutput">Result will appear here</div>
-
-                    <div class="info-note" id="explanation">
-                        Variables are cleanly structured inside standard script parsing syntax.
+                    <!-- 3. Integrated Mock Test Inputs (At the bottom per user selection) -->
+                    <div class="mock-section" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);">
+                        <div class="mock-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <span style="font-size: 11.5px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em;">🧪 Simulation Mock Values</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">In-Memory Test Data</span>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="mock-val-1" style="font-size: 12px;">Mock Primary Value <span class="helper-label">(token 1)</span></label>
+                            <input type="text" id="mock-val-1" value="100" oninput="userModifiedMock1(); generateFlowcode()">
+                        </div>
+                        <div class="form-group" id="mock-val-2-container" style="display: none; margin-bottom: 0;">
+                            <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label">(token 2)</span></label>
+                            <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1178,16 +1320,57 @@
         }
     };
 
+    // Preset Filtering
+    let currentPresetFilter = 'all';
+
+    function filterPresets(cat) {
+        currentPresetFilter = cat;
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-filter') === cat);
+        });
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            const btnCat = btn.getAttribute('data-cat');
+            if (cat === 'all' || btnCat === cat) {
+                btn.style.display = 'inline-flex';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+    }
+
+    // Collapsible Description Drawers
+    function toggleCategoryGuide(e) {
+        if (e) e.stopPropagation();
+        const card = document.getElementById('category-desc-card');
+        if (card) card.classList.toggle('open');
+    }
+
+    function toggleOpGuide(elId, e) {
+        if (e) e.stopPropagation();
+        const card = document.getElementById(elId);
+        if (card) card.classList.toggle('open');
+    }
+
     function updateDescriptions() {
         const cat = document.getElementById('category').value;
         const catDesc = categoryDescriptions[cat];
         const catCard = document.getElementById('category-desc-card');
         if (catCard && catDesc) {
+            const isOpen = catCard.classList.contains('open');
             catCard.innerHTML = `
-                <div class="desc-card-title">${catDesc.title}</div>
-                <div>${catDesc.body}</div>
-                <div style="margin-top: 6px; font-size: 11.5px; color: #475569;">💡 <strong>Best Practice:</strong> ${catDesc.advice}</div>
+                <div class="desc-card-compact" onclick="toggleCategoryGuide()">
+                    <span class="desc-card-badge">${catDesc.title}</span>
+                    <button type="button" class="desc-card-toggle" onclick="toggleCategoryGuide(event)">
+                        <span>Guide</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </div>
+                <div class="desc-card-drawer">
+                    <div style="margin-bottom: 6px;">${catDesc.body}</div>
+                    <div style="font-size: 11.5px; color: #475569;">💡 <strong>Best Practice:</strong> ${catDesc.advice}</div>
+                </div>
             `;
+            if (isOpen) catCard.classList.add('open');
         }
 
         let opKey = '';
@@ -1212,14 +1395,23 @@
 
         if (targetDescEl && operationDescriptions[opKey]) {
             const op = operationDescriptions[opKey];
+            const isOpen = targetDescEl.classList.contains('open');
             targetDescEl.innerHTML = `
-                <div class="desc-card-title">${op.summary}</div>
-                <div><strong>Hornbill Workflow Use Case:</strong> ${op.context}</div>
-                <div class="desc-card-meta">
-                    <span class="desc-meta-tag"><strong>Expected Input:</strong> ${op.inType}</span>
-                    <span class="desc-meta-tag"><strong>Output Type:</strong> ${op.outType}</span>
+                <div class="desc-card-compact" onclick="toggleOpGuide('${targetDescEl.id}')">
+                    <span class="desc-card-badge" style="font-size: 11.5px;">
+                        <strong>In:</strong> ${op.inType} &rarr; <strong>Out:</strong> ${op.outType}
+                    </span>
+                    <button type="button" class="desc-card-toggle" onclick="toggleOpGuide('${targetDescEl.id}', event)">
+                        <span>Details</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </div>
+                <div class="desc-card-drawer">
+                    <div style="font-weight: 600; color: #0f172a; margin-bottom: 3px;">${op.summary}</div>
+                    <div><strong>Hornbill Workflow Use Case:</strong> ${op.context}</div>
                 </div>
             `;
+            if (isOpen) targetDescEl.classList.add('open');
         }
     }
 

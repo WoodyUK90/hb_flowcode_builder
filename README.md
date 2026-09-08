@@ -108,17 +108,18 @@ One-click presets instantly configure the variable, type conversions, operation 
 - **Ticket Age (Days)**: Calculates elapsed days since date logged.
 - **Is Overdue? (Boolean)**: Evaluates whether date has passed.
 
-### 5. Live Simulation Engine
-- Runs a client-side execution sandbox simulating Hornbill's evaluation engine against mock input data.
-- Features **Smart Mock Defaults**: updates mock inputs to contextually relevant defaults (e.g., sample URLs, sample phone numbers, or numeric values) unless explicitly modified by the user.
-- Emits real-time live preview results alongside the generated expression in a sticky desktop preview deck.
+### 5. 3-Column Panoramic UX Architecture
+- **Ultrawide & Multi-Screen Optimized**: Replaces rigid single-column stacking with a fluid, widescreen-friendly 3-column panoramic layout (`max-width: 2400px`) supporting 3440x1440 ultrawides, standard 1080p, and laptops:
+  - **Column 1 (Left)**: Primary Base Variable token and 14+ Quick Action Templates organized into categorized filter pills (`All`, `Date & Time`, `Math & VAT`, `Format & PII`, `Logic`).
+  - **Column 2 (Center)**: Operation Category, Type Casting radios, and **Operation Parameters**—guaranteed strictly **above the fold** without vertical scrolling.
+  - **Column 3 (Right)**: Sticky Live Output & Simulation Deck containing Live Preview Result + explanation, Generated Flowcode (`&[...]`), and integrated Mock Test Inputs.
+- **Client-Side Simulation Engine**: Runs an in-memory evaluation sandbox simulating Hornbill's Flowcode engine with **Smart Mock Defaults**.
 
-### 6. Contextual Educational Guides
-- Every **Operation Category** includes an explanatory guide describing when to use it in Hornbill workflows and casting recommendations.
-- Every **Individual Operation** features a dedicated card detailing:
-  - Concise plain-English summary
-  - Realistic Hornbill BPM / Flowcode use case
-  - Expected input data types and resulting output data types
+### 6. Contextual Educational Guides & Collapsible Drawers
+- **Zero Vertical Clutter**: Documentation cards are streamlined into compact, one-line spec badges with click-to-expand drawers:
+  - **Category Guide**: Compact category badge with expandable Hornbill workflow best practices and type-casting advice.
+  - **Operation Guide**: Inline specification pill (`In: Type → Out: Type`) with expandable details on realistic BPM use cases.
+
 
 ### 7. Real-Time URL Synchronization & Shareable Links
 - **Live Address Bar Updates**: As options, inputs, and categories change, the browser address bar updates dynamically in real time (using `window.history.replaceState`) without page reloads.
