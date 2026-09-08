@@ -120,7 +120,9 @@ One-click presets instantly configure the variable, type conversions, operation 
   - Realistic Hornbill BPM / Flowcode use case
   - Expected input data types and resulting output data types
 
-### 7. URL Query Parameters & Shareable Links
+### 7. Real-Time URL Synchronization & Shareable Links
+- **Live Address Bar Updates**: As options, inputs, and categories change, the browser address bar updates dynamically in real time (using `window.history.replaceState`) without page reloads.
+- **Embedded Results in URL**: Both the generated expression (`result`) and the preview simulation output (`preview`) are automatically serialized into query parameters.
 - Pre-populate any builder configuration directly via URL query parameters:
   - `var` / `token`: Primary variable token
   - `cat` / `category`: Category (`math`, `routing`, `string`, `logic`, `date`)
@@ -130,7 +132,9 @@ One-click presets instantly configure the variable, type conversions, operation 
   - `fmt`, `customFmt`, `tz`, `offsetDir`, `offsetVal`, `offsetUnit`: Date parameters
   - `modType`, `modVal`, `var2`, `conv2`: Math parameters
   - `padLen`, `cond`, `compare`, `tVal`, `fVal`, `fallback`: String and Logic parameters
-- **"Share Link"** button in the header automatically serializes the active state and copies a shareable URL to the clipboard.
+  - `result`: Evaluated Hornbill Flowcode output expression
+  - `preview`: Evaluated mock simulation result
+- **"Share Link"** button in the header copies the exact current URL (including state and results) to the clipboard with toast confirmation.
 - Displays non-intrusive floating toast notifications for copy and configuration load events.
 
 ---

@@ -1877,6 +1877,15 @@
 
         const simResult = simulateExpression(convType1, category);
         document.getElementById('previewOutput').innerText = simResult;
+
+        // Dynamically update browser address bar with current state & results
+        if (window.history && window.history.replaceState) {
+            try {
+                window.history.replaceState(null, '', getShareableUrl());
+            } catch (e) {
+                // Graceful fallback if running under local file:// protocol
+            }
+        }
     }
 
     function copyToClipboard() {
@@ -1904,7 +1913,8 @@
         const cat = document.getElementById('category').value;
         if (cat === 'math') {
             params.set('op', document.getElementById('math-op').value);
-            params.set('modType', document.querySelector('input[name="mathModType"]:checked').value);
+            const mathModRadio = document.querySelector('input[name="mathModType"]:checked');
+            if (mathModRadio) params.set('modType', mathModRadio.value);
             params.set('modVal', document.getElementById('math-val').value);
             params.set('var2', document.getElementById('variable2').value);
             params.set('conv2', document.getElementById('convType2').value);
@@ -1934,6 +1944,15 @@
 
         if (isMock1ModifiedByUser) params.set('mock1', document.getElementById('mock-val-1').value);
         if (isMock2ModifiedByUser) params.set('mock2', document.getElementById('mock-val-2').value);
+
+        const outCode = document.getElementById('outputCode');
+        if (outCode && outCode.innerText) {
+            params.set('result', outCode.innerText);
+        }
+        const prevOut = document.getElementById('previewOutput');
+        if (prevOut && prevOut.innerText) {
+            params.set('preview', prevOut.innerText);
+        }
 
         return url.toString();
     }
