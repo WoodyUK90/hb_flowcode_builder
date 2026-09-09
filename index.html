@@ -701,6 +701,22 @@
             color: #78350f;
         }
 
+        .guardrail-note {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid #64748b;
+            padding: 8px 10px;
+            font-size: 11px;
+            color: #334155;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            line-height: 1.4;
+            margin-top: 8px;
+        }
+
+        .guardrail-note strong {
+            color: #0f172a;
+        }
+
         .app-footer {
             margin-top: 24px;
             padding-top: 14px;
@@ -1415,6 +1431,11 @@
                     <!-- Workflow Designer Notice -->
                     <div class="warning-note">
                         <strong>⚠️ Workflow Designer Notice:</strong> Pasting expressions into standard/static fields may trigger a yellow format warning in the Hornbill BPM Designer. In Hornbill, warnings do not block publishing/activation, and the backend engine will evaluate the expression at runtime. Always test in staging before deploying to live workflows.
+                    </div>
+
+                    <!-- V8 Engine Stability & Guardrail Guidance -->
+                    <div class="guardrail-note">
+                        <strong>🛡️ V8 Engine Stability &amp; Best Practice:</strong> Hornbill executes expressions inside an embedded Google V8 JIT runtime within core application processes. Expressions must be kept strictly to <em>instantaneous scalar evaluations</em> (simple arithmetic, formatting, dates, slicing). <strong>Never</strong> write loops (<code>for/while</code>), recursion, or complex scripts—doing so risks consuming unmanaged resources and forcing platform-level defensive blocks.
                     </div>
                 </div>
             </div>
@@ -2360,6 +2381,28 @@
 
     function escapeHtml(text) {
         return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function analyzeExpressionSafety(expr) {
+        if (!expr) return null;
+        const issues = [];
+
+        // Check for loops
+        if (/\b(for|while|do)\b/.test(expr)) {
+            issues.push("Loops (for/while/do) are strictly discouraged: rogue tight loops risk destabilising Hornbill's shared V8 engine process.");
+        }
+
+        // Check for network or DOM or timer calls
+        if (/\b(fetch|XMLHttpRequest|setTimeout|setInterval|eval|Function)\b/.test(expr)) {
+            issues.push("Asynchronous or dynamic code evaluation (fetch/setTimeout/eval) is not permitted in Hornbill workflow expressions.");
+        }
+
+        // Check for large array allocations
+        if (/new\s+Array\(\s*\d{4,}\s*\)/.test(expr)) {
+            issues.push("Large array allocations risk consuming excessive memory in the execution environment.");
+        }
+
+        return issues.length > 0 ? issues : null;
     }
 
     function cleanToken(token) {
