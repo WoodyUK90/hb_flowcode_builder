@@ -717,6 +717,40 @@
             color: #0f172a;
         }
 
+        .native-alt-card {
+            margin-top: 8px;
+            padding: 8px 10px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 3px solid #16a34a;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            color: #166534;
+            line-height: 1.4;
+        }
+
+        .native-alt-card a {
+            color: #15803d;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .native-alt-card a:hover {
+            color: #166534;
+        }
+
+        .no-alt-card {
+            margin-top: 8px;
+            padding: 8px 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 3px solid #94a3b8;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
         .app-footer {
             margin-top: 24px;
             padding-top: 14px;
@@ -1616,156 +1650,186 @@
         add: {
             summary: "Adds modifier value to primary token.",
             context: "Calculating totals (e.g. Base Cost + Shipping Surcharge, or extending quotas).",
-            inType: "Number / Float", outType: "Number"
+            inType: "Number / Float", outType: "Number",
+            nativeAlt: { supported: false, note: "Hornbill has no native Math / Calculation nodes in the workflow canvas. This inline Flowcode expression is the recommended approach." }
         },
         subtract: {
             summary: "Subtracts modifier from primary token.",
             context: "Calculating remaining balance, budget headroom, or deduction amounts.",
-            inType: "Number / Float", outType: "Number"
+            inType: "Number / Float", outType: "Number",
+            nativeAlt: { supported: false, note: "Hornbill has no native Math / Calculation nodes in the workflow canvas. This inline Flowcode expression is the recommended approach." }
         },
         multiply: {
             summary: "Multiplies primary token by modifier value.",
             context: "Applying tax multipliers (e.g. &times; 1.20 VAT) or quantity &times; unit price.",
-            inType: "Number / Float", outType: "Number"
+            inType: "Number / Float", outType: "Number",
+            nativeAlt: { supported: false, note: "Hornbill has no native Math / Calculation nodes in the workflow canvas. This inline Flowcode expression is the recommended approach." }
         },
         divide: {
             summary: "Divides primary token by divisor value.",
             context: "Distributing costs evenly across departments or converting units.",
-            inType: "Number / Float", outType: "Number"
+            inType: "Number / Float", outType: "Number",
+            nativeAlt: { supported: false, note: "Hornbill has no native Math / Calculation nodes in the workflow canvas. This inline Flowcode expression is the recommended approach." }
         },
         // Routing
         decision: {
             summary: "Evaluates whether primary value is an exact multiple of the divisor (remainder === 0).",
             context: "Used in BPM Decision Nodes for round-robin triage (e.g. every 5th ticket to QA audit).",
-            inType: "Integer / Counter", outType: "Boolean (true / false)"
+            inType: "Integer / Counter", outType: "Boolean (true / false)",
+            nativeAlt: { supported: false, note: "Hornbill provides Round-Robin Assignment automations on tickets, but custom modulo branching on counters requires an expression." }
         },
         remainder: {
             summary: "Returns the remainder after integer division.",
             context: "Used for cyclic index calculation or custom rotation logic.",
-            inType: "Integer", outType: "Number (Integer)"
+            inType: "Integer", outType: "Number (Integer)",
+            nativeAlt: { supported: false, note: "No native modulus node exists; use this expression for cyclic routing indexes." }
         },
         // String
         initcap: {
             summary: "Capitalises the very first character of the string, preserving remaining characters.",
             context: "Standardising single words or the start of sentences in ticket summaries.",
-            inType: "String", outType: "String"
+            inType: "String", outType: "String",
+            nativeAlt: { supported: true, name: "String Utilities > Case Conversion", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations#string-utilities", note: "Hornbill offers a Case Conversion task in String Utilities, but only converts to full UPPERCASE or lowercase. This expression specifically keeps InitCap." }
         },
         titlecap: {
             summary: "Capitalises the first letter of each space-delimited word in the string.",
             context: "Standardising customer full names, asset titles, and category descriptions.",
-            inType: "String", outType: "String"
+            inType: "String", outType: "String",
+            nativeAlt: { supported: false, note: "Hornbill's String Utilities supports UPPERCASE/lowercase only. Title Case requires this expression." }
         },
         pad: {
             summary: "Left-pads string or number with leading '0' characters until reaching target length.",
             context: "Formatting ticket identifiers into fixed-width codes (e.g. '123' &rarr; '000123').",
-            inType: "String / Number", outType: "String"
+            inType: "String / Number", outType: "String",
+            nativeAlt: { supported: false, note: "Hornbill has no native padStart / zero-pad utility node; use this expression for fixed-width references." }
         },
         mask: {
             summary: "Obfuscates sensitive identifiers, preserving only the final 4 characters.",
             context: "GDPR/PCI compliance when logging credit cards, phone numbers, or account IDs.",
-            inType: "String", outType: "String"
+            inType: "String", outType: "String",
+            nativeAlt: { supported: false, note: "Hornbill has no native masking node; use this expression to keep the last 4 characters for GDPR compliance." }
         },
         extract_between: {
             summary: "Extracts text between two specified delimiters (e.g. parentheses, brackets, or XML tags).",
             context: "Extracting ticket references '(INC00123)' from email subjects or XML/webhook payloads '<name>value</name>'.",
-            inType: "String", outType: "String (Extracted Substring)"
+            inType: "String", outType: "String (Extracted Substring)",
+            nativeAlt: { supported: true, name: "String Utilities > Regex Substring / Substring", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations#string-utilities", note: "Hornbill's String Utilities provides Regex Substring and Substring (slice). You can use the native node, or use this expression to extract between two variable markers in a single inline step without chaining multiple nodes." }
         },
         currency: {
             summary: "Enforces strict two-decimal currency representation via .toFixed(2).",
             context: "Displaying money totals or storing formatted values into financial text fields.",
-            inType: "Number / Float", outType: "String (.00)"
+            inType: "Number / Float", outType: "String (.00)",
+            nativeAlt: { supported: false, note: "Hornbill does not provide an inline currency formatter node; use this expression to enforce two decimal places (.00)." }
         },
         encode: {
             summary: "Single URL encoding of special characters and spaces.",
             context: "Preparing query parameters for external HTTP REST API integration nodes.",
-            inType: "String", outType: "URL-Encoded String"
+            inType: "String", outType: "URL-Encoded String",
+            nativeAlt: { supported: false, note: "Hornbill's String Utilities offers Base64 and JSON escape, but not URL encoding. Use this expression for REST URL parameters." }
         },
         encode2: {
             summary: "Twice-encoded URL parameter string.",
             context: "Required by security gateways (e.g. VirusTotal API) where URLs are decoded twice.",
-            inType: "String", outType: "Double URL-Encoded String"
+            inType: "String", outType: "Double URL-Encoded String",
+            nativeAlt: { supported: false, note: "No native double-URL-encode node exists; this expression replaces having to offload to external Power Automate flows." }
         },
         decode: {
             summary: "Decodes single URL-encoded string back to standard characters.",
             context: "Parsing inbound webhook parameters or decoding link payloads.",
-            inType: "Encoded String", outType: "Decoded String"
+            inType: "Encoded String", outType: "Decoded String",
+            nativeAlt: { supported: false, note: "Hornbill has no native URL decode task in String Utilities; use this expression." }
         },
         decode2: {
             summary: "Decodes twice URL-encoded strings.",
             context: "Handling double-encoded API responses or nested URI components.",
-            inType: "Double-Encoded String", outType: "Decoded String"
+            inType: "Double-Encoded String", outType: "Decoded String",
+            nativeAlt: { supported: false, note: "No native double-decode node exists in Hornbill." }
         },
         // Logic
         ternary: {
             summary: "Inline IF/THEN/ELSE condition returning value A if true, value B if false.",
             context: "Mapping numeric codes to human labels (e.g. status 1 &rarr; 'Active' / 'Inactive').",
-            inType: "Comparable Value", outType: "String, Number, or Boolean"
+            inType: "Comparable Value", outType: "String, Number, or Boolean",
+            nativeAlt: { supported: true, name: "BPM Decision Node (Branching)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "The official Hornbill approach is to branch your workflow using a Decision Node. Use this inline expression if you simply want to assign a 2-way value into a single field without branching the visual canvas." }
         },
         fallback: {
             summary: "Returns fallback default if token evaluates to null, undefined, or empty string.",
             context: "Guarding downstream workflow tasks against failure from blank form fields.",
-            inType: "Token String", outType: "String or Number"
+            inType: "Token String", outType: "String or Number",
+            nativeAlt: { supported: false, note: "Hornbill has no native null-coalescing task; this expression cleanly defaults empty/null variables." }
         },
         // Date
         format_date: {
             summary: "Parses an incoming date token and reformats it into the chosen standard or custom pattern.",
             context: "Converting database dates or user inputs into custom fields or notification formats.",
-            inType: "Date / DateTime String", outType: "Formatted Date/Time String"
+            inType: "Date / DateTime String", outType: "Formatted Date/Time String",
+            nativeAlt: { supported: true, name: "Utilities > Date Formatter (Cloud Automation / iBridge)", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill provides a fully supported Date Formatter utility node in Cloud Automations (supporting PHP date strings). Use the official node for no-code flows, or use this expression if you want the formatting evaluated inline within a field." }
         },
         now: {
             summary: "Generates current timestamp in UTC or Local time in the selected format.",
             context: "Setting resolution timestamps or today's date in Hornbill custom fields.",
-            inType: "None", outType: "Formatted Date/Time String"
+            inType: "None", outType: "Formatted Date/Time String",
+            nativeAlt: { supported: true, name: "Utilities > Get Current Timestamp (Cloud Automation / iBridge)", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill provides a Get Current Timestamp task in Cloud Automations. Use this expression for instant inline evaluation without adding an intermediate node." }
         },
         offset_now: {
             summary: "Adds or subtracts days, hours, or minutes from the current moment.",
             context: "Setting SLA targets, scheduled task due dates, or follow-up milestones.",
-            inType: "None", outType: "Formatted Date/Time String"
+            inType: "None", outType: "Formatted Date/Time String",
+            nativeAlt: { supported: true, name: "Working Time Calendars / Task Lifespan Settings", url: "https://docs.hornbill.com/esp-config/automation/human-task", note: "For task deadlines and SLAs, Hornbill provides native Working Time Calendars and lifespan offset fields. Use this expression when writing calculated offsets into custom fields." }
         },
         offset_var: {
             summary: "Adds or subtracts relative time from a dynamic date variable.",
             context: "Computing deadlines relative to ticket logged date or approval timestamp.",
-            inType: "Date / DateTime String", outType: "Formatted Date/Time String"
+            inType: "Date / DateTime String", outType: "Formatted Date/Time String",
+            nativeAlt: { supported: false, note: "Hornbill has no native node to offset a variable date token by days/hours; use this expression." }
         },
         extract_date: {
             summary: "Fast extraction of YYYY-MM-DD from SQL datetime by splitting on space.",
             context: "Extracting date portion from SQL datetime fields without Date object overhead.",
-            inType: "SQL DateTime String", outType: "YYYY-MM-DD (String)"
+            inType: "SQL DateTime String", outType: "YYYY-MM-DD (String)",
+            nativeAlt: { supported: true, name: "Utilities > Date Formatter (Cloud Automation)", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "The official Cloud Automation Date Formatter can format to YYYY-MM-DD. This expression provides a lightweight inline alternative." }
         },
         age_days: {
             summary: "Calculates full days elapsed from the given date until now.",
             context: "Aging reports, stale ticket notifications, and SLA breach calculations.",
-            inType: "Date String", outType: "Number (Integer Days)"
+            inType: "Date String", outType: "Number (Integer Days)",
+            nativeAlt: { supported: true, name: "Utilities > Get Date Difference (Cloud Automation)", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill provides a Get Date Difference task in Cloud Automations. Use this expression if you want the elapsed day count evaluated inline." }
         },
         diff_days: {
             summary: "Calculates absolute difference in days between two date tokens.",
             context: "Measuring duration between ticket opened and ticket resolved dates.",
-            inType: "Two Date Strings", outType: "Number (Integer Days)"
+            inType: "Two Date Strings", outType: "Number (Integer Days)",
+            nativeAlt: { supported: true, name: "Utilities > Get Date Difference (Cloud Automation)", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill's Get Date Difference utility computes durations between two timestamps. Use this expression for inline evaluation." }
         },
         age_hours: {
             summary: "Calculates full hours elapsed from the given date until now.",
             context: "P1 / Critical incident resolution tracking within tight hourly SLAs.",
-            inType: "Date String", outType: "Number (Integer Hours)"
+            inType: "Date String", outType: "Number (Integer Hours)",
+            nativeAlt: { supported: true, name: "Utilities > Get Date Difference (Cloud Automation)", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill provides a Get Date Difference task in Cloud Automations. Use this expression for instant inline evaluation." }
         },
         is_past: {
             summary: "Returns true if the given date is in the past compared to current moment.",
             context: "Evaluating whether SLA target has been breached in BPM Decision Nodes.",
-            inType: "Date String", outType: "Boolean (true / false)"
+            inType: "Date String", outType: "Boolean (true / false)",
+            nativeAlt: { supported: true, name: "BPM Decision Node (Date Comparison)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Hornbill Decision Nodes support comparing date fields against 'Current Time'. Use native Decision Nodes where possible, or use this expression for custom connector logic." }
         },
         is_future: {
             summary: "Returns true if the given date is in the future.",
             context: "Validating that scheduled maintenance or booking dates are set in advance.",
-            inType: "Date String", outType: "Boolean (true / false)"
+            inType: "Date String", outType: "Boolean (true / false)",
+            nativeAlt: { supported: true, name: "BPM Decision Node (Date Comparison)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Hornbill Decision Nodes support comparing dates against 'Current Time'. Use native Decision Nodes where possible." }
         },
         expires_within: {
             summary: "Returns true if target date is in the future and within the next N days.",
             context: "Triggering proactive contract, warranty, or certificate renewal notifications.",
-            inType: "Date String", outType: "Boolean (true / false)"
+            inType: "Date String", outType: "Boolean (true / false)",
+            nativeAlt: { supported: false, note: "Hornbill has no native 'expires within N days' decision rule; use this expression inside a Decision Node." }
         },
         is_weekend: {
             summary: "Returns true if date falls on Saturday or Sunday.",
             context: "Branching workflow to on-call support or pausing SLA timers over weekends.",
-            inType: "Date String", outType: "Boolean (true / false)"
+            inType: "Date String", outType: "Boolean (true / false)",
+            nativeAlt: { supported: true, name: "Working Time Calendars / Get Current Day", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill Working Time Calendars natively handle weekend exclusions for SLAs. Use this expression if you need a quick boolean check to branch a workflow." }
         }
     };
 
@@ -1849,7 +1913,24 @@
 
         if (targetDescEl && operationDescriptions[opKey]) {
             const op = operationDescriptions[opKey];
-            const isOpen = targetDescEl.classList.contains('open');
+            let altHtml = '';
+            if (op.nativeAlt) {
+                if (op.nativeAlt.supported) {
+                    altHtml = `
+                        <div class="native-alt-card">
+                            <div style="font-weight: 700; margin-bottom: 2px;">💡 Supported Hornbill Automation:</div>
+                            <div>Hornbill offers an official node: <a href="${op.nativeAlt.url}" target="_blank" rel="noopener">${op.nativeAlt.name} ↗</a></div>
+                            <div style="margin-top: 3px; font-size: 10.5px; opacity: 0.9;">${op.nativeAlt.note}</div>
+                        </div>`;
+                } else {
+                    altHtml = `
+                        <div class="no-alt-card">
+                            <div style="font-weight: 700; margin-bottom: 2px;">ℹ️ Platform Context:</div>
+                            <div>${op.nativeAlt.note}</div>
+                        </div>`;
+                }
+            }
+
             targetDescEl.innerHTML = `
                 <div class="desc-card-compact" onclick="toggleOpGuide('${targetDescEl.id}')">
                     <span class="desc-card-badge" style="font-size: 11.5px;">
@@ -1863,6 +1944,7 @@
                 <div class="desc-card-drawer">
                     <div style="font-weight: 600; color: #0f172a; margin-bottom: 3px;">${op.summary}</div>
                     <div><strong>Hornbill Workflow Use Case:</strong> ${op.context}</div>
+                    ${altHtml}
                 </div>
             `;
             if (isOpen) targetDescEl.classList.add('open');
