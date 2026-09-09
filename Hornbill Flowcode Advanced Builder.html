@@ -1870,7 +1870,11 @@
     function toggleOpGuide(elId, e) {
         if (e) e.stopPropagation();
         const card = document.getElementById(elId);
-        if (card) card.classList.toggle('open');
+        if (card) {
+            const willOpen = !card.classList.contains('open');
+            card.classList.toggle('open', willOpen);
+            card.dataset.userClosed = willOpen ? 'false' : 'true';
+        }
     }
 
     function updateDescriptions() {
@@ -1931,6 +1935,10 @@
                 }
             }
 
+            // Default to open (expanded), preserving closed state only if user explicitly collapsed it
+            const wasExplicitlyClosed = targetDescEl.dataset.userClosed === 'true';
+            const shouldBeOpen = !wasExplicitlyClosed;
+
             targetDescEl.innerHTML = `
                 <div class="desc-card-compact" onclick="toggleOpGuide('${targetDescEl.id}')">
                     <span class="desc-card-badge" style="font-size: 11.5px;">
@@ -1947,7 +1955,11 @@
                     ${altHtml}
                 </div>
             `;
-            if (isOpen) targetDescEl.classList.add('open');
+            if (shouldBeOpen) {
+                targetDescEl.classList.add('open');
+            } else {
+                targetDescEl.classList.remove('open');
+            }
         }
 
         updateMockHelperLabels();
@@ -2368,7 +2380,6 @@
         if (padPanel) padPanel.style.display = (strOp === 'pad') ? 'block' : 'none';
         if (extractPanel) extractPanel.style.display = (strOp === 'extract_between') ? 'block' : 'none';
         
-        switchCategory(); 
         updateSmartMockDefaults();
         updateDescriptions();
     }
