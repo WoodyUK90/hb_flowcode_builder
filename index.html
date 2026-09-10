@@ -985,9 +985,284 @@
             border-left: 4px solid #38bdf8;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(12px); }
+        /* Quick Start Banner */
+        .quick-banner {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12.5px;
+            color: #1e293b;
+        }
+
+        .quick-banner-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .quick-banner-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .quick-banner-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 5px 12px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .quick-banner-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .quick-banner-close {
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: #64748b;
+            cursor: pointer;
+            padding: 2px 6px;
+            line-height: 1;
+            border-radius: 4px;
+        }
+
+        .quick-banner-close:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* User Guide Modal Specifics */
+        .guide-modal-card {
+            max-width: 920px;
+            height: 90vh;
+        }
+
+        .guide-nav-tabs {
+            display: flex;
+            gap: 4px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 14px;
+            overflow-x: auto;
+        }
+
+        .guide-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .guide-tab-btn:hover {
+            color: var(--primary);
+            background: rgba(2, 132, 199, 0.08);
+        }
+
+        .guide-tab-btn.active {
+            background: white;
+            color: var(--primary-hover);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .guide-tab-pane {
+            display: none;
+        }
+
+        .guide-tab-pane.active {
+            display: block;
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Guide Step Timeline */
+        .guide-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 12px 0 20px 0;
+        }
+
+        .guide-step-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            position: relative;
+        }
+
+        .guide-step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .guide-step-num {
+            width: 26px;
+            height: 26px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .guide-step-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .guide-step-body {
+            font-size: 12px;
+            color: #334155;
+            line-height: 1.55;
+        }
+
+        .guide-callout {
+            margin-top: 8px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 3px solid #0284c7;
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .guide-callout strong {
+            color: #0369a1;
+        }
+
+        .guide-recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .guide-recipe-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+        }
+
+        .guide-recipe-card:hover {
+            border-color: #38bdf8;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .guide-recipe-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .guide-recipe-desc {
+            font-size: 11.5px;
+            color: #475569;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+
+        .guide-code-snippet {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .guide-recipe-btn {
+            align-self: flex-start;
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .guide-recipe-btn:hover {
+            background: #0284c7;
+            color: white;
+        }
+
+        /* Guide Rules Alert Box */
+        .guide-alert-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid #f59e0b;
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        .guide-alert-danger {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
         }
     </style>
 </head>
@@ -1012,6 +1287,10 @@
                 <span class="dot"></span>
                 <span>Zero-Dependency &bull; UK Standard</span>
             </div>
+            <button class="action-btn action-btn-secondary" onclick="openGuideModal()" title="Open comprehensive User Guide, Manual & Quick Start Walkthrough">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                User Guide
+            </button>
             <button class="action-btn action-btn-secondary" onclick="copyShareableLink()" title="Generate and copy a direct link to this exact Flowcode setup">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                 Share Link
@@ -1022,6 +1301,20 @@
             </a>
         </div>
     </header>
+
+    <!-- Interactive Onboarding Quick-Banner -->
+    <div id="quick-start-banner" class="quick-banner">
+        <div class="quick-banner-content">
+            <span class="quick-banner-icon">💡</span>
+            <div class="quick-banner-text">
+                <strong>New to Flowcode Expressions?</strong> Eliminate workflow decision &amp; utility nodes in 3 simple steps: pick your Hornbill variable, choose an operation, and paste the generated expression into your target node field.
+            </div>
+        </div>
+        <div class="quick-banner-actions">
+            <button type="button" class="quick-banner-btn" onclick="openGuideModal('quickstart')">Open Quick Start Walkthrough</button>
+            <button type="button" class="quick-banner-close" onclick="dismissQuickBanner()" title="Dismiss banner">&times;</button>
+        </div>
+    </div>
 
     <!-- Top Command Bar: Primary Base Variable & Quick Action Templates Trigger -->
     <div class="token-bar-card">
@@ -1488,6 +1781,257 @@
             </a>
         </div>
     </footer>
+</div>
+
+<!-- User Guide & Manual Modal -->
+<div class="modal-backdrop" id="guide-modal" onclick="closeGuideModalOnBackdrop(event)">
+    <div class="modal-card guide-modal-card" role="dialog" aria-modal="true" aria-labelledby="guide-modal-title">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <span class="modal-icon">📖</span>
+                <div>
+                    <h3 class="modal-title" id="guide-modal-title">Hornbill Flowcode User Guide &amp; Manual</h3>
+                    <p class="modal-subtitle">How to condense multi-node BPM logic into clean inline expressions</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeGuideModal()" title="Close (Esc)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body" style="padding: 16px 20px;">
+            <!-- Navigation Tabs -->
+            <div class="guide-nav-tabs">
+                <button type="button" class="guide-tab-btn active" id="tab-btn-quickstart" onclick="switchGuideTab('quickstart')">
+                    <span>🚀</span> Quick Start (3 Steps)
+                </button>
+                <button type="button" class="guide-tab-btn" id="tab-btn-recipes" onclick="switchGuideTab('recipes')">
+                    <span>🍳</span> Cookbook Recipes
+                </button>
+                <button type="button" class="guide-tab-btn" id="tab-btn-casting" onclick="switchGuideTab('casting')">
+                    <span>⚙️</span> Why Type Casting Matters
+                </button>
+                <button type="button" class="guide-tab-btn" id="tab-btn-rules" onclick="switchGuideTab('rules')">
+                    <span>🛡️</span> Safety &amp; Hornbill Rules
+                </button>
+                <button type="button" class="guide-tab-btn" id="tab-btn-faq" onclick="switchGuideTab('faq')">
+                    <span>❓</span> FAQ &amp; Troubleshooting
+                </button>
+            </div>
+
+            <!-- Tab 1: Quick Start -->
+            <div class="guide-tab-pane active" id="pane-quickstart">
+                <p style="font-size: 13px; color: #334155; margin-top: 0;">
+                    Hornbill BPM workflows normally require multiple Decision nodes, Stage Milestones, or External Automations just to do basic calculations, format dates, or provide fallback defaults. This tool builds <strong>inline Flowcode expressions</strong> that execute directly inside any node field.
+                </p>
+
+                <div class="guide-timeline">
+                    <!-- Step 1 -->
+                    <div class="guide-step-card">
+                        <div class="guide-step-header">
+                            <span class="guide-step-num">1</span>
+                            <h4 class="guide-step-title">Grab Your Variable from Hornbill</h4>
+                        </div>
+                        <div class="guide-step-body">
+                            Inside your Hornbill workflow (e.g. inside an <em>Update Custom Fields</em> or <em>Send Email</em> node), click the Hornbill <strong>Variable Picker</strong> icon <code>{&nbsp;}</code> next to any input field. Select the node and attribute you need.
+                            <div class="guide-callout">
+                                <strong>Example Token:</strong> <code>&amp;[global['flowcoderefs']['getReqDetails']['custom_1']]</code> or an Intelligent Capture answer.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="guide-step-card">
+                        <div class="guide-step-header">
+                            <span class="guide-step-num">2</span>
+                            <h4 class="guide-step-title">Configure in the Builder</h4>
+                        </div>
+                        <div class="guide-step-body">
+                            Paste your variable into <strong>Step 1 (Primary Base Variable)</strong> at the top of the builder. Then select:
+                            <ul style="margin: 6px 0 6px 18px; padding: 0;">
+                                <li><strong>Operation Category:</strong> Math, Routing, String Transformations, Advanced Logic, or Dates.</li>
+                                <li><strong>Data Conversion:</strong> <code>Number()</code>, <code>parseFloat()</code>, <code>parseInt()</code>, or <code>String()</code>.</li>
+                                <li><strong>Operation Parameters:</strong> Values, conditions, or target formats.</li>
+                            </ul>
+                            Watch the <strong>🧪 Live Preview Result</strong> update instantly with in-memory simulation!
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="guide-step-card">
+                        <div class="guide-step-header">
+                            <span class="guide-step-num">3</span>
+                            <h4 class="guide-step-title">Copy &amp; Paste Back into Hornbill</h4>
+                        </div>
+                        <div class="guide-step-body">
+                            Click <strong>Copy Code</strong> under the <em>Generated Flowcode</em> deck. Back in your Hornbill workflow node, paste the copied expression into your target field (e.g., in a Custom Date, Custom Integer, or Custom Text field).
+                            <div class="guide-callout">
+                                <strong>When the workflow runs:</strong> Hornbill's backend engine evaluates the expression on the fly and saves the result directly—no extra nodes needed!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Cookbook Recipes -->
+            <div class="guide-tab-pane" id="pane-recipes">
+                <p style="font-size: 13px; color: #334155; margin-top: 0;">
+                    Click any recipe below to instantly load it into the builder studio:
+                </p>
+                <div class="guide-recipe-grid">
+                    <!-- Recipe 1 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>🛡️</span> Intelligent Capture Fallback</div>
+                            <div class="guide-recipe-desc">If an Intelligent Capture form field was left blank by the user, automatically fallback to a safe default string.</div>
+                            <div class="guide-code-snippet">&amp;[global['flowcoderefs']['ic']['ans'] || "General Inquiry"]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipe('String', 'logic', 'fallback', '', 'General Inquiry', '')">Load Recipe</button>
+                    </div>
+
+                    <!-- Recipe 2 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>📅</span> Custom Field Date (YYYY-MM-DD)</div>
+                            <div class="guide-recipe-desc">Format today's date or a request logged date into Hornbill's strict custom field standard (no time component).</div>
+                            <div class="guide-code-snippet">&amp;[new Date().toISOString().slice(0, 10)]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeDate('now', 'YYYY-MM-DD')">Load Recipe</button>
+                    </div>
+
+                    <!-- Recipe 3 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>⚖️</span> Ternary Status Mapper</div>
+                            <div class="guide-recipe-desc">Evaluate an integer status code (1 = "Approved", otherwise "Rejected") without needing a decision branch.</div>
+                            <div class="guide-code-snippet">&amp;[Number(global['flowcoderefs']['node']['result']) === 1 ? "Approved" : "Rejected"]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipe('Number', 'logic', 'ternary', '===', 'Approved', 'Rejected')">Load Recipe</button>
+                    </div>
+
+                    <!-- Recipe 4 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>⏱️</span> Ticket Age in Elapsed Days</div>
+                            <div class="guide-recipe-desc">Calculate how many days have elapsed between the ticket dateLogged and right now.</div>
+                            <div class="guide-code-snippet">&amp;[Math.floor((Date.now() - new Date(...).getTime()) / 86400000)]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeDate('age_days', '')">Load Recipe</button>
+                    </div>
+
+                    <!-- Recipe 5 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>🔍</span> Extract Between Characters</div>
+                            <div class="guide-recipe-desc">Extract a reference number or username trapped inside parentheses <code>(INC001234)</code>.</div>
+                            <div class="guide-code-snippet">&amp;[(() => { const s = String(...); return s.substring(...); })()]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeExtract('(', ')', true)">Load Recipe</button>
+                    </div>
+
+                    <!-- Recipe 6 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>£</span> Currency &amp; 20% VAT Calculation</div>
+                            <div class="guide-recipe-desc">Multiply a base price token by 1.20 and format as currency with exactly 2 decimal places.</div>
+                            <div class="guide-code-snippet">&amp;[(parseFloat(cost) * 1.2).toFixed(2)]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipe('parseFloat', 'math', 'multiply', 'static', '1.20', '')">Load Recipe</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Type Casting -->
+            <div class="guide-tab-pane" id="pane-casting">
+                <p style="font-size: 13px; color: #334155; margin-top: 0;">
+                    One of the most frequent sources of workflow bugs in Hornbill is <strong>accidental string concatenation</strong>.
+                </p>
+
+                <div class="guide-alert-box">
+                    <strong>Why Hornbill tokens act like strings:</strong> Even if a field in Hornbill is called "Cost", "Quantity", or "Count", Hornbill's workflow engine frequently passes the token value as a JavaScript string (e.g. <code>"100"</code> instead of <code>100</code>).
+                </div>
+
+                <div style="background: white; border: 1px solid #e2e8f0; border-radius: var(--radius-sm); overflow: hidden; margin-top: 10px;">
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #475569;">
+                                <th style="padding: 8px 12px;">Casting Function</th>
+                                <th style="padding: 8px 12px;">When to Use</th>
+                                <th style="padding: 8px 12px;">Why It Matters</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: #334155;">
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 8px 12px;"><code>Number(val)</code></td>
+                                <td style="padding: 8px 12px;">General numeric math &amp; calculations</td>
+                                <td style="padding: 8px 12px;">Prevents <code>"100" + 20</code> becoming <code>"10020"</code></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 8px 12px;"><code>parseFloat(val)</code></td>
+                                <td style="padding: 8px 12px;">Currency, prices, VAT, percentages</td>
+                                <td style="padding: 8px 12px;">Preserves decimal places (e.g. <code>19.99</code>)</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 8px 12px;"><code>parseInt(val, 10)</code></td>
+                                <td style="padding: 8px 12px;">Whole integers, counters, routing indexes</td>
+                                <td style="padding: 8px 12px;">Always pass radix <code>10</code> to prevent octal parsing</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 12px;"><code>String(val)</code></td>
+                                <td style="padding: 8px 12px;">Text operations, padding, masking, regex</td>
+                                <td style="padding: 8px 12px;">Guarantees methods like <code>.padStart()</code> or <code>.slice()</code> don't crash on nulls</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 4: Rules & Safety -->
+            <div class="guide-tab-pane" id="pane-rules">
+                <div class="guide-alert-box guide-alert-danger">
+                    <strong>⚠️ Platform Stability Warning (Gerry's Rule):</strong> Flowcode expressions run directly in Google Chrome's V8 engine inside Hornbill's core application processes. You must never introduce tight loops (<code>for</code>/<code>while</code>) or unbounded recursion!
+                </div>
+
+                <div style="font-size: 12.5px; color: #334155; line-height: 1.6;">
+                    <h4 style="margin: 12px 0 4px 0; color: #0f172a;">1. Strictly Unsupported by Hornbill</h4>
+                    <p style="margin: 0 0 10px 0;">While Hornbill allows sensible customers to use custom expressions to cut down node bloat, it is officially classified as <em>unsupported</em>. If customer workflows introduce unstable code, Hornbill reserves the right to implement defensive restrictions.</p>
+
+                    <h4 style="margin: 12px 0 4px 0; color: #0f172a;">2. Delimiter Cleanliness (No Nested Enclosures)</h4>
+                    <p style="margin: 0 0 10px 0;">Every Flowcode expression is enclosed in an outer <code>&amp;[...]</code>. When embedding tokens inside expressions, make sure you do <strong>not</strong> nest enclosures like <code>&amp;[&amp;[...]]</code>. This tool automatically strips inner brackets for you.</p>
+
+                    <h4 style="margin: 12px 0 4px 0; color: #0f172a;">3. Hornbill Custom Field Date Formatting</h4>
+                    <p style="margin: 0 0 10px 0;">Hornbill Custom Date fields reject timestamps that include hours or time zones. They strictly require the <code>YYYY-MM-DD</code> ISO date format without any time component (e.g. <code>2026-09-10</code>).</p>
+
+                    <h4 style="margin: 12px 0 4px 0; color: #0f172a;">4. Prefer Native Hornbill Nodes Where Feasible</h4>
+                    <p style="margin: 0 0 10px 0;">If Hornbill provides a dedicated native automation node for an activity (such as URL decoding or string slicing), consider using the native node first unless combining steps reduces significant workflow complexity.</p>
+                </div>
+            </div>
+
+            <!-- Tab 5: FAQ & Troubleshooting -->
+            <div class="guide-tab-pane" id="pane-faq">
+                <div style="font-size: 12.5px; color: #334155; line-height: 1.55;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #0f172a; font-size: 13px;">Q: Where can I paste the generated Flowcode expression?</strong>
+                        <p style="margin: 2px 0 0 0; color: #475569;">You can paste it into almost any node input field that accepts text or variables: <em>Update Custom Fields</em>, <em>Log Request</em>, <em>Email Templates</em>, <em>Task Titles / Descriptions</em>, and external webhook parameters.</p>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #0f172a; font-size: 13px;">Q: Why did my calculation output <code>NaN</code> (Not a Number)?</strong>
+                        <p style="margin: 2px 0 0 0; color: #475569;">This happens when the Hornbill token contained an empty string or non-numeric characters (like currency symbols <code>£</code> or commas). In the builder, ensure you use <code>parseFloat()</code> or test with the Fallback operator (e.g. <code>parseFloat(val) || 0</code>).</p>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #0f172a; font-size: 13px;">Q: Can I share a specific Flowcode setup with a colleague?</strong>
+                        <p style="margin: 2px 0 0 0; color: #475569;">Yes! Click the <strong>Share Link</strong> button in the top navigation header. It encodes your entire variable, operation, and mock values into a shareable URL that loads the exact state on any computer.</p>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #0f172a; font-size: 13px;">Q: Does this tool send my Hornbill data or tokens anywhere?</strong>
+                        <p style="margin: 2px 0 0 0; color: #475569;">No. This application is 100% client-side, zero-dependency HTML/JavaScript. All calculations, parsing, and live simulation run entirely in your browser's memory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Quick Action Templates Modal -->
@@ -2237,10 +2781,130 @@
         applyDatePreset(...args);
     }
 
-    // Close modal on Escape key
+    // User Guide & Manual Modal Controls
+    function openGuideModal(initialTab = null) {
+        const modal = document.getElementById('guide-modal');
+        if (modal) {
+            if (initialTab) {
+                switchGuideTab(initialTab);
+            }
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeGuideModal() {
+        const modal = document.getElementById('guide-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function closeGuideModalOnBackdrop(event) {
+        if (event.target === document.getElementById('guide-modal')) {
+            closeGuideModal();
+        }
+    }
+
+    function switchGuideTab(tabId) {
+        const tabBtns = document.querySelectorAll('.guide-tab-btn');
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+        if (activeBtn) activeBtn.classList.add('active');
+
+        const panes = document.querySelectorAll('.guide-tab-pane');
+        panes.forEach(pane => pane.classList.remove('active'));
+        const activePane = document.getElementById(`pane-${tabId}`);
+        if (activePane) activePane.classList.add('active');
+    }
+
+    function dismissQuickBanner() {
+        const banner = document.getElementById('quick-start-banner');
+        if (banner) {
+            banner.style.display = 'none';
+            try {
+                sessionStorage.setItem('hb_guide_banner_dismissed', 'true');
+            } catch (e) {}
+        }
+    }
+
+    // Guide Cookbook Recipe Loaders
+    function loadGuideRecipe(convType, category, operation, compare, tVal, fVal) {
+        closeGuideModal();
+        document.getElementById('category').value = category;
+        switchCategory();
+
+        const r = document.querySelector(`input[name="convType"][value="${convType}"]`);
+        if (r && !r.disabled) r.checked = true;
+
+        if (category === 'logic') {
+            document.getElementById('logic-op').value = operation;
+            if (operation === 'ternary') {
+                document.getElementById('logic-cond').value = compare || '===';
+                document.getElementById('logic-compare').value = '1';
+                document.getElementById('logic-true').value = tVal;
+                document.getElementById('logic-false').value = fVal;
+                document.getElementById('mock-val-1').value = '1';
+            } else {
+                document.getElementById('logic-fallback-val').value = tVal;
+                document.getElementById('mock-val-1').value = '';
+            }
+            toggleLogicInputs();
+        } else if (category === 'math') {
+            document.getElementById('math-op').value = operation;
+            const staticRadio = document.querySelector('input[name="mathModType"][value="static"]');
+            if (staticRadio) staticRadio.checked = true;
+            document.getElementById('math-val').value = tVal;
+            document.getElementById('mock-val-1').value = '100';
+            toggleMathInputs();
+        }
+
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Cookbook recipe loaded!", "success");
+    }
+
+    function loadGuideRecipeDate(op, format) {
+        closeGuideModal();
+        document.getElementById('category').value = 'date';
+        switchCategory();
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        if (strRadio) strRadio.checked = true;
+
+        document.getElementById('date-op').value = op;
+        if (format) {
+            document.getElementById('date-format-select').value = format;
+        }
+        toggleDateInputs();
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Date recipe loaded!", "success");
+    }
+
+    function loadGuideRecipeExtract(start, end, trim) {
+        closeGuideModal();
+        document.getElementById('category').value = 'string';
+        switchCategory();
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        if (strRadio) strRadio.checked = true;
+
+        document.getElementById('string-op').value = 'extract_between';
+        document.getElementById('extract-start').value = start;
+        document.getElementById('extract-end').value = end;
+        document.getElementById('extract-trim').checked = !!trim;
+        document.getElementById('mock-val-1').value = 'Ticket summary: (INC0012345) Assigned to Team';
+        toggleStringInputs();
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Extract recipe loaded!", "success");
+    }
+
+    // Close modals on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeTemplatesModal();
+            closeGuideModal();
         }
     });
 
@@ -3079,6 +3743,14 @@
     // Initialization
     document.getElementById('variable').addEventListener('input', generateFlowcode);
     
+    // Check session storage for dismissed quick-start banner
+    try {
+        if (sessionStorage.getItem('hb_guide_banner_dismissed') === 'true') {
+            const banner = document.getElementById('quick-start-banner');
+            if (banner) banner.style.display = 'none';
+        }
+    } catch (e) {}
+
     // Check for URL parameters, otherwise initialize defaults
     if (!loadFromUrlParams()) {
         switchCategory();
