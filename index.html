@@ -1327,7 +1327,7 @@
             <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
                 <span class="btn-icon">⚡</span>
                 <span>Quick Action Templates</span>
-                <span class="template-count-badge">16</span>
+                <span class="template-count-badge">17</span>
             </button>
         </div>
         <div class="token-input-wrapper">
@@ -1504,6 +1504,9 @@
                             <optgroup label="Formatting">
                                 <option value="currency">Strict Currency Format (15.00)</option>
                             </optgroup>
+                            <optgroup label="Item &amp; List Counting">
+                                <option value="count_items">Count Delimited Items (Checklists, Multi-Select CSV)</option>
+                            </optgroup>
                             <optgroup label="URL Encoding (API Support)">
                                 <option value="encode1">Single URL Encode [encodeURIComponent(x)]</option>
                                 <option value="encode2">Double URL Encode (Nested REST APIs)</option>
@@ -1518,6 +1521,32 @@
                     <div class="inner-panel" id="string-pad-panel" style="display: none;">
                         <label for="pad-len">Total String Target Length</label>
                         <input type="number" id="pad-len" value="6" min="1" max="50" oninput="generateFlowcode()">
+                    </div>
+
+                    <!-- Count Delimited Items (Checklist) Panel -->
+                    <div class="inner-panel" id="string-count-panel" style="display: none;">
+                        <div class="grid-2" style="margin-bottom: 8px;">
+                            <div>
+                                <label for="count-delim">Item Separator / Delimiter</label>
+                                <select id="count-delim" onchange="toggleCustomCountDelim(); generateFlowcode()">
+                                    <option value="," selected>Comma ( , ) &mdash; Hornbill Checklist &amp; Multi-Select Default</option>
+                                    <option value=";">Semicolon ( ; )</option>
+                                    <option value="|">Pipe ( | )</option>
+                                    <option value="\n">Newline (Line by Line)</option>
+                                    <option value="custom">Custom Delimiter String...</option>
+                                </select>
+                            </div>
+                            <div id="count-custom-delim-group" style="display: none;">
+                                <label for="count-custom-delim">Custom Delimiter</label>
+                                <input type="text" id="count-custom-delim" value="," placeholder="e.g. :: or - " oninput="generateFlowcode()">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-bottom: 0;">
+                                <input type="checkbox" id="count-trim" checked onchange="generateFlowcode()">
+                                <span>Trim whitespace and ignore empty items (prevents trailing commas from false-counting)</span>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Extract Between Panel -->
@@ -1940,6 +1969,16 @@
                         </div>
                         <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipe('parseFloat', 'math', 'multiply', 'static', '1.20', '')">Load Recipe</button>
                     </div>
+
+                    <!-- Recipe 7 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>📋</span> Count Checklist / Multi-Select Items</div>
+                            <div class="guide-recipe-desc">Count items in comma-separated checklist answers, safely ignoring trailing blanks.</div>
+                            <div class="guide-code-snippet">&amp;[(() => { const s = String(ans).trim(); return s ? s.split(',').map(x => x.trim()).filter(Boolean).length : 0; })()]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeCount(',', true)">Load Recipe</button>
+                    </div>
                 </div>
             </div>
 
@@ -2054,10 +2093,10 @@
         </div>
         <div class="modal-body">
             <div class="preset-filter-row">
-                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (16)</button>
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (17)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (1)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (7)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (8)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
             </div>
             <div class="modal-preset-grid">
@@ -2072,6 +2111,10 @@
                     <div class="modal-preset-desc">Evaluates status code condition with custom True/False labels.</div>
                 </button>
                 <!-- String -->
+                <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'count_items', '', {delim: ',', trim: true}, 'Laptop, Monitor, Docking Station, Keyboard', '', 'global[\'flowcoderefs\'][\'myChecklistNode\'][\'checklistAnswers\']')">
+                    <div class="modal-preset-header"><span>📋</span> Checklist / CSV Count</div>
+                    <div class="modal-preset-desc">Counts items in comma-separated checklist strings or multi-select answers.</div>
+                </button>
                 <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'titlecap', '', '', 'john doe', '')">
                     <div class="modal-preset-header"><span>Aa</span> Title Case (John Doe)</div>
                     <div class="modal-preset-desc">Capitalises first letter of each space-separated word.</div>
@@ -2264,6 +2307,12 @@
             context: "Displaying money totals or storing formatted values into financial text fields.",
             inType: "Number / Float", outType: "String (.00)",
             nativeAlt: { supported: false, note: "Hornbill does not provide an inline currency formatter node; use this expression to enforce two decimal places (.00)." }
+        },
+        count_items: {
+            summary: "Counts the number of delimited items in a checklist or multi-select string, safely ignoring blanks.",
+            context: "Counting items selected in Hornbill Checklists, multi-checkbox Intelligent Capture answers, or comma-separated lists for decision branches or Custom Integer fields.",
+            inType: "String (Delimited / CSV)", outType: "Integer (Number)",
+            nativeAlt: { supported: false, note: "Hornbill has no native list length or CSV item counting node in workflow automations. This expression evaluates the count directly." }
         },
         encode: {
             summary: "Single URL encoding of special characters and spaces.",
@@ -2522,7 +2571,12 @@
         } else if (cat === 'routing') {
             helper1.textContent = '(token 1: counter / ticket ID)';
         } else if (cat === 'string') {
-            helper1.textContent = '(token 1: input text)';
+            const strOp = document.getElementById('string-op').value;
+            if (strOp === 'count_items') {
+                helper1.textContent = '(token 1: checklist or delimited string)';
+            } else {
+                helper1.textContent = '(token 1: input text)';
+            }
         } else if (cat === 'logic') {
             helper1.textContent = '(token 1: test value / condition)';
         } else if (cat === 'date') {
@@ -2675,6 +2729,10 @@
             document.getElementById('string-op').value = operation;
             if (operation === 'pad' && extraVal) {
                 document.getElementById('pad-len').value = extraVal;
+            } else if (operation === 'count_items' && extraVal && typeof extraVal === 'object') {
+                if (extraVal.delim !== undefined) document.getElementById('count-delim').value = extraVal.delim;
+                if (extraVal.customDelim !== undefined) document.getElementById('count-custom-delim').value = extraVal.customDelim;
+                if (extraVal.trim !== undefined) document.getElementById('count-trim').checked = !!extraVal.trim;
             } else if (operation === 'extract_between' && extraVal && typeof extraVal === 'object') {
                 if (extraVal.start !== undefined) document.getElementById('extract-start').value = extraVal.start;
                 if (extraVal.end !== undefined) document.getElementById('extract-end').value = extraVal.end;
@@ -2900,6 +2958,23 @@
         showToast("Extract recipe loaded!", "success");
     }
 
+    function loadGuideRecipeCount(delim, trim) {
+        closeGuideModal();
+        document.getElementById('category').value = 'string';
+        switchCategory();
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        if (strRadio) strRadio.checked = true;
+
+        document.getElementById('string-op').value = 'count_items';
+        document.getElementById('count-delim').value = delim || ',';
+        document.getElementById('count-trim').checked = !!trim;
+        document.getElementById('mock-val-1').value = 'Laptop, Monitor, Docking Station, Keyboard';
+        toggleStringInputs();
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Checklist count recipe loaded!", "success");
+    }
+
     // Close modals on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -2930,6 +3005,7 @@
                 'mask': '07700900461',
                 'extract_between': 'Email subject: Incident (INC0012345) has been assigned',
                 'currency': '15.5',
+                'count_items': 'Laptop, Monitor, Docking Station, Keyboard',
                 'encode': 'https://api.domain.com/?q=hello world',
                 'encode2': 'https://api.domain.com/?q=hello world',
                 'decode': 'https%3A%2F%2Fapi.domain.com%2F%3Fq%3Dhello%20world',
@@ -3039,13 +3115,24 @@
     function toggleStringInputs() {
         const strOp = document.getElementById('string-op').value;
         const padPanel = document.getElementById('string-pad-panel');
+        const countPanel = document.getElementById('string-count-panel');
         const extractPanel = document.getElementById('string-extract-panel');
 
         if (padPanel) padPanel.style.display = (strOp === 'pad') ? 'block' : 'none';
+        if (countPanel) countPanel.style.display = (strOp === 'count_items') ? 'block' : 'none';
         if (extractPanel) extractPanel.style.display = (strOp === 'extract_between') ? 'block' : 'none';
         
+        toggleCustomCountDelim();
         updateSmartMockDefaults();
         updateDescriptions();
+    }
+
+    function toggleCustomCountDelim() {
+        const delimSelect = document.getElementById('count-delim');
+        const customGroup = document.getElementById('count-custom-delim-group');
+        if (delimSelect && customGroup) {
+            customGroup.style.display = (delimSelect.value === 'custom') ? 'block' : 'none';
+        }
     }
 
     function toggleLogicInputs() {
@@ -3270,6 +3357,19 @@
                     return doTrim ? extracted.trim() : extracted;
                 }
                 if (strOp === 'currency') return parseFloat(c1).toFixed(2);
+                if (strOp === 'count_items') {
+                    const delimSelect = document.getElementById('count-delim').value;
+                    const customDelim = document.getElementById('count-custom-delim').value;
+                    const delim = (delimSelect === 'custom') ? (customDelim || ',') : delimSelect;
+                    const doTrim = document.getElementById('count-trim').checked;
+                    const trimmedM1 = strM1.trim();
+                    if (!trimmedM1) return 0;
+                    const parts = trimmedM1.split(delim);
+                    if (doTrim) {
+                        return parts.map(x => x.trim()).filter(Boolean).length;
+                    }
+                    return parts.filter(Boolean).length;
+                }
                 if (strOp === 'encode') return encodeURIComponent(strM1);
                 if (strOp === 'encode2') return encodeURIComponent(encodeURIComponent(strM1));
                 if (strOp === 'decode') return decodeURIComponent(strM1);
@@ -3448,6 +3548,20 @@
             } else if (strOp === 'currency') {
                 innerExpression = `${expressionVar1}.toFixed(2)`;
                 expText = `Formats numeric value into strict currency representation with two decimal places.`;
+            } else if (strOp === 'count_items') {
+                const delimSelect = document.getElementById('count-delim').value;
+                const customDelim = document.getElementById('count-custom-delim').value;
+                const delim = (delimSelect === 'custom') ? (customDelim || ',') : delimSelect;
+                const doTrim = document.getElementById('count-trim').checked;
+                const escapedDelim = JSON.stringify(delim);
+
+                if (doTrim) {
+                    innerExpression = `(() => { const s = String(${rawVar1}).trim(); return s ? s.split(${escapedDelim}).map(x => x.trim()).filter(Boolean).length : 0; })()`;
+                    expText = `Counts delimited items split by <code>${escapeHtml(delim)}</code>, safely trimming entries and ignoring empty/blank values. Returns integer <strong>0</strong> if empty.`;
+                } else {
+                    innerExpression = `(() => { const s = String(${rawVar1}).trim(); return s ? s.split(${escapedDelim}).filter(Boolean).length : 0; })()`;
+                    expText = `Counts delimited items split by <code>${escapeHtml(delim)}</code>. Returns integer <strong>0</strong> if empty.`;
+                }
             } else if (strOp === 'encode') {
                 innerExpression = `encodeURIComponent(${expressionVar1})`;
                 expText = `URL-encodes characters for HTTP query parameters.`;
@@ -3620,6 +3734,9 @@
             params.set('extEnd', document.getElementById('extract-end').value);
             params.set('extFallback', document.getElementById('extract-fallback').value);
             params.set('extTrim', document.getElementById('extract-trim').checked ? '1' : '0');
+            params.set('countDelim', document.getElementById('count-delim').value);
+            params.set('countCustomDelim', document.getElementById('count-custom-delim').value);
+            params.set('countTrim', document.getElementById('count-trim').checked ? '1' : '0');
         } else if (cat === 'logic') {
             params.set('op', document.getElementById('logic-op').value);
             params.set('cond', document.getElementById('logic-cond').value);
@@ -3702,6 +3819,9 @@
             if (params.has('extEnd')) document.getElementById('extract-end').value = params.get('extEnd');
             if (params.has('extFallback')) document.getElementById('extract-fallback').value = params.get('extFallback');
             if (params.has('extTrim')) document.getElementById('extract-trim').checked = (params.get('extTrim') === '1');
+            if (params.has('countDelim')) document.getElementById('count-delim').value = params.get('countDelim');
+            if (params.has('countCustomDelim')) document.getElementById('count-custom-delim').value = params.get('countCustomDelim');
+            if (params.has('countTrim')) document.getElementById('count-trim').checked = (params.get('countTrim') === '1');
             toggleStringInputs();
         } else if (cat === 'logic') {
             if (op) document.getElementById('logic-op').value = op;
