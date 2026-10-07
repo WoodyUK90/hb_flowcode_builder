@@ -1327,7 +1327,7 @@
             <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
                 <span class="btn-icon">⚡</span>
                 <span>Quick Action Templates</span>
-                <span class="template-count-badge">17</span>
+                <span class="template-count-badge">18</span>
             </button>
         </div>
         <div class="token-input-wrapper">
@@ -1583,6 +1583,7 @@
                         <select id="logic-op" onchange="toggleLogicInputs(); updateDescriptions(); generateFlowcode()">
                             <option value="ternary">Ternary Expression (Inline IF / ELSE)</option>
                             <option value="fallback">Null / Undefined Coalesce / Fallback</option>
+                            <option value="conditional_block">Conditional Block / Header Wrapper (Omit if Empty)</option>
                         </select>
                     </div>
 
@@ -1619,6 +1620,37 @@
                     <div class="inner-panel" id="logic-fallback-panel" style="display: none;">
                         <label for="logic-fallback-val">Fallback Default Value (If Null, Undefined, or Empty)</label>
                         <input type="text" id="logic-fallback-val" value="N/A" oninput="generateFlowcode()">
+                    </div>
+
+                    <!-- Conditional Block / Header Wrapper Panel -->
+                    <div class="inner-panel" id="logic-conditional-panel" style="display: none;">
+                        <div class="form-group">
+                            <label for="cond-header">Header / Prefix Text</label>
+                            <input type="text" id="cond-header" value="'''Additional Information'''" placeholder="e.g. '''Additional Information''' or **Notes:**" oninput="generateFlowcode()">
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="cond-sep">Separator between Header &amp; Value</label>
+                                <select id="cond-sep" onchange="generateFlowcode()">
+                                    <option value="\n" selected>Newline (\n) &mdash; Value on Next Line</option>
+                                    <option value=" ">Space ( ) &mdash; Inline on Same Line</option>
+                                    <option value=": ">Colon &amp; Space (: )</option>
+                                    <option value="">None &mdash; Direct Concatenation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cond-suffix">Trailing Suffix / Spacing</label>
+                                <select id="cond-suffix" onchange="generateFlowcode()">
+                                    <option value="\n\n" selected>Double Newline (\n\n) &mdash; Spacing Before Next Section</option>
+                                    <option value="\n">Single Newline (\n)</option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="cond-empty-val">Fallback if Empty / Null <span class="helper-label">(Leave blank to omit completely)</span></label>
+                            <input type="text" id="cond-empty-val" value="" placeholder="Leave blank to completely omit header &amp; value, or e.g. None" oninput="generateFlowcode()">
+                        </div>
                     </div>
                 </div>
 
@@ -1979,6 +2011,16 @@
                         </div>
                         <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeCount(',', true)">Load Recipe</button>
                     </div>
+
+                    <!-- Recipe 8 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>📑</span> Conditional Header &amp; Section</div>
+                            <div class="guide-recipe-desc">Wrap text with a header and line breaks, but omit the entire block if the field is blank.</div>
+                            <div class="guide-code-snippet">&amp;[(() => { const v = String(val || "").trim(); return v ? ("'''Header'''\n" + v + "\n\n") : ""; })()]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeConditional('\'\'\'Additional Information\'\'\'', '\\n', '\\n\\n', '')">Load Recipe</button>
+                    </div>
                 </div>
             </div>
 
@@ -2093,9 +2135,9 @@
         </div>
         <div class="modal-body">
             <div class="preset-filter-row">
-                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (17)</button>
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (18)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (1)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (2)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (8)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
             </div>
@@ -2109,6 +2151,10 @@
                 <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('Number', 'logic', 'ternary', '', '', '1', '')">
                     <div class="modal-preset-header"><span>⚖</span> Ternary Status IF/ELSE</div>
                     <div class="modal-preset-desc">Evaluates status code condition with custom True/False labels.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('String', 'logic', 'conditional_block', '', {header: '\'\'\'Additional Information\'\'\'', sep: '\\n', suffix: '\\n\\n', emptyVal: ''}, 'User provided additional context here', '', 'functions.getTaskAnswers(\'task-uuid\').Additional_Information')">
+                    <div class="modal-preset-header"><span>📑</span> Conditional Section (Omit if Empty)</div>
+                    <div class="modal-preset-desc">Outputs header, value, and line breaks only if populated; omits completely if empty.</div>
                 </button>
                 <!-- String -->
                 <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'count_items', '', {delim: ',', trim: true}, 'Laptop, Monitor, Docking Station, Keyboard', '', 'global[\'flowcoderefs\'][\'myChecklistNode\'][\'checklistAnswers\']')">
@@ -2351,6 +2397,12 @@
             inType: "Token String", outType: "String or Number",
             nativeAlt: { supported: false, note: "Hornbill has no native null-coalescing task; this expression cleanly defaults empty/null variables." }
         },
+        conditional_block: {
+            summary: "Wraps text in a formatted header, value, and line breaks, but omits the entire section if the variable is blank or null.",
+            context: "Preventing orphaned headers in emails, task descriptions, and timeline posts (e.g. '''Additional Information'''\\n[answer]\\n\\n).",
+            inType: "Token String", outType: "Formatted Section or Empty String",
+            nativeAlt: { supported: true, name: "BPM Decision Node (Branching)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "The no-code Hornbill approach is branching with a Decision Node. Use this inline expression to dynamically include or omit entire multiline sections without branching the workflow." }
+        },
         // Date
         format_date: {
             summary: "Parses an incoming date token and reformats it into the chosen standard or custom pattern.",
@@ -2578,7 +2630,12 @@
                 helper1.textContent = '(token 1: input text)';
             }
         } else if (cat === 'logic') {
-            helper1.textContent = '(token 1: test value / condition)';
+            const logicOp = document.getElementById('logic-op').value;
+            if (logicOp === 'conditional_block') {
+                helper1.textContent = '(token 1: field value to wrap or omit)';
+            } else {
+                helper1.textContent = '(token 1: test value / condition)';
+            }
         } else if (cat === 'date') {
             const dateOp = document.getElementById('date-op').value;
             if (dateOp === 'is_past') {
@@ -2743,6 +2800,12 @@
         }
         else if (category === 'logic') {
             document.getElementById('logic-op').value = operation;
+            if (operation === 'conditional_block' && extraVal && typeof extraVal === 'object') {
+                if (extraVal.header !== undefined) document.getElementById('cond-header').value = extraVal.header;
+                if (extraVal.sep !== undefined) document.getElementById('cond-sep').value = extraVal.sep;
+                if (extraVal.suffix !== undefined) document.getElementById('cond-suffix').value = extraVal.suffix;
+                if (extraVal.emptyVal !== undefined) document.getElementById('cond-empty-val').value = extraVal.emptyVal;
+            }
             toggleLogicInputs();
         }
 
@@ -2975,6 +3038,25 @@
         showToast("Checklist count recipe loaded!", "success");
     }
 
+    function loadGuideRecipeConditional(header, sep, suffix, emptyVal) {
+        closeGuideModal();
+        document.getElementById('category').value = 'logic';
+        switchCategory();
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        if (strRadio) strRadio.checked = true;
+
+        document.getElementById('logic-op').value = 'conditional_block';
+        document.getElementById('cond-header').value = header || "'''Additional Information'''";
+        document.getElementById('cond-sep').value = (sep !== undefined) ? sep : '\\n';
+        document.getElementById('cond-suffix').value = (suffix !== undefined) ? suffix : '\\n\\n';
+        document.getElementById('cond-empty-val').value = emptyVal || '';
+        document.getElementById('mock-val-1').value = 'User provided additional context here';
+        toggleLogicInputs();
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Conditional section recipe loaded!", "success");
+    }
+
     // Close modals on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -3015,7 +3097,13 @@
         } 
         else if (category === 'logic') {
             const logicOp = document.getElementById('logic-op').value;
-            newMock1 = (logicOp === 'ternary') ? '1' : ''; 
+            if (logicOp === 'ternary') {
+                newMock1 = '1';
+            } else if (logicOp === 'conditional_block') {
+                newMock1 = 'User requested urgent hardware setup';
+            } else {
+                newMock1 = '';
+            }
         }
         else if (category === 'date') {
             const dateOp = document.getElementById('date-op').value;
@@ -3137,13 +3225,14 @@
 
     function toggleLogicInputs() {
         const logicOp = document.getElementById('logic-op').value;
-        if (logicOp === 'ternary') {
-            document.getElementById('logic-ternary-panel').style.display = 'block';
-            document.getElementById('logic-fallback-panel').style.display = 'none';
-        } else {
-            document.getElementById('logic-ternary-panel').style.display = 'none';
-            document.getElementById('logic-fallback-panel').style.display = 'block';
-        }
+        const ternaryPanel = document.getElementById('logic-ternary-panel');
+        const fallbackPanel = document.getElementById('logic-fallback-panel');
+        const conditionalPanel = document.getElementById('logic-conditional-panel');
+
+        if (ternaryPanel) ternaryPanel.style.display = (logicOp === 'ternary') ? 'block' : 'none';
+        if (fallbackPanel) fallbackPanel.style.display = (logicOp === 'fallback') ? 'block' : 'none';
+        if (conditionalPanel) conditionalPanel.style.display = (logicOp === 'conditional_block') ? 'block' : 'none';
+
         updateSmartMockDefaults();
         updateDescriptions();
     }
@@ -3391,6 +3480,16 @@
                     if (cond === '<') isMatch = (c1 < parsedComp);
 
                     return isMatch ? tVal : fVal;
+                } else if (logicOp === 'conditional_block') {
+                    const header = document.getElementById('cond-header').value;
+                    const sep = document.getElementById('cond-sep').value;
+                    const suffix = document.getElementById('cond-suffix').value;
+                    const emptyVal = document.getElementById('cond-empty-val').value;
+                    const strVal = String(c1 || '').trim();
+                    if (strVal) {
+                        return header + sep + strVal + suffix;
+                    }
+                    return emptyVal || '';
                 } else {
                     const fallbackVal = document.getElementById('logic-fallback-val').value;
                     return c1 || fallbackVal;
@@ -3592,6 +3691,19 @@
 
                 innerExpression = `${expressionVar1} ${cond} ${compareVal} ? ${trueVal} : ${falseVal}`;
                 expText = `Inline ternary condition: Evaluates <code>${expressionVar1} ${escapeHtml(cond)} ${compareVal}</code> &rarr; Returns ${trueVal} if true, ${falseVal} if false.`;
+            } else if (logicOp === 'conditional_block') {
+                const header = document.getElementById('cond-header').value;
+                const sep = document.getElementById('cond-sep').value;
+                const suffix = document.getElementById('cond-suffix').value;
+                const emptyVal = document.getElementById('cond-empty-val').value;
+
+                const prefixStr = header ? (header + sep) : '';
+                const escapedPrefix = JSON.stringify(prefixStr);
+                const escapedSuffix = JSON.stringify(suffix);
+                const escapedFallback = JSON.stringify(emptyVal || "");
+
+                innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); return v ? (${escapedPrefix} + v + ${escapedSuffix}) : ${escapedFallback}; })()`;
+                expText = `Wraps <code>${rawVar1}</code> with header/prefix <code>${escapeHtml(header)}</code> and trailing spacing. If the value is empty, null, or whitespace, completely omits the section${emptyVal ? ' (defaults to <code>' + escapeHtml(emptyVal) + '</code>)' : ''}.`;
             } else {
                 let fallbackVal = document.getElementById('logic-fallback-val').value;
                 if (isNaN(fallbackVal) && fallbackVal !== "true" && fallbackVal !== "false") {
@@ -3744,6 +3856,10 @@
             params.set('tVal', document.getElementById('logic-true').value);
             params.set('fVal', document.getElementById('logic-false').value);
             params.set('fallback', document.getElementById('logic-fallback-val').value);
+            params.set('condHeader', document.getElementById('cond-header').value);
+            params.set('condSep', document.getElementById('cond-sep').value);
+            params.set('condSuffix', document.getElementById('cond-suffix').value);
+            params.set('condEmptyVal', document.getElementById('cond-empty-val').value);
         } else if (cat === 'date') {
             params.set('op', document.getElementById('date-op').value);
             params.set('fmt', document.getElementById('date-format-select').value);
@@ -3830,6 +3946,10 @@
             if (params.has('tVal')) document.getElementById('logic-true').value = params.get('tVal');
             if (params.has('fVal')) document.getElementById('logic-false').value = params.get('fVal');
             if (params.has('fallback')) document.getElementById('logic-fallback-val').value = params.get('fallback');
+            if (params.has('condHeader')) document.getElementById('cond-header').value = params.get('condHeader');
+            if (params.has('condSep')) document.getElementById('cond-sep').value = params.get('condSep');
+            if (params.has('condSuffix')) document.getElementById('cond-suffix').value = params.get('condSuffix');
+            if (params.has('condEmptyVal')) document.getElementById('cond-empty-val').value = params.get('condEmptyVal');
             toggleLogicInputs();
         } else if (cat === 'date') {
             if (op) document.getElementById('date-op').value = op;
