@@ -1328,7 +1328,7 @@
             <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
                 <span class="btn-icon">⚡</span>
                 <span>Quick Action Templates</span>
-                <span class="template-count-badge">18</span>
+                <span class="template-count-badge">19</span>
             </button>
         </div>
         <div class="token-input-wrapper">
@@ -1585,6 +1585,7 @@
                             <option value="ternary">Ternary Expression (Inline IF / ELSE)</option>
                             <option value="fallback">Null / Undefined Coalesce / Fallback</option>
                             <option value="conditional_block">Conditional Block / Header Wrapper (Omit if Empty)</option>
+                            <option value="chain">Multi-Variable Chain / Join (Omit if All Empty)</option>
                         </select>
                     </div>
 
@@ -1651,6 +1652,66 @@
                         <div class="form-group" style="margin-bottom: 0;">
                             <label for="cond-empty-val">Fallback if Empty / Null <span class="helper-label">(Leave blank to omit completely)</span></label>
                             <input type="text" id="cond-empty-val" value="" placeholder="Leave blank to completely omit header &amp; value, or e.g. None" oninput="generateFlowcode()">
+                        </div>
+                    </div>
+
+                    <!-- Multi-Variable Chain / Join Panel -->
+                    <div class="inner-panel" id="logic-chain-panel" style="display: none;">
+                        <div class="form-group">
+                            <label for="chain-mode">Chaining Mode</label>
+                            <select id="chain-mode" onchange="generateFlowcode()">
+                                <option value="join_non_empty" selected>Join All Non-Empty Variables (Skip blanks)</option>
+                                <option value="coalesce">First Non-Empty Variable (Fallback Cascade: Var1 || Var2 || Var3)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="chain-variables">Variables to Chain <span class="helper-label">(One Hornbill token per line &mdash; up to 10 tokens)</span></label>
+                            <textarea id="chain-variables" rows="4" style="width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); resize: vertical;" placeholder="global['flowcoderefs']['node1']['result']&#10;global['flowcoderefs']['node2']['result']&#10;global['flowcoderefs']['node3']['result']" oninput="generateFlowcode()">functions.getTaskAnswers("task-123").Field1
+functions.getTaskAnswers("task-123").Field2
+functions.getTaskAnswers("task-123").Field3</textarea>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                                💡 Tip: You can paste tokens with or without <code>&amp;[...]</code>. Empty / blank variables are automatically filtered out.
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="chain-delim">Join Delimiter (Between populated variables)</label>
+                                <select id="chain-delim" onchange="generateFlowcode()">
+                                    <option value="\n" selected>Newline (\n) &mdash; Each on New Line</option>
+                                    <option value=", ">Comma + Space (, )</option>
+                                    <option value=" - ">Hyphen Space ( - )</option>
+                                    <option value=" / ">Slash ( / )</option>
+                                    <option value=" • \n">Bullet Points (•)</option>
+                                    <option value=" ">Single Space ( )</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="chain-header">Optional Header / Prefix</label>
+                                <input type="text" id="chain-header" value="'''Additional Information'''" placeholder="e.g. '''Additional Information''' (leave blank for none)" oninput="generateFlowcode()">
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="chain-sep">Separator after Header</label>
+                                <select id="chain-sep" onchange="generateFlowcode()">
+                                    <option value="\n" selected>Newline (\n)</option>
+                                    <option value=": ">Colon + Space (: )</option>
+                                    <option value=" ">Space ( )</option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="chain-suffix">Trailing Suffix / Spacing</label>
+                                <select id="chain-suffix" onchange="generateFlowcode()">
+                                    <option value="\n\n" selected>Double Newline (\n\n) &mdash; Spacing before next section</option>
+                                    <option value="\n">Single Newline (\n)</option>
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="chain-empty-val">Fallback if ALL Variables are Empty <span class="helper-label">(Leave blank to omit completely)</span></label>
+                            <input type="text" id="chain-empty-val" value="" placeholder="Leave blank to completely omit header &amp; variables, or e.g. None" oninput="generateFlowcode()">
                         </div>
                     </div>
                 </div>
@@ -1789,6 +1850,15 @@
                             <div class="form-group" id="mock-val-2-container" style="display: none; flex: 1; min-width: 130px; margin-bottom: 0;">
                                 <label for="mock-val-2" style="font-size: 12px;">Mock Secondary Value <span class="helper-label" id="mock-val-2-helper">(token 2)</span></label>
                                 <input type="text" id="mock-val-2" value="1.20" oninput="userModifiedMock2(); generateFlowcode()">
+                            </div>
+                        </div>
+                        <div class="form-group" id="mock-chain-container" style="display: none; margin-top: 8px; margin-bottom: 0;">
+                            <label for="mock-chain-vals" style="font-size: 12px;">Mock Variable Values <span class="helper-label">(One per line, matching variables in chain)</span></label>
+                            <textarea id="mock-chain-vals" rows="3" style="width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); resize: vertical;" placeholder="Value for Variable 1&#10;Value for Variable 2&#10;Value for Variable 3" oninput="generateFlowcode()">Item 1: Power supply replaced
+Item 2: Tested and verified working
+</textarea>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                                💡 Leave any line empty to test how empty variables are skipped!
                             </div>
                         </div>
                     </div>
@@ -2022,6 +2092,16 @@
                         </div>
                         <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeConditional('\'\'\'Additional Information\'\'\'', '\\n', '\\n\\n', '')">Load Recipe</button>
                     </div>
+
+                    <!-- Recipe 9 -->
+                    <div class="guide-recipe-card">
+                        <div>
+                            <div class="guide-recipe-title"><span>🔗</span> Multi-Variable Chain &amp; Join</div>
+                            <div class="guide-recipe-desc">Chain 3+ variables, automatically filtering out blanks and omitting the section completely if all are empty.</div>
+                            <div class="guide-code-snippet">&amp;[(() => { const items = [String(v1||"").trim(), String(v2||"").trim()].filter(Boolean); return items.length ? ("'''Header'''\n" + items.join("\n") + "\n\n") : ""; })()]</div>
+                        </div>
+                        <button type="button" class="guide-recipe-btn" onclick="loadGuideRecipeChain()">Load Recipe</button>
+                    </div>
                 </div>
             </div>
 
@@ -2136,9 +2216,9 @@
         </div>
         <div class="modal-body">
             <div class="preset-filter-row">
-                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (18)</button>
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (19)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (2)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (3)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (8)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
             </div>
@@ -2156,6 +2236,10 @@
                 <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('String', 'logic', 'conditional_block', '', {header: '\'\'\'Additional Information\'\'\'', sep: '\\n', suffix: '\\n\\n', emptyVal: ''}, 'User provided additional context here', '', 'functions.getTaskAnswers(\'task-uuid\').Additional_Information')">
                     <div class="modal-preset-header"><span>📑</span> Conditional Section (Omit if Empty)</div>
                     <div class="modal-preset-desc">Outputs header, value, and line breaks only if populated; omits completely if empty.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('String', 'logic', 'chain', '', {mode: 'join_non_empty', variables: 'functions.getTaskAnswers(\'task-123\').Field1\nfunctions.getTaskAnswers(\'task-123\').Field2\nfunctions.getTaskAnswers(\'task-123\').Field3', delim: '\\n', header: '\'\'\'Additional Information\'\'\'', sep: '\\n', suffix: '\\n\\n', emptyVal: '', mockVals: 'First answer\n\nThird answer'}, 'First answer', '', 'functions.getTaskAnswers(\'task-123\').Field1')">
+                    <div class="modal-preset-header"><span>🔗</span> Multi-Variable Chain (Omit if All Empty)</div>
+                    <div class="modal-preset-desc">Combines 3+ fields, strips empty ones, and completely omits header &amp; spacing if all blank.</div>
                 </button>
                 <!-- String -->
                 <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'count_items', '', {delim: ',', trim: true}, 'Laptop, Monitor, Docking Station, Keyboard', '', 'global[\'flowcoderefs\'][\'myChecklistNode\'][\'checklistAnswers\']')">
@@ -2404,6 +2488,12 @@
             inType: "Token String", outType: "Formatted Section or Empty String",
             nativeAlt: { supported: true, name: "BPM Decision Node (Branching)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "The no-code Hornbill approach is branching with a Decision Node. Use this inline expression to dynamically include or omit entire multiline sections without branching the workflow." }
         },
+        chain: {
+            summary: "Combines 2 or more variables (with delimiter, bullet points, or fallback cascade) and omits the entire block if all variables are empty.",
+            context: "Combining multiple task answers, custom fields, or notes into one cohesive block (e.g. in email notifications, resolution details, or timeline posts) without leaving blank lines.",
+            inType: "Multiple Token Strings", outType: "Formatted Multi-Field String or Empty String",
+            nativeAlt: { supported: true, name: "BPM Decision Nodes + String Utilities", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Chaining 3+ conditional variables natively in Hornbill requires multiple Decision and String Utility nodes. This expression handles multi-token filtering and formatting entirely in a single field." }
+        },
         // Date
         format_date: {
             summary: "Parses an incoming date token and reformats it into the chosen standard or custom pattern.",
@@ -2634,6 +2724,8 @@
             const logicOp = document.getElementById('logic-op').value;
             if (logicOp === 'conditional_block') {
                 helper1.textContent = '(token 1: field value to wrap or omit)';
+            } else if (logicOp === 'chain') {
+                helper1.textContent = '(token 1: first variable preview)';
             } else {
                 helper1.textContent = '(token 1: test value / condition)';
             }
@@ -2806,6 +2898,15 @@
                 if (extraVal.sep !== undefined) document.getElementById('cond-sep').value = extraVal.sep;
                 if (extraVal.suffix !== undefined) document.getElementById('cond-suffix').value = extraVal.suffix;
                 if (extraVal.emptyVal !== undefined) document.getElementById('cond-empty-val').value = extraVal.emptyVal;
+            } else if (operation === 'chain' && extraVal && typeof extraVal === 'object') {
+                if (extraVal.mode !== undefined) document.getElementById('chain-mode').value = extraVal.mode;
+                if (extraVal.variables !== undefined) document.getElementById('chain-variables').value = extraVal.variables;
+                if (extraVal.delim !== undefined) document.getElementById('chain-delim').value = extraVal.delim;
+                if (extraVal.header !== undefined) document.getElementById('chain-header').value = extraVal.header;
+                if (extraVal.sep !== undefined) document.getElementById('chain-sep').value = extraVal.sep;
+                if (extraVal.suffix !== undefined) document.getElementById('chain-suffix').value = extraVal.suffix;
+                if (extraVal.emptyVal !== undefined) document.getElementById('chain-empty-val').value = extraVal.emptyVal;
+                if (extraVal.mockVals !== undefined) document.getElementById('mock-chain-vals').value = extraVal.mockVals;
             }
             toggleLogicInputs();
         }
@@ -3058,6 +3159,28 @@
         showToast("Conditional section recipe loaded!", "success");
     }
 
+    function loadGuideRecipeChain() {
+        closeGuideModal();
+        document.getElementById('category').value = 'logic';
+        switchCategory();
+        const strRadio = document.querySelector('input[name="convType"][value="String"]');
+        if (strRadio) strRadio.checked = true;
+
+        document.getElementById('logic-op').value = 'chain';
+        document.getElementById('chain-mode').value = 'join_non_empty';
+        document.getElementById('chain-variables').value = 'functions.getTaskAnswers("task-123").Field1\nfunctions.getTaskAnswers("task-123").Field2\nfunctions.getTaskAnswers("task-123").Field3';
+        document.getElementById('chain-delim').value = '\\n';
+        document.getElementById('chain-header').value = "'''Additional Information'''";
+        document.getElementById('chain-sep').value = '\\n';
+        document.getElementById('chain-suffix').value = '\\n\\n';
+        document.getElementById('chain-empty-val').value = '';
+        document.getElementById('mock-chain-vals').value = 'Item 1: Power supply replaced\n\nItem 3: Verified working';
+        toggleLogicInputs();
+        updateDescriptions();
+        generateFlowcode();
+        showToast("Multi-variable chain recipe loaded!", "success");
+    }
+
     // Close modals on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -3102,6 +3225,8 @@
                 newMock1 = '1';
             } else if (logicOp === 'conditional_block') {
                 newMock1 = 'User requested urgent hardware setup';
+            } else if (logicOp === 'chain') {
+                newMock1 = 'Item 1: Power supply replaced';
             } else {
                 newMock1 = '';
             }
@@ -3229,10 +3354,15 @@
         const ternaryPanel = document.getElementById('logic-ternary-panel');
         const fallbackPanel = document.getElementById('logic-fallback-panel');
         const conditionalPanel = document.getElementById('logic-conditional-panel');
+        const chainPanel = document.getElementById('logic-chain-panel');
+        const mockChainContainer = document.getElementById('mock-chain-container');
+        const mock1Container = document.getElementById('mock-val-1')?.closest('.form-group');
 
         if (ternaryPanel) ternaryPanel.style.display = (logicOp === 'ternary') ? 'block' : 'none';
         if (fallbackPanel) fallbackPanel.style.display = (logicOp === 'fallback') ? 'block' : 'none';
         if (conditionalPanel) conditionalPanel.style.display = (logicOp === 'conditional_block') ? 'block' : 'none';
+        if (chainPanel) chainPanel.style.display = (logicOp === 'chain') ? 'block' : 'none';
+        if (mockChainContainer) mockChainContainer.style.display = (logicOp === 'chain') ? 'block' : 'none';
 
         updateSmartMockDefaults();
         updateDescriptions();
@@ -3496,6 +3626,34 @@
                         return header + sep + strVal + suffix;
                     }
                     return emptyVal || '';
+                } else if (logicOp === 'chain') {
+                    const mode = document.getElementById('chain-mode').value;
+                    const header = document.getElementById('chain-header').value;
+                    const sep = resolveEscapes(document.getElementById('chain-sep').value);
+                    const delim = resolveEscapes(document.getElementById('chain-delim').value);
+                    const suffix = resolveEscapes(document.getElementById('chain-suffix').value);
+                    const emptyVal = resolveEscapes(document.getElementById('chain-empty-val').value);
+
+                    const mockText = document.getElementById('mock-chain-vals').value;
+                    const mockLines = mockText.split('\n').map(x => x.trim());
+
+                    if (mode === 'join_non_empty') {
+                        const populated = mockLines.filter(Boolean);
+                        if (populated.length > 0) {
+                            const joined = populated.join(delim);
+                            const prefixStr = header ? (header + sep) : '';
+                            return prefixStr + joined + suffix;
+                        }
+                        return emptyVal || '';
+                    } else {
+                        // Coalesce / cascade: first non-empty
+                        const first = mockLines.find(Boolean);
+                        if (first) {
+                            const prefixStr = header ? (header + sep) : '';
+                            return prefixStr + first + suffix;
+                        }
+                        return emptyVal || '';
+                    }
                 } else {
                     const fallbackVal = document.getElementById('logic-fallback-val').value;
                     return c1 || fallbackVal;
@@ -3710,6 +3868,44 @@
 
                 innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); return v ? (${escapedPrefix} + v + ${escapedSuffix}) : ${escapedFallback}; })()`;
                 expText = `Wraps <code>${rawVar1}</code> with header/prefix <code>${escapeHtml(header)}</code> and trailing spacing. If the value is empty, null, or whitespace, completely omits the section${emptyVal ? ' (defaults to <code>' + escapeHtml(emptyVal) + '</code>)' : ''}.`;
+            } else if (logicOp === 'chain') {
+                const mode = document.getElementById('chain-mode').value;
+                const rawVarText = document.getElementById('chain-variables').value;
+                const header = document.getElementById('chain-header').value;
+                const sep = resolveEscapes(document.getElementById('chain-sep').value);
+                const delim = resolveEscapes(document.getElementById('chain-delim').value);
+                const suffix = resolveEscapes(document.getElementById('chain-suffix').value);
+                const emptyVal = resolveEscapes(document.getElementById('chain-empty-val').value);
+
+                const lines = rawVarText.split('\n').map(l => l.trim()).filter(Boolean);
+                const tokens = lines.map(cleanHornbillToken).filter(Boolean);
+
+                const prefixStr = header ? (header + sep) : '';
+                const escapedPrefix = JSON.stringify(prefixStr);
+                const escapedDelim = JSON.stringify(delim);
+                const escapedSuffix = JSON.stringify(suffix);
+                const escapedFallback = JSON.stringify(emptyVal || "");
+
+                if (tokens.length === 0) {
+                    innerExpression = `""`;
+                    expText = `No variables specified in chain. Enter one Hornbill token per line.`;
+                } else if (mode === 'join_non_empty') {
+                    const tokenArrayElements = tokens.map(t => `String(${t} || "").trim()`);
+                    const arrayCode = `[${tokenArrayElements.join(', ')}]`;
+                    const prefixCode = (prefixStr !== '') ? `${escapedPrefix} + ` : '';
+                    const suffixCode = (suffix !== '') ? ` + ${escapedSuffix}` : '';
+
+                    innerExpression = `(() => { const items = ${arrayCode}.filter(Boolean); return items.length ? (${prefixCode}items.join(${escapedDelim})${suffixCode}) : ${escapedFallback}; })()`;
+                    expText = `Chains <strong>${tokens.length} variables</strong>. Filters out empty/blank fields and joins populated values with <code>${escapeHtml(delim)}</code>. If all variables are empty, omits the section completely${emptyVal ? ' (defaults to <code>' + escapeHtml(emptyVal) + '</code>)' : ''}.`;
+                } else {
+                    // Coalesce / fallback cascade
+                    const chainCascade = tokens.map(t => `String(${t} || "").trim()`).join(' || ') + ' || ""';
+                    const prefixCode = (prefixStr !== '') ? `${escapedPrefix} + ` : '';
+                    const suffixCode = (suffix !== '') ? ` + ${escapedSuffix}` : '';
+
+                    innerExpression = `(() => { const v = ${chainCascade}; return v ? (${prefixCode}v${suffixCode}) : ${escapedFallback}; })()`;
+                    expText = `Coalesces <strong>${tokens.length} variables</strong> in cascade order. Returns the first non-empty variable value. If all are empty, omits completely${emptyVal ? ' (defaults to <code>' + escapeHtml(emptyVal) + '</code>)' : ''}.`;
+                }
             } else {
                 let fallbackVal = document.getElementById('logic-fallback-val').value;
                 if (isNaN(fallbackVal) && fallbackVal !== "true" && fallbackVal !== "false") {
@@ -3866,6 +4062,13 @@
             params.set('condSep', document.getElementById('cond-sep').value);
             params.set('condSuffix', document.getElementById('cond-suffix').value);
             params.set('condEmptyVal', document.getElementById('cond-empty-val').value);
+            params.set('chainMode', document.getElementById('chain-mode').value);
+            params.set('chainVars', document.getElementById('chain-variables').value);
+            params.set('chainDelim', document.getElementById('chain-delim').value);
+            params.set('chainHeader', document.getElementById('chain-header').value);
+            params.set('chainSep', document.getElementById('chain-sep').value);
+            params.set('chainSuffix', document.getElementById('chain-suffix').value);
+            params.set('chainEmptyVal', document.getElementById('chain-empty-val').value);
         } else if (cat === 'date') {
             params.set('op', document.getElementById('date-op').value);
             params.set('fmt', document.getElementById('date-format-select').value);
@@ -3956,6 +4159,13 @@
             if (params.has('condSep')) document.getElementById('cond-sep').value = params.get('condSep');
             if (params.has('condSuffix')) document.getElementById('cond-suffix').value = params.get('condSuffix');
             if (params.has('condEmptyVal')) document.getElementById('cond-empty-val').value = params.get('condEmptyVal');
+            if (params.has('chainMode')) document.getElementById('chain-mode').value = params.get('chainMode');
+            if (params.has('chainVars')) document.getElementById('chain-variables').value = params.get('chainVars');
+            if (params.has('chainDelim')) document.getElementById('chain-delim').value = params.get('chainDelim');
+            if (params.has('chainHeader')) document.getElementById('chain-header').value = params.get('chainHeader');
+            if (params.has('chainSep')) document.getElementById('chain-sep').value = params.get('chainSep');
+            if (params.has('chainSuffix')) document.getElementById('chain-suffix').value = params.get('chainSuffix');
+            if (params.has('chainEmptyVal')) document.getElementById('chain-empty-val').value = params.get('chainEmptyVal');
             toggleLogicInputs();
         } else if (cat === 'date') {
             if (op) document.getElementById('date-op').value = op;
