@@ -670,6 +670,7 @@
             border: 1px solid var(--preview-border);
             min-height: 34px;
             word-break: break-all;
+            white-space: pre-wrap;
             margin-bottom: 8px;
             box-shadow: var(--shadow-sm);
         }
@@ -3379,6 +3380,11 @@
             .replace(/ss/g, ss);
     }
 
+    function resolveEscapes(val) {
+        if (typeof val !== 'string') return val;
+        return val.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\t/g, '\t');
+    }
+
     function simulateExpression(convType1, category) {
         const m1 = document.getElementById('mock-val-1').value;
         const m2 = document.getElementById('mock-val-2').value;
@@ -3482,9 +3488,9 @@
                     return isMatch ? tVal : fVal;
                 } else if (logicOp === 'conditional_block') {
                     const header = document.getElementById('cond-header').value;
-                    const sep = document.getElementById('cond-sep').value;
-                    const suffix = document.getElementById('cond-suffix').value;
-                    const emptyVal = document.getElementById('cond-empty-val').value;
+                    const sep = resolveEscapes(document.getElementById('cond-sep').value);
+                    const suffix = resolveEscapes(document.getElementById('cond-suffix').value);
+                    const emptyVal = resolveEscapes(document.getElementById('cond-empty-val').value);
                     const strVal = String(c1 || '').trim();
                     if (strVal) {
                         return header + sep + strVal + suffix;
@@ -3693,9 +3699,9 @@
                 expText = `Inline ternary condition: Evaluates <code>${expressionVar1} ${escapeHtml(cond)} ${compareVal}</code> &rarr; Returns ${trueVal} if true, ${falseVal} if false.`;
             } else if (logicOp === 'conditional_block') {
                 const header = document.getElementById('cond-header').value;
-                const sep = document.getElementById('cond-sep').value;
-                const suffix = document.getElementById('cond-suffix').value;
-                const emptyVal = document.getElementById('cond-empty-val').value;
+                const sep = resolveEscapes(document.getElementById('cond-sep').value);
+                const suffix = resolveEscapes(document.getElementById('cond-suffix').value);
+                const emptyVal = resolveEscapes(document.getElementById('cond-empty-val').value);
 
                 const prefixStr = header ? (header + sep) : '';
                 const escapedPrefix = JSON.stringify(prefixStr);
