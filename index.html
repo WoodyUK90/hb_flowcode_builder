@@ -675,6 +675,13 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .preview-box:empty::before {
+            content: "(Empty Output — Section Omitted)";
+            color: #94a3b8;
+            font-style: italic;
+            font-weight: 400;
+        }
+
         .info-note {
             background: #f0f9ff;
             border-left: 3px solid #0284c7;
@@ -3293,6 +3300,7 @@ Item 2: Tested and verified working
             strRadio.disabled = false;
             numRadios.forEach(r => r.disabled = false);
             noneRadio.disabled = false;
+            toggleLogicInputs();
         } else if (category === 'date') {
             document.getElementById('section-date').classList.add('active');
             numRadios.forEach(r => r.disabled = true);
@@ -3302,6 +3310,13 @@ Item 2: Tested and verified working
                 strRadio.checked = true;
             }
             toggleDateInputs();
+        }
+
+        if (category !== 'logic') {
+            const mockChainContainer = document.getElementById('mock-chain-container');
+            if (mockChainContainer) mockChainContainer.style.display = 'none';
+            const mock1Container = document.getElementById('mock-val-1')?.closest('.form-group');
+            if (mock1Container) mock1Container.style.display = '';
         }
 
         toggleMathInputs(); 
@@ -3363,6 +3378,7 @@ Item 2: Tested and verified working
         if (conditionalPanel) conditionalPanel.style.display = (logicOp === 'conditional_block') ? 'block' : 'none';
         if (chainPanel) chainPanel.style.display = (logicOp === 'chain') ? 'block' : 'none';
         if (mockChainContainer) mockChainContainer.style.display = (logicOp === 'chain') ? 'block' : 'none';
+        if (mock1Container) mock1Container.style.display = (logicOp === 'chain') ? 'none' : '';
 
         updateSmartMockDefaults();
         updateDescriptions();
@@ -3476,6 +3492,10 @@ Item 2: Tested and verified working
             cleaned = cleaned.substring(2, cleaned.length - 1).trim();
         }
         return cleaned;
+    }
+
+    function cleanHornbillToken(token) {
+        return cleanToken(token);
     }
 
     function wrapVariable(rawVar, convType) {
@@ -3878,7 +3898,7 @@ Item 2: Tested and verified working
                 const emptyVal = resolveEscapes(document.getElementById('chain-empty-val').value);
 
                 const lines = rawVarText.split('\n').map(l => l.trim()).filter(Boolean);
-                const tokens = lines.map(cleanHornbillToken).filter(Boolean);
+                const tokens = lines.map(cleanToken).filter(Boolean);
 
                 const prefixStr = header ? (header + sep) : '';
                 const escapedPrefix = JSON.stringify(prefixStr);
@@ -4052,23 +4072,30 @@ Item 2: Tested and verified working
             params.set('countCustomDelim', document.getElementById('count-custom-delim').value);
             params.set('countTrim', document.getElementById('count-trim').checked ? '1' : '0');
         } else if (cat === 'logic') {
-            params.set('op', document.getElementById('logic-op').value);
-            params.set('cond', document.getElementById('logic-cond').value);
-            params.set('compare', document.getElementById('logic-compare').value);
-            params.set('tVal', document.getElementById('logic-true').value);
-            params.set('fVal', document.getElementById('logic-false').value);
-            params.set('fallback', document.getElementById('logic-fallback-val').value);
-            params.set('condHeader', document.getElementById('cond-header').value);
-            params.set('condSep', document.getElementById('cond-sep').value);
-            params.set('condSuffix', document.getElementById('cond-suffix').value);
-            params.set('condEmptyVal', document.getElementById('cond-empty-val').value);
-            params.set('chainMode', document.getElementById('chain-mode').value);
-            params.set('chainVars', document.getElementById('chain-variables').value);
-            params.set('chainDelim', document.getElementById('chain-delim').value);
-            params.set('chainHeader', document.getElementById('chain-header').value);
-            params.set('chainSep', document.getElementById('chain-sep').value);
-            params.set('chainSuffix', document.getElementById('chain-suffix').value);
-            params.set('chainEmptyVal', document.getElementById('chain-empty-val').value);
+            const logicOp = document.getElementById('logic-op').value;
+            params.set('op', logicOp);
+            if (logicOp === 'ternary') {
+                params.set('cond', document.getElementById('logic-cond').value);
+                params.set('compare', document.getElementById('logic-compare').value);
+                params.set('tVal', document.getElementById('logic-true').value);
+                params.set('fVal', document.getElementById('logic-false').value);
+            } else if (logicOp === 'conditional_block') {
+                params.set('condHeader', document.getElementById('cond-header').value);
+                params.set('condSep', document.getElementById('cond-sep').value);
+                params.set('condSuffix', document.getElementById('cond-suffix').value);
+                params.set('condEmptyVal', document.getElementById('cond-empty-val').value);
+            } else if (logicOp === 'chain') {
+                params.set('chainMode', document.getElementById('chain-mode').value);
+                params.set('chainVars', document.getElementById('chain-variables').value);
+                params.set('chainDelim', document.getElementById('chain-delim').value);
+                params.set('chainHeader', document.getElementById('chain-header').value);
+                params.set('chainSep', document.getElementById('chain-sep').value);
+                params.set('chainSuffix', document.getElementById('chain-suffix').value);
+                params.set('chainEmptyVal', document.getElementById('chain-empty-val').value);
+                params.set('chainMock', document.getElementById('mock-chain-vals').value);
+            } else {
+                params.set('fallback', document.getElementById('logic-fallback-val').value);
+            }
         } else if (cat === 'date') {
             params.set('op', document.getElementById('date-op').value);
             params.set('fmt', document.getElementById('date-format-select').value);
@@ -4166,6 +4193,7 @@ Item 2: Tested and verified working
             if (params.has('chainSep')) document.getElementById('chain-sep').value = params.get('chainSep');
             if (params.has('chainSuffix')) document.getElementById('chain-suffix').value = params.get('chainSuffix');
             if (params.has('chainEmptyVal')) document.getElementById('chain-empty-val').value = params.get('chainEmptyVal');
+            if (params.has('chainMock')) document.getElementById('mock-chain-vals').value = params.get('chainMock');
             toggleLogicInputs();
         } else if (cat === 'date') {
             if (op) document.getElementById('date-op').value = op;
