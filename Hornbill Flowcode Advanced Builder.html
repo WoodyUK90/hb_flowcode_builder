@@ -1335,7 +1335,7 @@
             <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
                 <span class="btn-icon">⚡</span>
                 <span>Quick Action Templates</span>
-                <span class="template-count-badge">23</span>
+                <span class="template-count-badge">25</span>
             </button>
         </div>
         <div class="token-input-wrapper">
@@ -1765,6 +1765,9 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                                 <option value="expires_within">Target Date within next N Days?</option>
                                 <option value="is_weekend">Is Date on Weekend? (Saturday / Sunday)</option>
                             </optgroup>
+                            <optgroup label="Range Extraction (JSON from / to)">
+                                <option value="extract_range_part">Extract Range Part (From / To Date &amp; Time)</option>
+                            </optgroup>
                             <optgroup label="Database Field Reset / Nullify">
                                 <option value="null_date">Clear / Set Date to NULL (&amp;[null])</option>
                                 <option value="conditional_null">Conditional Date or NULL (&amp;[trigger ? null : date])</option>
@@ -1866,6 +1869,29 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                             <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
                                 💡 Tip: Passes SQL <code>NULL</code> when trigger matches; otherwise outputs the date string.
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Date Range JSON Extractor Panel -->
+                    <div class="inner-panel" id="date-range-panel" style="display: none;">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="date-range-part">Range Endpoint to Extract</label>
+                                <select id="date-range-part" onchange="generateFlowcode()">
+                                    <option value="from" selected>Start Date / Time (data.from)</option>
+                                    <option value="to">End Date / Time (data.to)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date-range-fallback">Fallback on Empty / Parse Error</label>
+                                <select id="date-range-fallback" onchange="generateFlowcode()">
+                                    <option value="null" selected>SQL NULL (null) &mdash; Best for Date Fields</option>
+                                    <option value="empty">Empty String ("") &mdash; Best for Text Fields</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                            💡 Parses Hornbill between-date question JSON (e.g. <code>{"from":"...","to":"..."}</code>) and converts the chosen endpoint into your selected format above.
                         </div>
                     </div>
                 </div>
@@ -2265,11 +2291,11 @@ Item 2: Tested and verified working
         </div>
         <div class="modal-body">
             <div class="preset-filter-row">
-                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (23)</button>
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (25)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (5)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (8)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (9)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (11)</button>
             </div>
             <div class="modal-preset-grid">
                 <!-- Math -->
@@ -2367,6 +2393,14 @@ Item 2: Tested and verified working
                 <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('conditional_null', '', '', '', '', 'Cancelled', '', 'functions.getTaskAnswers(\'task-123\').Status')">
                     <div class="modal-preset-header"><span>⚖</span> Conditional Date or NULL</div>
                     <div class="modal-preset-desc">Nullifies date if ticket status is "Cancelled"; otherwise preserves/outputs date.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'from', fallback: 'null'})">
+                    <div class="modal-preset-header"><span>⏱</span> Extract "From" Date &amp; Time (Range JSON)</div>
+                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "from" timestamp (SQL DateTime / null).</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'to', fallback: 'null'})">
+                    <div class="modal-preset-header"><span>⏱</span> Extract "To" Date &amp; Time (Range JSON)</div>
+                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "to" timestamp (SQL DateTime / null).</div>
                 </button>
             </div>
         </div>
@@ -2649,6 +2683,12 @@ Item 2: Tested and verified working
             context: "Retaining a scheduled date until a cancellation/closure trigger wipes it.",
             inType: "Comparable Variable", outType: "Date String or null",
             nativeAlt: { supported: true, name: "BPM Decision Node (Branching)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Hornbill Decision Nodes can branch to an Update Request node. Use this expression to conditionally nullify inline." }
+        },
+        extract_range_part: {
+            summary: "Parses Hornbill between-date question JSON and extracts either 'from' (start) or 'to' (end) date & time in the selected format.",
+            context: "Extracting start or end date/time from Intelligent Capture date range answers (e.g. Change Request proposed start/end times) into Custom Date or DateTime fields.",
+            inType: "JSON String ({\"from\":\"...\",\"to\":\"...\"})", outType: "Formatted Date/Time or null",
+            nativeAlt: { supported: false, note: "Hornbill does not provide a native node to unpack JSON between-date question answers; use this inline Flowcode expression." }
         }
     };
 
@@ -2825,6 +2865,8 @@ Item 2: Tested and verified working
             } else if (dateOp === 'diff_days') {
                 helper1.textContent = '(token 1: start date)';
                 if (helper2) helper2.textContent = '(token 2: end date)';
+            } else if (dateOp === 'extract_range_part') {
+                helper1.textContent = '(token 1: date range JSON object string)';
             } else if (dateOp === 'format_date' || dateOp === 'offset_var' || dateOp === 'extract_date' || dateOp === 'is_weekend') {
                 helper1.textContent = '(token 1: date string to evaluate)';
             } else {
@@ -2850,6 +2892,14 @@ Item 2: Tested and verified working
                 mock1.style.fontStyle = 'italic';
                 mock1.style.cursor = 'not-allowed';
                 mock1.value = '(current system timestamp evaluated automatically)';
+                if (quickChips) quickChips.style.display = 'none';
+            } else if (dateOp === 'extract_range_part') {
+                mock1.disabled = false;
+                mock1.style.background = '#ffffff';
+                mock1.style.color = 'var(--text-main)';
+                mock1.style.fontStyle = 'normal';
+                mock1.style.cursor = 'auto';
+                mock1.type = 'text';
                 if (quickChips) quickChips.style.display = 'none';
             } else {
                 mock1.disabled = false;
@@ -3002,7 +3052,7 @@ Item 2: Tested and verified working
         showToast("Template applied: " + operation, "info");
     }
 
-    function applyDatePreset(op, format, offsetDir, offsetVal, offsetUnit, mock1, customFmt, tokenVar) {
+    function applyDatePreset(op, format, offsetDir, offsetVal, offsetUnit, mock1, customFmt, tokenVar, extraOpt) {
         isMock1ModifiedByUser = false;
         isMock2ModifiedByUser = false;
 
@@ -3025,6 +3075,11 @@ Item 2: Tested and verified working
         if (offsetDir) document.getElementById('date-offset-dir').value = offsetDir;
         if (offsetVal) document.getElementById('date-offset-val').value = offsetVal;
         if (offsetUnit) document.getElementById('date-offset-unit').value = offsetUnit;
+
+        if (op === 'extract_range_part' && extraOpt && typeof extraOpt === 'object') {
+            if (extraOpt.part) document.getElementById('date-range-part').value = extraOpt.part;
+            if (extraOpt.fallback) document.getElementById('date-range-fallback').value = extraOpt.fallback;
+        }
 
         toggleDateInputs();
 
@@ -3336,6 +3391,8 @@ Item 2: Tested and verified working
                 newMock1 = '2026-10-15T10:00';
             } else if (dateOp === 'conditional_null') {
                 newMock1 = 'Cancelled';
+            } else if (dateOp === 'extract_range_part') {
+                newMock1 = '{"from":"2026-10-12T08:00:00.000Z","to":"2026-10-13T08:00:00.000Z"}';
             } else {
                 newMock1 = '2026-09-08T14:30';
             }
@@ -3531,7 +3588,7 @@ Item 2: Tested and verified working
         const offsetDirGroup = document.getElementById('date-offset-dir-group');
         const offsetValLabel = document.getElementById('date-offset-val-label');
 
-        const needsFormat = ['format_date', 'now', 'offset_now', 'offset_var'].includes(dateOp);
+        const needsFormat = ['format_date', 'now', 'offset_now', 'offset_var', 'extract_range_part'].includes(dateOp);
         formatContainer.style.display = needsFormat ? 'block' : 'none';
         if (needsFormat) handleDateFormatSelect();
 
@@ -3550,6 +3607,9 @@ Item 2: Tested and verified working
         secondaryPanel.style.display = (dateOp === 'diff_days') ? 'block' : 'none';
         const condNullPanel = document.getElementById('date-cond-null-panel');
         if (condNullPanel) condNullPanel.style.display = (dateOp === 'conditional_null') ? 'block' : 'none';
+
+        const rangePanel = document.getElementById('date-range-panel');
+        if (rangePanel) rangePanel.style.display = (dateOp === 'extract_range_part') ? 'block' : 'none';
 
         toggleMathInputs(); 
         updateSmartMockDefaults();
@@ -3839,6 +3899,18 @@ Item 2: Tested and verified working
                     const trigger = document.getElementById('date-null-trigger').value;
                     const fallbackDate = document.getElementById('date-null-fallback-date').value || new Date().toISOString().slice(0, 10);
                     return (String(m1).trim() === trigger.trim()) ? null : fallbackDate;
+                } else if (dateOp === 'extract_range_part') {
+                    const part = document.getElementById('date-range-part').value;
+                    const fallback = document.getElementById('date-range-fallback').value;
+                    try {
+                        const parsed = typeof m1 === 'string' ? JSON.parse(m1) : m1;
+                        const dateStr = parsed && parsed[part];
+                        if (!dateStr) return (fallback === 'null') ? null : "";
+                        const d = new Date(String(dateStr).replace(' ', 'T'));
+                        return formatDateByPattern(d, pattern, useUTC);
+                    } catch (e) {
+                        return (fallback === 'null') ? null : "";
+                    }
                 }
             }
         } catch(e) {
@@ -4139,6 +4211,30 @@ Item 2: Tested and verified working
                 const escapedTrigger = JSON.stringify(trigger);
                 innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); return v === ${escapedTrigger} ? null : ${fallbackDateExpr}; })()`;
                 expText = `Conditional Date Nullify: If <code>${rawVar1}</code> matches <code>${escapeHtml(trigger)}</code>, returns <code>null</code> (clearing date to SQL NULL); otherwise outputs <code>${escapeHtml(fallbackDateExpr)}</code>.`;
+            } else if (dateOp === 'extract_range_part') {
+                const part = document.getElementById('date-range-part').value;
+                const fallbackType = document.getElementById('date-range-fallback').value;
+                const fallbackCode = (fallbackType === 'null') ? 'null' : '""';
+
+                // We want to format the extracted ISO timestamp according to chosen pattern and timezone
+                if (pattern === 'YYYY-MM-DD' && isUTC) {
+                    innerExpression = `(() => { try { const d = JSON.parse(${rawVar1}); return d.${part} ? d.${part}.slice(0, 10) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                } else if (pattern === 'YYYY-MM-DD HH:mm:ss' && isUTC) {
+                    innerExpression = `(() => { try { const d = JSON.parse(${rawVar1}); return d.${part} ? d.${part}.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                } else {
+                    const fnPrefix = isUTC ? 'getUTC' : 'get';
+                    const yr = `d.${fnPrefix}FullYear()`;
+                    const mo = `p(d.${fnPrefix}Month() + 1)`;
+                    const da = `p(d.${fnPrefix}Date())`;
+                    const hr = `p(d.${fnPrefix}Hours())`;
+                    const mi = `p(d.${fnPrefix}Minutes())`;
+                    const sc = `p(d.${fnPrefix}Seconds())`;
+                    const fmtExpr = `"${pattern}".replace(/YYYY/g, ${yr}).replace(/YY/g, String(${yr}).slice(-2)).replace(/MM/g, ${mo}).replace(/DD/g, ${da}).replace(/HH/g, ${hr}).replace(/mm/g, ${mi}).replace(/ss/g, ${sc})`;
+
+                    innerExpression = `(() => { try { const data = JSON.parse(${rawVar1}); if (!data.${part}) return ${fallbackCode}; const d = new Date(String(data.${part}).replace(' ', 'T')); const p = n => String(n).padStart(2, '0'); return ${fmtExpr}; } catch(e) { return ${fallbackCode}; } })()`;
+                }
+
+                expText = `Parses date range JSON from <code>${rawVar1}</code> and extracts the <strong>${part === 'from' ? 'start ("from")' : 'end ("to")'}</strong> timestamp formatted as <code>${escapeHtml(pattern)}</code> (${isUTC ? 'UTC' : 'Local'}). Falls back to <code>${fallbackCode}</code> if blank or invalid.`;
             }
         }
 
@@ -4250,6 +4346,9 @@ Item 2: Tested and verified working
             if (dateOp === 'conditional_null') {
                 params.set('nullTrigger', document.getElementById('date-null-trigger').value);
                 params.set('nullFallback', document.getElementById('date-null-fallback-date').value);
+            } else if (dateOp === 'extract_range_part') {
+                params.set('rangePart', document.getElementById('date-range-part').value);
+                params.set('rangeFallback', document.getElementById('date-range-fallback').value);
             }
         }
 
@@ -4356,6 +4455,8 @@ Item 2: Tested and verified working
             if (params.has('var2')) document.getElementById('variableDate2').value = params.get('var2');
             if (params.has('nullTrigger')) document.getElementById('date-null-trigger').value = params.get('nullTrigger');
             if (params.has('nullFallback')) document.getElementById('date-null-fallback-date').value = params.get('nullFallback');
+            if (params.has('rangePart')) document.getElementById('date-range-part').value = params.get('rangePart');
+            if (params.has('rangeFallback')) document.getElementById('date-range-fallback').value = params.get('rangeFallback');
             toggleDateInputs();
         }
 
