@@ -1335,7 +1335,7 @@
             <button type="button" class="template-trigger-btn" onclick="openTemplatesModal()">
                 <span class="btn-icon">⚡</span>
                 <span>Quick Action Templates</span>
-                <span class="template-count-badge">19</span>
+                <span class="template-count-badge">23</span>
             </button>
         </div>
         <div class="token-input-wrapper">
@@ -1593,6 +1593,7 @@
                             <option value="fallback">Null / Undefined Coalesce / Fallback</option>
                             <option value="conditional_block">Conditional Block / Header Wrapper (Omit if Empty)</option>
                             <option value="chain">Multi-Variable Chain / Join (Omit if All Empty)</option>
+                            <option value="set_blank">Clear / Set Field to Blank ("")</option>
                         </select>
                     </div>
 
@@ -1721,6 +1722,24 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                             <input type="text" id="chain-empty-val" value="" placeholder="Leave blank to completely omit header &amp; variables, or e.g. None" oninput="generateFlowcode()">
                         </div>
                     </div>
+
+                    <!-- Set Field to Blank Panel -->
+                    <div class="inner-panel" id="logic-blank-panel" style="display: none;">
+                        <div class="form-group">
+                            <label for="blank-mode">Blanking Behavior</label>
+                            <select id="blank-mode" onchange="toggleBlankMode(); generateFlowcode()">
+                                <option value="static" selected>Always Blank / Clear Field (&amp;[""])</option>
+                                <option value="conditional">Conditional Reset: Clear if Variable Matches Trigger</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="blank-cond-group" style="display: none; margin-bottom: 0;">
+                            <label for="blank-match-val">Reset Trigger Value <span class="helper-label">(If variable matches this, output ""; otherwise keep variable)</span></label>
+                            <input type="text" id="blank-match-val" value="CLEAR" placeholder="e.g. CLEAR, N/A, or None" oninput="generateFlowcode()">
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                                💡 Tip: When a user selects or passes this trigger, the field is overwritten with empty <code>""</code>.
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Date & Time Panel -->
@@ -1745,6 +1764,10 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                                 <option value="is_future">Is Date in the Future? (Date &gt; Now)</option>
                                 <option value="expires_within">Target Date within next N Days?</option>
                                 <option value="is_weekend">Is Date on Weekend? (Saturday / Sunday)</option>
+                            </optgroup>
+                            <optgroup label="Database Field Reset / Nullify">
+                                <option value="null_date">Clear / Set Date to NULL (&amp;[null])</option>
+                                <option value="conditional_null">Conditional Date or NULL (&amp;[trigger ? null : date])</option>
                             </optgroup>
                         </select>
                     </div>
@@ -1828,6 +1851,21 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                         <div class="form-group" style="margin-bottom: 0;">
                             <label for="variableDate2">Secondary Date Variable (Compare Against / Date 2)</label>
                             <input type="text" id="variableDate2" placeholder="global['flowcoderefs']['resolveNode']['dateClosed']" value="global['flowcoderefs']['resolveNode']['dateClosed']" oninput="generateFlowcode()">
+                        </div>
+                    </div>
+
+                    <!-- Conditional Date / NULL Panel -->
+                    <div class="inner-panel" id="date-cond-null-panel" style="display: none;">
+                        <div class="form-group">
+                            <label for="date-null-trigger">Trigger Value to Nullify Date <span class="helper-label">(If variable equals this, output null)</span></label>
+                            <input type="text" id="date-null-trigger" value="Cancelled" placeholder="e.g. Cancelled, Closed, or 0" oninput="generateFlowcode()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="date-null-fallback-date">Retained Date Value <span class="helper-label">(If not triggered)</span></label>
+                            <input type="text" id="date-null-fallback-date" class="token-input-field" value="new Date().toISOString().slice(0, 10)" placeholder="e.g. new Date().toISOString().slice(0, 10) or variable" oninput="generateFlowcode()">
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                                💡 Tip: Passes SQL <code>NULL</code> when trigger matches; otherwise outputs the date string.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2194,6 +2232,10 @@ Item 2: Tested and verified working
                         <p style="margin: 2px 0 0 0; color: #475569;">Yes! Click the <strong>Share Link</strong> button in the top navigation header. It encodes your entire variable, operation, and mock values into a shareable URL that loads the exact state on any computer.</p>
                     </div>
                     <div style="margin-bottom: 12px;">
+                        <strong style="color: #0f172a; font-size: 13px;">Q: How do I clear or reset an existing text field or date field?</strong>
+                        <p style="margin: 2px 0 0 0; color: #475569;">In Hornbill update nodes, leaving a mapped field blank is ignored by the engine (it preserves existing database content). To explicitly wipe a text custom field, pass <code>&amp;[""]</code>. To clear a Date or DateTime field to SQL NULL without format validator errors, pass <code>&amp;[null]</code>. Use the <em>Set Field to Blank</em> (under Logic) or <em>Clear Date Field to NULL</em> (under Date &amp; Time) templates!</p>
+                    </div>
+                    <div style="margin-bottom: 12px;">
                         <strong style="color: #0f172a; font-size: 13px;">Q: Does this tool send my Hornbill data or tokens anywhere?</strong>
                         <p style="margin: 2px 0 0 0; color: #475569;">No. This application is 100% client-side, zero-dependency HTML/JavaScript. All calculations, parsing, and live simulation run entirely in your browser's memory.</p>
                     </div>
@@ -2223,11 +2265,11 @@ Item 2: Tested and verified working
         </div>
         <div class="modal-body">
             <div class="preset-filter-row">
-                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (19)</button>
+                <button type="button" class="filter-pill active" onclick="filterModalPresets('all')">All (23)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('math')">Math (1)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (3)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('logic')">Logic (5)</button>
                 <button type="button" class="filter-pill" onclick="filterModalPresets('string')">String &amp; Text (8)</button>
-                <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (7)</button>
+                <button type="button" class="filter-pill" onclick="filterModalPresets('date')">Date &amp; Time (9)</button>
             </div>
             <div class="modal-preset-grid">
                 <!-- Math -->
@@ -2247,6 +2289,14 @@ Item 2: Tested and verified working
                 <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('String', 'logic', 'chain', '', {mode: 'join_non_empty', variables: 'functions.getTaskAnswers(\'task-123\').Field1\nfunctions.getTaskAnswers(\'task-123\').Field2\nfunctions.getTaskAnswers(\'task-123\').Field3', delim: '\\n', header: '\'\'\'Additional Information\'\'\'', sep: '\\n', suffix: '\\n\\n', emptyVal: '', mockVals: 'First answer\n\nThird answer'}, 'First answer', '', 'functions.getTaskAnswers(\'task-123\').Field1')">
                     <div class="modal-preset-header"><span>🔗</span> Multi-Variable Chain (Omit if All Empty)</div>
                     <div class="modal-preset-desc">Combines 3+ fields, strips empty ones, and completely omits header &amp; spacing if all blank.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('String', 'logic', 'set_blank', '', {blankMode: 'static'}, '', '', 'global[\'flowcoderefs\'][\'myNode\'][\'myField\']')">
+                    <div class="modal-preset-header"><span>🗑</span> Clear Field to Blank ("")</div>
+                    <div class="modal-preset-desc">Outputs empty string to clear/wipe an existing text field in a Hornbill update node.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="logic" onclick="applyTemplateAndClose('String', 'logic', 'set_blank', '', {blankMode: 'conditional', matchVal: 'CLEAR'}, 'CLEAR', '', 'functions.getTaskAnswers(\'task-123\').Status')">
+                    <div class="modal-preset-header"><span>🔄</span> Conditional Reset to Blank</div>
+                    <div class="modal-preset-desc">Wipes field to empty if variable equals "CLEAR" or trigger; otherwise retains data.</div>
                 </button>
                 <!-- String -->
                 <button type="button" class="modal-preset-btn" data-cat="string" onclick="applyTemplateAndClose('String', 'string', 'count_items', '', {delim: ',', trim: true}, 'Laptop, Monitor, Docking Station, Keyboard', '', 'global[\'flowcoderefs\'][\'myChecklistNode\'][\'checklistAnswers\']')">
@@ -2309,6 +2359,14 @@ Item 2: Tested and verified working
                 <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('is_past', '', '', '', '', '2026-09-01 00:00:00', '', 'global[\'flowcoderefs\'][\'ticketDetails\'][\'slaTargetDate\']')">
                     <div class="modal-preset-header"><span>❗</span> Is Overdue? (Bool)</div>
                     <div class="modal-preset-desc">Evaluates boolean overdue condition (date &lt; now).</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('null_date', '', '', '', '', '', '', 'global[\'flowcoderefs\'][\'myNode\'][\'targetDate\']')">
+                    <div class="modal-preset-header"><span>∅</span> Clear Date Field to NULL</div>
+                    <div class="modal-preset-desc">Outputs native JavaScript null to reset/clear a Date/DateTime column to SQL NULL.</div>
+                </button>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('conditional_null', '', '', '', '', 'Cancelled', '', 'functions.getTaskAnswers(\'task-123\').Status')">
+                    <div class="modal-preset-header"><span>⚖</span> Conditional Date or NULL</div>
+                    <div class="modal-preset-desc">Nullifies date if ticket status is "Cancelled"; otherwise preserves/outputs date.</div>
                 </button>
             </div>
         </div>
@@ -2501,6 +2559,12 @@ Item 2: Tested and verified working
             inType: "Multiple Token Strings", outType: "Formatted Multi-Field String or Empty String",
             nativeAlt: { supported: true, name: "BPM Decision Nodes + String Utilities", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Chaining 3+ conditional variables natively in Hornbill requires multiple Decision and String Utility nodes. This expression handles multi-token filtering and formatting entirely in a single field." }
         },
+        set_blank: {
+            summary: "Outputs an empty string (\"\") statically or conditionally to reset or clear an existing text field.",
+            context: "Wiping existing custom field text or resetting a field when a ticket status or answer triggers a reset.",
+            inType: "Token String (optional)", outType: "Empty String (\"\")",
+            nativeAlt: { supported: false, note: "Hornbill workflow update nodes ignore unmapped fields. Passing &[\"\"] explicitly overwrites the database field with an empty value." }
+        },
         // Date
         format_date: {
             summary: "Parses an incoming date token and reformats it into the chosen standard or custom pattern.",
@@ -2573,6 +2637,18 @@ Item 2: Tested and verified working
             context: "Branching workflow to on-call support or pausing SLA timers over weekends.",
             inType: "Date String", outType: "Boolean (true / false)",
             nativeAlt: { supported: true, name: "Working Time Calendars / Get Current Day", url: "https://docs.hornbill.com/esp-config/automation/hornbill-automations", note: "Hornbill Working Time Calendars natively handle weekend exclusions for SLAs. Use this expression if you need a quick boolean check to branch a workflow." }
+        },
+        null_date: {
+            summary: "Evaluates to native JavaScript null to reset or clear a Date/DateTime field in the database.",
+            context: "Clearing target dates, scheduled dates, or custom date fields upon cancellation or reset.",
+            inType: "None", outType: "null (SQL NULL)",
+            nativeAlt: { supported: false, note: "Hornbill date inputs expect valid dates or native null. Passing &[null] resets the database column to SQL NULL." }
+        },
+        conditional_null: {
+            summary: "Evaluates to null if condition is met (e.g. ticket is cancelled); otherwise outputs date.",
+            context: "Retaining a scheduled date until a cancellation/closure trigger wipes it.",
+            inType: "Comparable Variable", outType: "Date String or null",
+            nativeAlt: { supported: true, name: "BPM Decision Node (Branching)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Hornbill Decision Nodes can branch to an Update Request node. Use this expression to conditionally nullify inline." }
         }
     };
 
@@ -2913,7 +2989,10 @@ Item 2: Tested and verified working
                 if (extraVal.sep !== undefined) document.getElementById('chain-sep').value = extraVal.sep;
                 if (extraVal.suffix !== undefined) document.getElementById('chain-suffix').value = extraVal.suffix;
                 if (extraVal.emptyVal !== undefined) document.getElementById('chain-empty-val').value = extraVal.emptyVal;
-                if (extraVal.mockVals !== undefined) document.getElementById('mock-chain-vals').value = extraVal.mockVals;
+            } else if (operation === 'set_blank' && extraVal && typeof extraVal === 'object') {
+                if (extraVal.blankMode !== undefined) document.getElementById('blank-mode').value = extraVal.blankMode;
+                if (extraVal.matchVal !== undefined) document.getElementById('blank-match-val').value = extraVal.matchVal;
+                toggleBlankMode();
             }
             toggleLogicInputs();
         }
@@ -3234,6 +3313,8 @@ Item 2: Tested and verified working
                 newMock1 = 'User requested urgent hardware setup';
             } else if (logicOp === 'chain') {
                 newMock1 = 'Item 1: Power supply replaced';
+            } else if (logicOp === 'set_blank') {
+                newMock1 = 'CLEAR';
             } else {
                 newMock1 = '';
             }
@@ -3251,6 +3332,10 @@ Item 2: Tested and verified working
                 if (!isMock2ModifiedByUser) document.getElementById('mock-val-2').value = '2026-09-08T17:30';
             } else if (dateOp === 'expires_within') {
                 newMock1 = new Date(Date.now() + (10 * 86400000)).toISOString().slice(0, 16);
+            } else if (dateOp === 'null_date') {
+                newMock1 = '2026-10-15T10:00';
+            } else if (dateOp === 'conditional_null') {
+                newMock1 = 'Cancelled';
             } else {
                 newMock1 = '2026-09-08T14:30';
             }
@@ -3364,12 +3449,19 @@ Item 2: Tested and verified working
         }
     }
 
+    function toggleBlankMode() {
+        const mode = document.getElementById('blank-mode')?.value;
+        const group = document.getElementById('blank-cond-group');
+        if (group) group.style.display = (mode === 'conditional') ? 'block' : 'none';
+    }
+
     function toggleLogicInputs() {
         const logicOp = document.getElementById('logic-op').value;
         const ternaryPanel = document.getElementById('logic-ternary-panel');
         const fallbackPanel = document.getElementById('logic-fallback-panel');
         const conditionalPanel = document.getElementById('logic-conditional-panel');
         const chainPanel = document.getElementById('logic-chain-panel');
+        const blankPanel = document.getElementById('logic-blank-panel');
         const mockChainContainer = document.getElementById('mock-chain-container');
         const mock1Container = document.getElementById('mock-val-1')?.closest('.form-group');
 
@@ -3377,9 +3469,11 @@ Item 2: Tested and verified working
         if (fallbackPanel) fallbackPanel.style.display = (logicOp === 'fallback') ? 'block' : 'none';
         if (conditionalPanel) conditionalPanel.style.display = (logicOp === 'conditional_block') ? 'block' : 'none';
         if (chainPanel) chainPanel.style.display = (logicOp === 'chain') ? 'block' : 'none';
+        if (blankPanel) blankPanel.style.display = (logicOp === 'set_blank') ? 'block' : 'none';
         if (mockChainContainer) mockChainContainer.style.display = (logicOp === 'chain') ? 'block' : 'none';
         if (mock1Container) mock1Container.style.display = (logicOp === 'chain') ? 'none' : '';
 
+        toggleBlankMode();
         updateSmartMockDefaults();
         updateDescriptions();
     }
@@ -3454,6 +3548,9 @@ Item 2: Tested and verified working
         }
 
         secondaryPanel.style.display = (dateOp === 'diff_days') ? 'block' : 'none';
+        const condNullPanel = document.getElementById('date-cond-null-panel');
+        if (condNullPanel) condNullPanel.style.display = (dateOp === 'conditional_null') ? 'block' : 'none';
+
         toggleMathInputs(); 
         updateSmartMockDefaults();
         updateDescriptions();
@@ -3674,6 +3771,14 @@ Item 2: Tested and verified working
                         }
                         return emptyVal || '';
                     }
+                } else if (logicOp === 'set_blank') {
+                    const mode = document.getElementById('blank-mode').value;
+                    if (mode === 'static') {
+                        return "";
+                    } else {
+                        const matchVal = document.getElementById('blank-match-val').value;
+                        return (String(m1).trim() === matchVal.trim()) ? "" : m1;
+                    }
                 } else {
                     const fallbackVal = document.getElementById('logic-fallback-val').value;
                     return c1 || fallbackVal;
@@ -3728,6 +3833,12 @@ Item 2: Tested and verified working
                 } else if (dateOp === 'is_weekend') {
                     const day = new Date(String(m1).replace(' ', 'T')).getDay();
                     return (day === 0 || day === 6) ? "true (Weekend)" : "false (Weekday)";
+                } else if (dateOp === 'null_date') {
+                    return null;
+                } else if (dateOp === 'conditional_null') {
+                    const trigger = document.getElementById('date-null-trigger').value;
+                    const fallbackDate = document.getElementById('date-null-fallback-date').value || new Date().toISOString().slice(0, 10);
+                    return (String(m1).trim() === trigger.trim()) ? null : fallbackDate;
                 }
             }
         } catch(e) {
@@ -3926,6 +4037,17 @@ Item 2: Tested and verified working
                     innerExpression = `(() => { const v = ${chainCascade}; return v ? (${prefixCode}v${suffixCode}) : ${escapedFallback}; })()`;
                     expText = `Coalesces <strong>${tokens.length} variables</strong> in cascade order. Returns the first non-empty variable value. If all are empty, omits completely${emptyVal ? ' (defaults to <code>' + escapeHtml(emptyVal) + '</code>)' : ''}.`;
                 }
+            } else if (logicOp === 'set_blank') {
+                const mode = document.getElementById('blank-mode').value;
+                if (mode === 'static') {
+                    innerExpression = `""`;
+                    expText = `Outputs an empty string literal (<code>""</code>). When passed to a Hornbill update node, explicitly overwrites and resets the database field to blank.`;
+                } else {
+                    const matchVal = document.getElementById('blank-match-val').value;
+                    const escapedMatch = JSON.stringify(matchVal);
+                    innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); return v === ${escapedMatch} ? "" : v; })()`;
+                    expText = `Conditional Field Blanking: If <code>${rawVar1}</code> matches <code>${escapeHtml(matchVal)}</code>, returns <code>""</code> to clear the field; otherwise retains <code>${rawVar1}</code>.`;
+                }
             } else {
                 let fallbackVal = document.getElementById('logic-fallback-val').value;
                 if (isNaN(fallbackVal) && fallbackVal !== "true" && fallbackVal !== "false") {
@@ -4008,6 +4130,15 @@ Item 2: Tested and verified working
             } else if (dateOp === 'is_weekend') {
                 innerExpression = `[0, 6].includes(new Date(String(${rawVar1}).replace(' ', 'T')).getDay())`;
                 expText = `Evaluates to <strong>true</strong> if date falls on a weekend (Saturday or Sunday).`;
+            } else if (dateOp === 'null_date') {
+                innerExpression = `null`;
+                expText = `Evaluates to native JavaScript <code>null</code>. When passed into a Hornbill Date or DateTime custom field, clears the field and resets the database column to <strong>SQL NULL</strong> without format validation errors.`;
+            } else if (dateOp === 'conditional_null') {
+                const trigger = document.getElementById('date-null-trigger').value;
+                const fallbackDateExpr = document.getElementById('date-null-fallback-date').value.trim() || 'new Date().toISOString().slice(0, 10)';
+                const escapedTrigger = JSON.stringify(trigger);
+                innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); return v === ${escapedTrigger} ? null : ${fallbackDateExpr}; })()`;
+                expText = `Conditional Date Nullify: If <code>${rawVar1}</code> matches <code>${escapeHtml(trigger)}</code>, returns <code>null</code> (clearing date to SQL NULL); otherwise outputs <code>${escapeHtml(fallbackDateExpr)}</code>.`;
             }
         }
 
@@ -4016,7 +4147,14 @@ Item 2: Tested and verified working
         document.getElementById('explanation').innerHTML = expText;
 
         const simResult = simulateExpression(convType1, category);
-        document.getElementById('previewOutput').innerText = simResult;
+        const previewEl = document.getElementById('previewOutput');
+        if (simResult === null) {
+            previewEl.innerHTML = '<span style="color: #6366f1; font-weight: bold;">null</span> <span style="font-size: 11px; font-weight: normal; color: #64748b;">(SQL NULL — Date Cleared)</span>';
+        } else if (simResult === "" && (category === 'logic' && document.getElementById('logic-op').value === 'set_blank')) {
+            previewEl.innerHTML = '<span style="color: #94a3b8; font-style: italic; font-weight: normal;">(Empty String — Field Cleared)</span>';
+        } else {
+            previewEl.innerText = simResult;
+        }
 
         // Dynamically update browser address bar with current state & results
         if (window.history && window.history.replaceState) {
@@ -4093,11 +4231,15 @@ Item 2: Tested and verified working
                 params.set('chainSuffix', document.getElementById('chain-suffix').value);
                 params.set('chainEmptyVal', document.getElementById('chain-empty-val').value);
                 params.set('chainMock', document.getElementById('mock-chain-vals').value);
+            } else if (logicOp === 'set_blank') {
+                params.set('blankMode', document.getElementById('blank-mode').value);
+                params.set('blankMatch', document.getElementById('blank-match-val').value);
             } else {
                 params.set('fallback', document.getElementById('logic-fallback-val').value);
             }
         } else if (cat === 'date') {
-            params.set('op', document.getElementById('date-op').value);
+            const dateOp = document.getElementById('date-op').value;
+            params.set('op', dateOp);
             params.set('fmt', document.getElementById('date-format-select').value);
             params.set('customFmt', document.getElementById('date-custom-format').value);
             params.set('tz', document.getElementById('date-tz').value);
@@ -4105,6 +4247,10 @@ Item 2: Tested and verified working
             params.set('offsetVal', document.getElementById('date-offset-val').value);
             params.set('offsetUnit', document.getElementById('date-offset-unit').value);
             params.set('var2', document.getElementById('variableDate2').value);
+            if (dateOp === 'conditional_null') {
+                params.set('nullTrigger', document.getElementById('date-null-trigger').value);
+                params.set('nullFallback', document.getElementById('date-null-fallback-date').value);
+            }
         }
 
         if (isMock1ModifiedByUser) params.set('mock1', document.getElementById('mock-val-1').value);
@@ -4194,6 +4340,8 @@ Item 2: Tested and verified working
             if (params.has('chainSuffix')) document.getElementById('chain-suffix').value = params.get('chainSuffix');
             if (params.has('chainEmptyVal')) document.getElementById('chain-empty-val').value = params.get('chainEmptyVal');
             if (params.has('chainMock')) document.getElementById('mock-chain-vals').value = params.get('chainMock');
+            if (params.has('blankMode')) document.getElementById('blank-mode').value = params.get('blankMode');
+            if (params.has('blankMatch')) document.getElementById('blank-match-val').value = params.get('blankMatch');
             toggleLogicInputs();
         } else if (cat === 'date') {
             if (op) document.getElementById('date-op').value = op;
@@ -4206,6 +4354,8 @@ Item 2: Tested and verified working
             if (params.has('offsetVal')) document.getElementById('date-offset-val').value = params.get('offsetVal');
             if (params.has('offsetUnit')) document.getElementById('date-offset-unit').value = params.get('offsetUnit');
             if (params.has('var2')) document.getElementById('variableDate2').value = params.get('var2');
+            if (params.has('nullTrigger')) document.getElementById('date-null-trigger').value = params.get('nullTrigger');
+            if (params.has('nullFallback')) document.getElementById('date-null-fallback-date').value = params.get('nullFallback');
             toggleDateInputs();
         }
 
