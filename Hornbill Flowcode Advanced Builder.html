@@ -1885,13 +1885,13 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                             <div class="form-group">
                                 <label for="date-range-fallback">Fallback on Empty / Parse Error</label>
                                 <select id="date-range-fallback" onchange="generateFlowcode()">
-                                    <option value="null" selected>SQL NULL (null) &mdash; Best for Date Fields</option>
-                                    <option value="empty">Empty String ("") &mdash; Best for Text Fields</option>
+                                    <option value="empty" selected>Empty String ("") &mdash; Safe for XMLMC &amp; Form Fields (Prevents 0203 Error)</option>
+                                    <option value="null">SQL NULL (null) &mdash; Direct SQL Column Reset</option>
                                 </select>
                             </div>
                         </div>
                         <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-                            💡 Parses Hornbill between-date question JSON (e.g. <code>{"from":"...","to":"..."}</code>) and converts the chosen endpoint into your selected format above.
+                            💡 Parses Hornbill between-date question JSON (e.g. <code>{"from":"...","to":"..."}</code>). Using <code>""</code> fallback prevents Hornbill XMLMC error <code>0203: property is not allowed to be null</code> when the field is optional or unpopulated.
                         </div>
                     </div>
                 </div>
@@ -2262,6 +2262,10 @@ Item 2: Tested and verified working
                         <p style="margin: 2px 0 0 0; color: #475569;">In Hornbill update nodes, leaving a mapped field blank is ignored by the engine (it preserves existing database content). To explicitly wipe a text custom field, pass <code>&amp;[""]</code>. To clear a Date or DateTime field to SQL NULL without format validator errors, pass <code>&amp;[null]</code>. Use the <em>Set Field to Blank</em> (under Logic) or <em>Clear Date Field to NULL</em> (under Date &amp; Time) templates!</p>
                     </div>
                     <div style="margin-bottom: 12px;">
+                        <strong style="color: #0f172a; font-size: 13px;">Q: Why did my node fail with "Error 0203: The value for property 'customX' is not allowed to be null"?</strong>
+                        <p style="margin: 2px 0 0 0; color: #475569;">Hornbill's XMLMC API parameter schemas for update nodes (e.g. <em>Update Request Custom Fields</em>) reject parameters serialized with <code>null</code> or <code>xsi:nil="true"</code>. If a question was optional or not answered in Intelligent Capture, returning <code>null</code> causes error 0203. Always use the <strong>Empty String ("")</strong> fallback in your expressions, or branch your workflow with a Decision Node so the field is only mapped when answered.</p>
+                    </div>
+                    <div style="margin-bottom: 12px;">
                         <strong style="color: #0f172a; font-size: 13px;">Q: Does this tool send my Hornbill data or tokens anywhere?</strong>
                         <p style="margin: 2px 0 0 0; color: #475569;">No. This application is 100% client-side, zero-dependency HTML/JavaScript. All calculations, parsing, and live simulation run entirely in your browser's memory.</p>
                     </div>
@@ -2394,13 +2398,13 @@ Item 2: Tested and verified working
                     <div class="modal-preset-header"><span>⚖</span> Conditional Date or NULL</div>
                     <div class="modal-preset-desc">Nullifies date if ticket status is "Cancelled"; otherwise preserves/outputs date.</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'from', fallback: 'null'})">
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'from', fallback: 'empty'})">
                     <div class="modal-preset-header"><span>⏱</span> Extract "From" Date &amp; Time (Range JSON)</div>
-                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "from" timestamp (SQL DateTime / null).</div>
+                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "from" timestamp (SQL DateTime / safe empty fallback).</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'to', fallback: 'null'})">
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'to', fallback: 'empty'})">
                     <div class="modal-preset-header"><span>⏱</span> Extract "To" Date &amp; Time (Range JSON)</div>
-                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "to" timestamp (SQL DateTime / null).</div>
+                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "to" timestamp (SQL DateTime / safe empty fallback).</div>
                 </button>
             </div>
         </div>
@@ -4218,9 +4222,9 @@ Item 2: Tested and verified working
 
                 // We want to format the extracted ISO timestamp according to chosen pattern and timezone
                 if (pattern === 'YYYY-MM-DD' && isUTC) {
-                    innerExpression = `(() => { try { const d = JSON.parse(${rawVar1}); return d.${part} ? d.${part}.slice(0, 10) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                    innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const d = JSON.parse(raw); return d.${part} ? d.${part}.slice(0, 10) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
                 } else if (pattern === 'YYYY-MM-DD HH:mm:ss' && isUTC) {
-                    innerExpression = `(() => { try { const d = JSON.parse(${rawVar1}); return d.${part} ? d.${part}.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                    innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const d = JSON.parse(raw); return d.${part} ? d.${part}.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
                 } else {
                     const fnPrefix = isUTC ? 'getUTC' : 'get';
                     const yr = `d.${fnPrefix}FullYear()`;
@@ -4231,7 +4235,7 @@ Item 2: Tested and verified working
                     const sc = `p(d.${fnPrefix}Seconds())`;
                     const fmtExpr = `"${pattern}".replace(/YYYY/g, ${yr}).replace(/YY/g, String(${yr}).slice(-2)).replace(/MM/g, ${mo}).replace(/DD/g, ${da}).replace(/HH/g, ${hr}).replace(/mm/g, ${mi}).replace(/ss/g, ${sc})`;
 
-                    innerExpression = `(() => { try { const data = JSON.parse(${rawVar1}); if (!data.${part}) return ${fallbackCode}; const d = new Date(String(data.${part}).replace(' ', 'T')); const p = n => String(n).padStart(2, '0'); return ${fmtExpr}; } catch(e) { return ${fallbackCode}; } })()`;
+                    innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const data = JSON.parse(raw); if (!data.${part}) return ${fallbackCode}; const d = new Date(String(data.${part}).replace(' ', 'T')); const p = n => String(n).padStart(2, '0'); return ${fmtExpr}; } catch(e) { return ${fallbackCode}; } })()`;
                 }
 
                 expText = `Parses date range JSON from <code>${rawVar1}</code> and extracts the <strong>${part === 'from' ? 'start ("from")' : 'end ("to")'}</strong> timestamp formatted as <code>${escapeHtml(pattern)}</code> (${isUTC ? 'UTC' : 'Local'}). Falls back to <code>${fallbackCode}</code> if blank or invalid.`;
