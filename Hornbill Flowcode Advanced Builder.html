@@ -1872,26 +1872,34 @@ functions.getTaskAnswers("task-123").Field3</textarea>
                         </div>
                     </div>
 
-                    <!-- Date Range JSON Extractor Panel -->
+                    <!-- Date Range Extractor Panel -->
                     <div class="inner-panel" id="date-range-panel" style="display: none;">
                         <div class="grid-2">
                             <div class="form-group">
-                                <label for="date-range-part">Range Endpoint to Extract</label>
-                                <select id="date-range-part" onchange="generateFlowcode()">
-                                    <option value="from" selected>Start Date / Time (data.from)</option>
-                                    <option value="to">End Date / Time (data.to)</option>
+                                <label for="date-range-input-mode">Incoming Format / Token Type</label>
+                                <select id="date-range-input-mode" onchange="generateFlowcode()">
+                                    <option value="delimited" selected>Delimited String ("Start - End") &mdash; Standard Flowcode</option>
+                                    <option value="json">JSON Object ({"from":"...","to":"..."})</option>
+                                    <option value="auto">Auto-Detect (Delimited String or JSON)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="date-range-fallback">Fallback on Empty / Parse Error</label>
-                                <select id="date-range-fallback" onchange="generateFlowcode()">
-                                    <option value="empty" selected>Empty String ("") &mdash; Safe for XMLMC &amp; Form Fields (Prevents 0203 Error)</option>
-                                    <option value="null">SQL NULL (null) &mdash; Direct SQL Column Reset</option>
+                                <label for="date-range-part">Range Endpoint to Extract</label>
+                                <select id="date-range-part" onchange="generateFlowcode()">
+                                    <option value="from" selected>Start Date / Time (From / [0])</option>
+                                    <option value="to">End Date / Time (To / [1])</option>
                                 </select>
                             </div>
                         </div>
-                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-                            💡 Parses Hornbill between-date question JSON (e.g. <code>{"from":"...","to":"..."}</code>). Using <code>""</code> fallback prevents Hornbill XMLMC error <code>0203: property is not allowed to be null</code> when the field is optional or unpopulated.
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="date-range-fallback">Fallback on Empty / Parse Error</label>
+                            <select id="date-range-fallback" onchange="generateFlowcode()">
+                                <option value="empty" selected>Empty String ("") &mdash; Safe for XMLMC &amp; Form Fields (Prevents 0203 Error)</option>
+                                <option value="null">SQL NULL (null) &mdash; Direct SQL Column Reset</option>
+                            </select>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                            💡 In Hornbill BPM workflows, between-date tokens resolve directly to <code>"YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss"</code>. <strong>Delimited String</strong> generates the clean single-line split expression!
                         </div>
                     </div>
                 </div>
@@ -2398,13 +2406,13 @@ Item 2: Tested and verified working
                     <div class="modal-preset-header"><span>⚖</span> Conditional Date or NULL</div>
                     <div class="modal-preset-desc">Nullifies date if ticket status is "Cancelled"; otherwise preserves/outputs date.</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'from', fallback: 'empty'})">
-                    <div class="modal-preset-header"><span>⏱</span> Extract "From" Date &amp; Time (Range JSON)</div>
-                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "from" timestamp (SQL DateTime / safe empty fallback).</div>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '2026-10-19 06:00:00 - 2026-10-19 09:00:00', '', 'functions.pcf(\'ChangeAssessmentDetails\',\'outage_date_and_time\',\'pcf-296\')', {mode: 'delimited', part: 'from', fallback: 'empty'})">
+                    <div class="modal-preset-header"><span>⏱</span> Extract "From" Date &amp; Time (Range String)</div>
+                    <div class="modal-preset-desc">Splits "Start - End" range string and extracts start date/time (clean single-line Flowcode).</div>
                 </button>
-                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '{\"from\":\"2026-10-12T08:00:00.000Z\",\"to\":\"2026-10-13T08:00:00.000Z\"}', '', 'functions.pcf(\'ChangeRequestDetails\',\'h_proposed_start_time\',\'pcf-296\')', {part: 'to', fallback: 'empty'})">
-                    <div class="modal-preset-header"><span>⏱</span> Extract "To" Date &amp; Time (Range JSON)</div>
-                    <div class="modal-preset-desc">Parses between-date question JSON and extracts "to" timestamp (SQL DateTime / safe empty fallback).</div>
+                <button type="button" class="modal-preset-btn" data-cat="date" onclick="applyDatePresetAndClose('extract_range_part', 'YYYY-MM-DD HH:mm:ss', '', '', '', '2026-10-19 06:00:00 - 2026-10-19 09:00:00', '', 'functions.pcf(\'ChangeAssessmentDetails\',\'outage_date_and_time\',\'pcf-296\')', {mode: 'delimited', part: 'to', fallback: 'empty'})">
+                    <div class="modal-preset-header"><span>⏱</span> Extract "To" Date &amp; Time (Range String)</div>
+                    <div class="modal-preset-desc">Splits "Start - End" range string and extracts end date/time (clean single-line Flowcode).</div>
                 </button>
             </div>
         </div>
@@ -2689,10 +2697,10 @@ Item 2: Tested and verified working
             nativeAlt: { supported: true, name: "BPM Decision Node (Branching)", url: "https://docs.hornbill.com/esp-config/automation/decision", note: "Hornbill Decision Nodes can branch to an Update Request node. Use this expression to conditionally nullify inline." }
         },
         extract_range_part: {
-            summary: "Parses Hornbill between-date question JSON and extracts either 'from' (start) or 'to' (end) date & time in the selected format.",
-            context: "Extracting start or end date/time from Intelligent Capture date range answers (e.g. Change Request proposed start/end times) into Custom Date or DateTime fields.",
-            inType: "JSON String ({\"from\":\"...\",\"to\":\"...\"})", outType: "Formatted Date/Time or null",
-            nativeAlt: { supported: false, note: "Hornbill does not provide a native node to unpack JSON between-date question answers; use this inline Flowcode expression." }
+            summary: "Extracts start ('from') or end ('to') date & time from Hornbill between-date range strings ('Start - End') or JSON.",
+            context: "Extracting start or end date/time from Intelligent Capture date range answers (e.g. Change Request proposed start/end times or outage windows) into Custom Date or DateTime fields.",
+            inType: "Range String ('Start - End') or JSON", outType: "Formatted Date/Time String",
+            nativeAlt: { supported: false, note: "Hornbill does not provide a native range-split utility node; use this clean inline Flowcode expression." }
         }
     };
 
@@ -3081,6 +3089,7 @@ Item 2: Tested and verified working
         if (offsetUnit) document.getElementById('date-offset-unit').value = offsetUnit;
 
         if (op === 'extract_range_part' && extraOpt && typeof extraOpt === 'object') {
+            if (extraOpt.mode) document.getElementById('date-range-input-mode').value = extraOpt.mode;
             if (extraOpt.part) document.getElementById('date-range-part').value = extraOpt.part;
             if (extraOpt.fallback) document.getElementById('date-range-fallback').value = extraOpt.fallback;
         }
@@ -3396,7 +3405,12 @@ Item 2: Tested and verified working
             } else if (dateOp === 'conditional_null') {
                 newMock1 = 'Cancelled';
             } else if (dateOp === 'extract_range_part') {
-                newMock1 = '{"from":"2026-10-12T08:00:00.000Z","to":"2026-10-13T08:00:00.000Z"}';
+                const mode = document.getElementById('date-range-input-mode')?.value;
+                if (mode === 'json') {
+                    newMock1 = '{"from":"2026-10-12T08:00:00.000Z","to":"2026-10-13T08:00:00.000Z"}';
+                } else {
+                    newMock1 = '2026-10-19 06:00:00 - 2026-10-19 09:00:00';
+                }
             } else {
                 newMock1 = '2026-09-08T14:30';
             }
@@ -3904,16 +3918,34 @@ Item 2: Tested and verified working
                     const fallbackDate = document.getElementById('date-null-fallback-date').value || new Date().toISOString().slice(0, 10);
                     return (String(m1).trim() === trigger.trim()) ? null : fallbackDate;
                 } else if (dateOp === 'extract_range_part') {
+                    const inputMode = document.getElementById('date-range-input-mode').value;
                     const part = document.getElementById('date-range-part').value;
                     const fallback = document.getElementById('date-range-fallback').value;
+                    const fallbackVal = (fallback === 'null') ? null : "";
+
+                    const str = String(m1 || "").trim();
+                    if (!str) return fallbackVal;
+
+                    if (inputMode === 'delimited' || (inputMode === 'auto' && str.includes(' - ') && !str.startsWith('{'))) {
+                        const parts = str.split(' - ');
+                        const targetStr = (part === 'from') ? parts[0]?.trim() : (parts[1]?.trim() || parts[0]?.trim());
+                        if (!targetStr) return fallbackVal;
+                        // If format is YYYY-MM-DD HH:mm:ss and matches, return as is or parse
+                        const d = new Date(targetStr.replace(' ', 'T'));
+                        if (!isNaN(d.getTime())) {
+                            return formatDateByPattern(d, pattern, useUTC);
+                        }
+                        return targetStr;
+                    }
+
                     try {
                         const parsed = typeof m1 === 'string' ? JSON.parse(m1) : m1;
                         const dateStr = parsed && parsed[part];
-                        if (!dateStr) return (fallback === 'null') ? null : "";
+                        if (!dateStr) return fallbackVal;
                         const d = new Date(String(dateStr).replace(' ', 'T'));
                         return formatDateByPattern(d, pattern, useUTC);
                     } catch (e) {
-                        return (fallback === 'null') ? null : "";
+                        return fallbackVal;
                     }
                 }
             }
@@ -4216,29 +4248,48 @@ Item 2: Tested and verified working
                 innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); return v === ${escapedTrigger} ? null : ${fallbackDateExpr}; })()`;
                 expText = `Conditional Date Nullify: If <code>${rawVar1}</code> matches <code>${escapeHtml(trigger)}</code>, returns <code>null</code> (clearing date to SQL NULL); otherwise outputs <code>${escapeHtml(fallbackDateExpr)}</code>.`;
             } else if (dateOp === 'extract_range_part') {
+                const inputMode = document.getElementById('date-range-input-mode').value;
                 const part = document.getElementById('date-range-part').value;
                 const fallbackType = document.getElementById('date-range-fallback').value;
                 const fallbackCode = (fallbackType === 'null') ? 'null' : '""';
+                const partIndex = (part === 'from') ? 0 : 1;
 
-                // We want to format the extracted ISO timestamp according to chosen pattern and timezone
-                if (pattern === 'YYYY-MM-DD' && isUTC) {
-                    innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const d = JSON.parse(raw); return d.${part} ? d.${part}.slice(0, 10) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
-                } else if (pattern === 'YYYY-MM-DD HH:mm:ss' && isUTC) {
-                    innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const d = JSON.parse(raw); return d.${part} ? d.${part}.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                if (inputMode === 'delimited') {
+                    // Ultra-clean single-line expression for Hornbill between-date display strings
+                    if (partIndex === 0) {
+                        innerExpression = `String(${rawVar1} || "").split(" - ")[0].trim() || ${fallbackCode}`;
+                    } else {
+                        innerExpression = `(String(${rawVar1} || "").split(" - ")[1] || "").trim() || ${fallbackCode}`;
+                    }
+                    expText = `Fast single-line delimiter split: Extracts <strong>${part === 'from' ? 'start ("from")' : 'end ("to")'}</strong> date &amp; time by splitting <code>${rawVar1}</code> on <code>" - "</code>. Zero overhead, safe against XMLMC null errors.`;
+                } else if (inputMode === 'auto') {
+                    // Hybrid mode: handles both delimited strings AND JSON objects seamlessly
+                    if (part === 'from') {
+                        innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); if (!v) return ${fallbackCode}; if (v.startsWith("{")) { try { const d = JSON.parse(v); return d.from ? d.from.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e){} } return v.split(" - ")[0].trim() || ${fallbackCode}; })()`;
+                    } else {
+                        innerExpression = `(() => { const v = String(${rawVar1} || "").trim(); if (!v) return ${fallbackCode}; if (v.startsWith("{")) { try { const d = JSON.parse(v); return d.to ? d.to.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e){} } const p = v.split(" - "); return (p.length > 1 ? p[1].trim() : p[0].trim()) || ${fallbackCode}; })()`;
+                    }
+                    expText = `Auto-detect extractor: Handles both raw between-date JSON (<code>{"from":"..."}</code>) and resolved display strings (<code>"Start - End"</code>) for <strong>${part === 'from' ? 'start ("from")' : 'end ("to")'}</strong>.`;
                 } else {
-                    const fnPrefix = isUTC ? 'getUTC' : 'get';
-                    const yr = `d.${fnPrefix}FullYear()`;
-                    const mo = `p(d.${fnPrefix}Month() + 1)`;
-                    const da = `p(d.${fnPrefix}Date())`;
-                    const hr = `p(d.${fnPrefix}Hours())`;
-                    const mi = `p(d.${fnPrefix}Minutes())`;
-                    const sc = `p(d.${fnPrefix}Seconds())`;
-                    const fmtExpr = `"${pattern}".replace(/YYYY/g, ${yr}).replace(/YY/g, String(${yr}).slice(-2)).replace(/MM/g, ${mo}).replace(/DD/g, ${da}).replace(/HH/g, ${hr}).replace(/mm/g, ${mi}).replace(/ss/g, ${sc})`;
+                    // Pure JSON parsing mode
+                    if (pattern === 'YYYY-MM-DD' && isUTC) {
+                        innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const d = JSON.parse(raw); return d.${part} ? d.${part}.slice(0, 10) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                    } else if (pattern === 'YYYY-MM-DD HH:mm:ss' && isUTC) {
+                        innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const d = JSON.parse(raw); return d.${part} ? d.${part}.replace('T', ' ').slice(0, 19) : ${fallbackCode}; } catch(e) { return ${fallbackCode}; } })()`;
+                    } else {
+                        const fnPrefix = isUTC ? 'getUTC' : 'get';
+                        const yr = `d.${fnPrefix}FullYear()`;
+                        const mo = `p(d.${fnPrefix}Month() + 1)`;
+                        const da = `p(d.${fnPrefix}Date())`;
+                        const hr = `p(d.${fnPrefix}Hours())`;
+                        const mi = `p(d.${fnPrefix}Minutes())`;
+                        const sc = `p(d.${fnPrefix}Seconds())`;
+                        const fmtExpr = `"${pattern}".replace(/YYYY/g, ${yr}).replace(/YY/g, String(${yr}).slice(-2)).replace(/MM/g, ${mo}).replace(/DD/g, ${da}).replace(/HH/g, ${hr}).replace(/mm/g, ${mi}).replace(/ss/g, ${sc})`;
 
-                    innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const data = JSON.parse(raw); if (!data.${part}) return ${fallbackCode}; const d = new Date(String(data.${part}).replace(' ', 'T')); const p = n => String(n).padStart(2, '0'); return ${fmtExpr}; } catch(e) { return ${fallbackCode}; } })()`;
+                        innerExpression = `(() => { try { const raw = ${rawVar1}; if (!raw) return ${fallbackCode}; const data = JSON.parse(raw); if (!data.${part}) return ${fallbackCode}; const d = new Date(String(data.${part}).replace(' ', 'T')); const p = n => String(n).padStart(2, '0'); return ${fmtExpr}; } catch(e) { return ${fallbackCode}; } })()`;
+                    }
+                    expText = `Parses date range JSON from <code>${rawVar1}</code> and extracts the <strong>${part === 'from' ? 'start ("from")' : 'end ("to")'}</strong> timestamp formatted as <code>${escapeHtml(pattern)}</code> (${isUTC ? 'UTC' : 'Local'}). Falls back to <code>${fallbackCode}</code> if blank or invalid.`;
                 }
-
-                expText = `Parses date range JSON from <code>${rawVar1}</code> and extracts the <strong>${part === 'from' ? 'start ("from")' : 'end ("to")'}</strong> timestamp formatted as <code>${escapeHtml(pattern)}</code> (${isUTC ? 'UTC' : 'Local'}). Falls back to <code>${fallbackCode}</code> if blank or invalid.`;
             }
         }
 
@@ -4351,6 +4402,7 @@ Item 2: Tested and verified working
                 params.set('nullTrigger', document.getElementById('date-null-trigger').value);
                 params.set('nullFallback', document.getElementById('date-null-fallback-date').value);
             } else if (dateOp === 'extract_range_part') {
+                params.set('rangeInputMode', document.getElementById('date-range-input-mode').value);
                 params.set('rangePart', document.getElementById('date-range-part').value);
                 params.set('rangeFallback', document.getElementById('date-range-fallback').value);
             }
@@ -4459,6 +4511,7 @@ Item 2: Tested and verified working
             if (params.has('var2')) document.getElementById('variableDate2').value = params.get('var2');
             if (params.has('nullTrigger')) document.getElementById('date-null-trigger').value = params.get('nullTrigger');
             if (params.has('nullFallback')) document.getElementById('date-null-fallback-date').value = params.get('nullFallback');
+            if (params.has('rangeInputMode')) document.getElementById('date-range-input-mode').value = params.get('rangeInputMode');
             if (params.has('rangePart')) document.getElementById('date-range-part').value = params.get('rangePart');
             if (params.has('rangeFallback')) document.getElementById('date-range-fallback').value = params.get('rangeFallback');
             toggleDateInputs();
